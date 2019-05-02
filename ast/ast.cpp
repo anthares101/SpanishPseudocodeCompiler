@@ -1249,11 +1249,11 @@ void lp::IfStmt::print()
   this->_cond->print();
 
   // Consequent
-  this->_stmt1->print();
+  this->_consequent->print();
 
  // The alternative is printed if exists
-  if (this->_stmt2 != NULL)
-	  this->_stmt2->print();
+  if (this->_alternative != NULL)
+	  this->_alternative->print();
 
   std::cout << std::endl;
 }
@@ -1264,11 +1264,11 @@ void lp::IfStmt::evaluate()
    // If the condition is true,
 	if (this->_cond->evaluateBool() == true )
      // the consequent is run 
-	  this->_stmt1->evaluate();
+	  this->_consequent->evaluate();
 
     // Otherwise, the alternative is run if exists
-	else if (this->_stmt2 != NULL)
-		  this->_stmt2->evaluate();
+	else if (this->_alternative != NULL)
+		  this->_alternative->evaluate();
 }
 
 
@@ -1285,7 +1285,7 @@ void lp::WhileStmt::print()
   this->_cond->print();
 
   // Body of the while loop
-  this->_stmt->print();
+  this->_stmts->print();
 
   std::cout << std::endl;
 }
@@ -1296,19 +1296,40 @@ void lp::WhileStmt::evaluate()
   // While the condition is true. the body is run 
   while (this->_cond->evaluateBool() == true)
   {	
-	  this->_stmt->evaluate();
+	  this->_stmts->evaluate();
   }
 
 }
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
 
+
+void lp::StatementList::print() {
+	std::list<Statement *>::iterator stmtIter;
+
+	std::cout << "BlockStmt: "  << std::endl;
+
+	for (stmtIter = this->_stmts.begin(); stmtIter != this->_stmts.end(); stmtIter++) {
+	    (*stmtIter)->print();
+	}
+}
+
+void lp::StatementList::evaluate() {
+  std::list<Statement *>::iterator stmtIter;
+
+  for (stmtIter = this->_stmts.begin(); stmtIter != this->_stmts.end(); stmtIter++) 
+  {
+    (*stmtIter)->evaluate();
+  }
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // NEW in example 17
-
+/*
 void lp::BlockStmt::print() 
 {
   std::list<Statement *>::iterator stmtIter;
@@ -1331,7 +1352,7 @@ void lp::BlockStmt::evaluate()
     (*stmtIter)->evaluate();
   }
 }
-
+*/
 
 
 
