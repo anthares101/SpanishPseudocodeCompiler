@@ -75,9 +75,9 @@ static struct {
 	      } keyword[] = {
 	                    "print", PRINT,
 	                    "read",  READ,
-						"if",	 IF,   		// NEW in example 17
-						"else",	 ELSE, 		// NEW in example 17
-						"while",  WHILE,	// NEW in example 17
+						"si",	 IF,   		// NEW in example 17
+						"si_no", ELSE, 		// NEW in example 17
+						"mientras",  WHILE,	// NEW in example 17
 	                    "",      0
 	                   };
 
