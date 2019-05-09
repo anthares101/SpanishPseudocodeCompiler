@@ -33,12 +33,12 @@ PALABRAS RESERVADAS:		[ ]							CHECK
 	escribir_cadena										[ ]
 
 	SENTENCIA CONDICIONAL:								[ ]
-		si												[ ]
+		si												[OK]
 		entonces										[ ]
-		si_no											[ ]
+		si_no											[OK]
 		fin_si											[ ]
 
-	SENTENCIA DE BUCLE MIENTRAS:						[ ]
+	SENTENCIA DE BUCLE MIENTRAS:						[OK]
 		mientras										[ ]
 		hacer											[ ]
 		fin_mientras									[ ]
