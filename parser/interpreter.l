@@ -6,6 +6,11 @@
 #include <iostream>
 
 /*********************/
+/* strdup */
+#include <string.h>
+/*********************/
+
+/*********************/
 /* NEW in example 4 */
 /* atof */
 #include <stdlib.h>
