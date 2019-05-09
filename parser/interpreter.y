@@ -245,7 +245,7 @@ program : stmtlist
 stmtlist:  /* empty: epsilon rule */
 		  { 
 			// create a empty list of statements
-			//$$ = new std::list<lp::Statement *>(); 
+			$$ = new lp::StatementList(); 
 		  }  
 
         | stmtlist stmt 

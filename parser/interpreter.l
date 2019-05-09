@@ -110,7 +110,7 @@ IDENTIFIER {LETTER}+(({LETTER}|{DIGIT})+"_"({LETTER}|{DIGIT})+)*
 {IDENTIFIER}   		 {
 						 /* NEW in example 7 */
 						 std::string identifier(yytext);
-std::cout << "soy yytext en IDENTIFIER --> " << yytext << std::endl;
+//std::cout << "soy yytext en IDENTIFIER --> " << yytext << std::endl;
 						/* 
                           strdup() function returns a pointer to a new string 
                           which  is a duplicate of the string yytext
@@ -125,7 +125,7 @@ std::cout << "soy yytext en IDENTIFIER --> " << yytext << std::endl;
 						/* If the identifier is not in the table of symbols then it is inserted */	
 						 if (table.lookupSymbol(identifier) == false)
 							{
-								std::cout << "soy identifier en IDENTIFIER y no soy palabra clave --> " << identifier << std::endl << std::endl;
+								//std::cout << "soy identifier en IDENTIFIER y no soy palabra clave --> " << identifier << std::endl << std::endl;
 								/* 
 								 The identifier is inserted into the symbol table 
 								 as undefined Variable with value 0.0
@@ -146,7 +146,7 @@ std::cout << "soy yytext en IDENTIFIER --> " << yytext << std::endl;
 						else 
 							{
 								lp::Symbol	*s = table.getSymbol(identifier);
-std::cout << "soy identifier en IDENTIFIER y soy palabra clave --> " << identifier << std::endl << std::endl;
+//std::cout << "soy identifier en IDENTIFIER y soy palabra clave --> " << identifier << std::endl << std::endl;
 /*
 								std::cout << "lex: "<< s->getName() 
 										  << "token " << s->getToken()
@@ -246,7 +246,7 @@ std::cout << "soy identifier en IDENTIFIER y soy palabra clave --> " << identifi
 								/* NEW in example 3 */
 								/* Rewind one position */
 								yyless(yyleng-1); 
-std::cout << "soy yytext en ERROR --> " << yytext << std::endl;
+//std::cout << "soy yytext en ERROR --> " << yytext << std::endl;
 								/* Display the error message */
 								warning("Lexical error", yytext);
 
