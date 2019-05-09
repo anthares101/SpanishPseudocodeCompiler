@@ -6,6 +6,11 @@
 #include <iostream>
 
 /*********************/
+/* tolower */
+#include <ctype.h>
+/*********************/
+
+/*********************/
 /* strdup */
 #include <string.h>
 /*********************/
@@ -62,7 +67,7 @@ NUMBER1 {DIGIT}+\.?
 
 NUMBER2 {DIGIT}*\.{DIGIT}+
 
-IDENTIFIER  {LETTER}({LETTER}|{DIGIT})*
+IDENTIFIER {LETTER}({LETTER}+{DIGIT}+_({LETTER}+{DIGIT}))∗
 
 /* NEW in example 3 */
 /* STATE  */
@@ -110,7 +115,12 @@ IDENTIFIER  {LETTER}({LETTER}|{DIGIT})*
                           strdup() function returns a pointer to a new string 
                           which  is a duplicate of the string yytext
                         */
-						  yylval.identifier =  strdup(yytext); 
+						  yylval.identifier =  strdup(yytext);
+
+						  //Transform the string to lowerCase to avoid case sensitive
+						  for(int i = 0; i < identifier.size(); i++){
+							  identifier[i] = tolower(identifier[i]);
+						  }
 
 						/* If the identifier is not in the table of symbols then it is inserted */	
 						 if (table.lookupSymbol(identifier) == false)
