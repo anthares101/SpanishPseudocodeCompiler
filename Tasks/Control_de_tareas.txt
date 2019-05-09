@@ -65,10 +65,10 @@ PALABRAS RESERVADAS:		[ ]							CHECK
 -----------------------------------------------------------------
 IDENTIFICADORES:		[ ]								CHECK
 -----------------------------------------------------------------
-	COMPUESTOS POR LETRAS, DIGITOS Y SUBRAYADOS 		[ ]
-	COMIENZA POR UNA LETRA								[ ]
-	NO TERMINAN  EN SUBRAYADA							[ ]
-	NO CONTIENEN DOS SUBRAYADOS SEGUIDOS				[ ]
+	COMPUESTOS POR LETRAS, DIGITOS Y SUBRAYADOS 		[OK]
+	COMIENZA POR UNA LETRA								[OK]
+	NO TERMINAN  EN SUBRAYADA							[OK]
+	NO CONTIENEN DOS SUBRAYADOS SEGUIDOS				[OK]
 
 	NO SE DISTINGUE ENTRE MAYÚSCULAS Y MINÚSCULAS		[ ]
 
