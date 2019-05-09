@@ -34,14 +34,14 @@ PALABRAS RESERVADAS:		[ ]							CHECK
 
 	SENTENCIA CONDICIONAL:								[ ]
 		si												[OK]
-		entonces										[ ]
+		entonces										[OK]
 		si_no											[OK]
-		fin_si											[ ]
+		fin_si											[OK]
 
-	SENTENCIA DE BUCLE MIENTRAS:						[OK]
-		mientras										[ ]
-		hacer											[ ]
-		fin_mientras									[ ]
+	SENTENCIA DE BUCLE MIENTRAS:						[ ]
+		mientras										[OK]
+		hacer											[OK]
+		fin_mientras									[OK]
 
 	SENTENCIA DE BUCLE REPETIR:							[ ]
 		repetir											[ ]

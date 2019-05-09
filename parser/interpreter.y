@@ -162,11 +162,20 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 %token SEMICOLON
 /*******************************************/
 
-// NEW in example 17: IF, ELSE, WHILE 
-%token PRINT READ IF ELSE WHILE
+// Tokens for print sentence
+%token PRINT
+
+// Tokens for read sentence
+%token READ
+
+// Tokens for conditional sentence
+%token IF THEN ELSE ENDIF
+
+// Tokens for while loop
+%token WHILE DO ENDWHILE
 
 // NEW in example 17
-%token LETFCURLYBRACKET RIGHTCURLYBRACKET
+//%token LETFCURLYBRACKET RIGHTCURLYBRACKET
 
 /* NEW in example 7 */
 %right ASSIGNMENT
@@ -298,25 +307,25 @@ stmt: SEMICOLON  /* Empty statement: ";" */
  
 	/*  NEW in example 17 */
 if:	/* Simple conditional statement */
-	IF cond stmtlist 
+	IF cond THEN stmtlist ENDIF
     {
 		// Create a new if statement node
-		$$ = new lp::IfStmt($2, $3);
+		$$ = new lp::IfStmt($2, $4);
 	}
 
 	/* Compound conditional statement */
-	| IF cond stmtlist  ELSE stmtlist 
+	| IF cond THEN stmtlist ELSE stmtlist ENDIF
 	 {
 		// Create a new if statement node
-		$$ = new lp::IfStmt($2, $3, $5);
+		$$ = new lp::IfStmt($2, $4, $6);
 	 }
 ;
 
 	/*  NEW in example 17 */
-while:  WHILE cond stmtlist 
+while:  WHILE cond DO stmtlist ENDWHILE
 		{
 			// Create a new while statement node
-			$$ = new lp::WhileStmt($2, $3);
+			$$ = new lp::WhileStmt($2, $4);
         }
 ;
 

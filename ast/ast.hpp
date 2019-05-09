@@ -1392,7 +1392,7 @@ class Statement {
   \warning Abstract class
 */
 
-class StatementList : private Statement {
+class StatementList : public Statement {
 
 private:
 	//! List with all the statements
@@ -1440,7 +1440,7 @@ void evaluate();
   \note    AssignmentStmt Class publicly inherits from Statement class 
 		   and adds its own print and evaluate functions
 */
-class AssignmentStmt : public Statement 
+class AssignmentStmt : public Statement
 {
  private:
   std::string _id;    //!< Name of the variable of the assignment statement
@@ -1501,7 +1501,7 @@ class AssignmentStmt : public Statement
 		   and adds its own print and evaluate functions
   \warning  In this class, print and evaluate functions have the same meaning.
 */
-class PrintStmt: public Statement 
+class PrintStmt: public Statement
 {
  private:
   ExpNode *_exp; //!< Expresssion the print statement
@@ -1586,7 +1586,7 @@ class ReadStmt : public Statement
   \note    EmptyStmt Class publicly inherits from Statement class 
 		   and adds its own print and evaluate functions
 */
-class EmptyStmt : public Statement 
+class EmptyStmt : public Statement
 {
   // No attributes
 
@@ -1626,7 +1626,7 @@ class EmptyStmt : public Statement
   \note    IfStmt Class publicly inherits from Statement class 
 		   and adds its own print and evaluate functions
 */
-class IfStmt : public Statement 
+class IfStmt : public StatementList 
 {
  private:
   ExpNode *_cond; //!< Condicion of the if statement
@@ -1692,7 +1692,7 @@ class IfStmt : public Statement
   \note    WhileStmt Class publicly inherits from Statement class 
 		   and adds its own print and evaluate functions
 */
-class WhileStmt : public Statement 
+class WhileStmt : public StatementList 
 {
  private:
   ExpNode *_cond; //!< Condicion of the while statement

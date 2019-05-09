@@ -73,11 +73,27 @@ static struct {
           std::string name ;
 	      int token;
 	      } keyword[] = {
+	      				//READ SENTENCE
 	                    "print", PRINT,
+	                    //////////////////////
+
+	                    //PRINT SENTENCE
 	                    "read",  READ,
+	                    //////////////////////
+
+	                    //CONDITIONAL SENTENCE
 						"si",	 IF,   		// NEW in example 17
+						"entonces",	THEN,
 						"si_no", ELSE, 		// NEW in example 17
+						"fin_si", ENDIF,
+						//////////////////////
+
+						//WHILE LOOP
 						"mientras",  WHILE,	// NEW in example 17
+						"hacer", DO,
+						"fin_mientras", ENDWHILE,
+						//////////////////////
+
 	                    "",      0
 	                   };
 
