@@ -70,7 +70,7 @@ IDENTIFICADORES:		[ ]								CHECK
 	NO TERMINAN  EN SUBRAYADA							[OK]
 	NO CONTIENEN DOS SUBRAYADOS SEGUIDOS				[OK]
 
-	NO SE DISTINGUE ENTRE MAYÚSCULAS Y MINÚSCULAS		[ ]
+	NO SE DISTINGUE ENTRE MAYÚSCULAS Y MINÚSCULAS		[OK]
 
 
 -----------------------------------------------------------------
