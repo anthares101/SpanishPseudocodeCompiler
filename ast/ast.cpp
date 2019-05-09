@@ -1306,6 +1306,10 @@ void lp::WhileStmt::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 
+void lp::StatementList::addStatement(lp::Statement * stmt) {
+	this->_stmts.push_back(stmt);
+}
+
 void lp::StatementList::print() {
 	std::list<Statement *>::iterator stmtIter;
 
@@ -1360,25 +1364,13 @@ void lp::BlockStmt::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-void lp::AST::print() 
-{
-  std::list<Statement *>::iterator stmtIter;
-
-  for (stmtIter = stmts->begin(); stmtIter != stmts->end(); stmtIter++) 
-  {
-     (*stmtIter)->print();
-  }
+void lp::AST::print() {
+  this->_stmts->print();
 }
 
 
 
-void lp::AST::evaluate() 
-{
-  std::list<Statement *>::iterator stmtIter;
-
-  for (stmtIter = stmts->begin(); stmtIter != stmts->end(); stmtIter++) 
-  {
-    (*stmtIter)->evaluate();
-  }
+void lp::AST::evaluate() {
+  this->_stmts->evaluate();
 }
 

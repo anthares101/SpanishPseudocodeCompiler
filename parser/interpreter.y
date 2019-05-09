@@ -134,7 +134,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
   bool logic;						 /* NEW in example 15 */
   lp::ExpNode *expNode;  			 /* NEW in example 16 */
   std::list<lp::ExpNode *>  *parameters;    // New in example 16; NOTE: #include<list> must be in interpreter.l, init.cpp, interpreter.cpp
-  std::list<lp::Statement *> *stmts; /* NEW in example 16 */
+  lp::StatementList *stmts; /* NEW in example 16 */
   lp::Statement *st;				 /* NEW in example 16 */
   lp::AST *prog;					 /* NEW in example 16 */
 }
@@ -236,14 +236,14 @@ program : stmtlist
 stmtlist:  /* empty: epsilon rule */
 		  { 
 			// create a empty list of statements
-			$$ = new std::list<lp::Statement *>(); 
+			//$$ = new std::list<lp::Statement *>(); 
 		  }  
 
         | stmtlist stmt 
 		  { 
 			// copy up the list and add the stmt to it
 			$$ = $1;
-			$$->push_back($2);
+			$$->addStatement($2);
 
 			// Control the interative mode of execution of the interpreter
 			if (interactiveMode == true)

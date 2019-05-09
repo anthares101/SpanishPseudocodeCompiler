@@ -1404,8 +1404,14 @@ public:
 	\brief Class constructor
 */
 StatementList() {
-	//empty
+	//Empty 
 }
+
+/*!
+	\brief Adds a statement to the list
+	\return void
+*/
+void addStatement(lp::Statement * stmt);
 
 /*!	
 	\brief   Print the StatementList
@@ -1776,7 +1782,7 @@ class BlockStmt : public Statement
 */
 class AST {
  private:
-  std::list<lp::Statement *> *stmts;  //!< List of statements
+  lp::StatementList *_stmts;  //!< List of statements
 
  public:
 
@@ -1785,7 +1791,7 @@ class AST {
 	\param stmtList: pointer to a list of pointers to Statement
 	\post  A new PrintStmt is created with the parameter
 */
-  AST(std::list<lp::Statement *> *stmtList): stmts(stmtList)
+  AST(lp::StatementList *stmtList): _stmts(stmtList)
 	{
 		// Empty
 	}
