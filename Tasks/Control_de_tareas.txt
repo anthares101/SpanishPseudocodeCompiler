@@ -85,10 +85,10 @@ NÚMERO:					[ ]								CHECK
 -----------------------------------------------------------------
 CADENA:					[ ]								CHECK
 -----------------------------------------------------------------
-	CARACTERES DELIMITADOS POR COMILLAS SIMPLES 		[ ]
-	INCLUYE COMILLA SIMPLE CON \ \'						[ ]
+	CARACTERES DELIMITADOS POR COMILLAS SIMPLES 		[OK]
+	INCLUYE COMILLA SIMPLE CON \ \'						[OK]
 
-	COMILLAS EXTERIORES NO SON PARTE DE LA CADENA 		[ ]
+	COMILLAS EXTERIORES NO SON PARTE DE LA CADENA 		[OK]
 
 -----------------------------------------------------------------
 OPERADORES:				[ ]								CHECK
@@ -193,7 +193,7 @@ OBSERVACIONES:			[ ]								CHECK
 CONTROL DE ERRORES:		[ ]								CHECK
 -----------------------------------------------------------------
 	LÉXICOS
-		IDENTIFICADOR MAL ESCRITO 						[ ]
+		IDENTIFICADOR MAL ESCRITO 						[OK]
 		SIMBOLO NO PERMITIDO							[ ]
 		OTROS											[ ]
 

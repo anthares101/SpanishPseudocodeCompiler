@@ -187,6 +187,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 /* MODIFIED in example 4 */
 %token <number> NUMBER
 /*******************************************/
+%token <identifier> STRING
 
 /*******************************************/
 /* NEW in example 15 */
@@ -448,6 +449,11 @@ exp:	NUMBER
      	{ 
 		  // Create a new power node	
   		  $$ = new lp::PowerNode($1, $3);
+		}
+	|	STRING 
+		{ 
+			// Create a new string node
+			$$ = new lp::StringNode($1);
 		}
 
 	 | VARIABLE

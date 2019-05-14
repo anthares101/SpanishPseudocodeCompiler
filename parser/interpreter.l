@@ -69,9 +69,12 @@ NUMBER2 {DIGIT}*\.{DIGIT}+
 
 IDENTIFIER {LETTER}(({LETTER}|{DIGIT})*("_"({LETTER}|{DIGIT}))*)*
 
+IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
+
 /* NEW in example 3 */
 /* STATE  */
 %x ERROR
+%x STRING_STATE
 
 /*! \name REGULAR EXPRESSIONS  */
 %%
@@ -110,23 +113,24 @@ IDENTIFIER {LETTER}(({LETTER}|{DIGIT})*("_"({LETTER}|{DIGIT}))*)*
 
 
 {IDENTIFIER}   		 {
+						 
+
+						 //Transform the string to lowerCase to avoid case sensitive
+						 for(int i = 0; i < strlen(yytext); i++){
+						 	yytext[i] = tolower(yytext[i]);
+						 }
+
 						 /* NEW in example 7 */
 						 std::string identifier(yytext);
-						/* 
-                          strdup() function returns a pointer to a new string 
-                          which  is a duplicate of the string yytext
-                        */
+						 /* 
+                           strdup() function returns a pointer to a new string 
+                           which  is a duplicate of the string yytext
+                         */
 						  yylval.identifier =  strdup(yytext);
 
-						  //Transform the string to lowerCase to avoid case sensitive
-						  for(int i = 0; i < identifier.size(); i++){
-							  identifier[i] = tolower(identifier[i]);
-						  }
-
-						/* If the identifier is not in the table of symbols then it is inserted */	
+						 /* If the identifier is not in the table of symbols then it is inserted */	
 						 if (table.lookupSymbol(identifier) == false)
 							{
-								//std::cout << "soy identifier en IDENTIFIER y no soy palabra clave --> " << identifier << std::endl << std::endl;
 								/* 
 								 The identifier is inserted into the symbol table 
 								 as undefined Variable with value 0.0
@@ -147,17 +151,29 @@ IDENTIFIER {LETTER}(({LETTER}|{DIGIT})*("_"({LETTER}|{DIGIT}))*)*
 						else 
 							{
 								lp::Symbol	*s = table.getSymbol(identifier);
-//std::cout << "soy identifier en IDENTIFIER y soy palabra clave --> " << identifier << std::endl << std::endl;
-/*
-								std::cout << "lex: "<< s->getName() 
-										  << "token " << s->getToken()
-  										  << std::endl; 
-*/
 
 								/*  If the identifier is in the table then its token is returned  */
 								return s->getToken();
 							}
                      }
+
+"'"		{ 	/* String recognition on */
+			BEGIN STRING_STATE; 
+		}
+<STRING_STATE>"'"  { /* String end: returned to default state */
+			         BEGIN 0; 
+			         yytext[yyleng-1]='\0';
+
+			         //Use the same type as an identifier id (String)
+			         yylval.identifier =  strdup(yytext);
+			         return STRING;
+					}      
+
+<STRING_STATE>"\\\'"     {yymore();}
+
+<STRING_STATE>.          {yymore();}
+
+<STRING_STATE>\n         {yymore();}
 
 "-"		{ return MINUS;  } 			/* NEW in example 3 */
 "+"		{ return PLUS;   } 			/* NEW in example 3 */
@@ -255,5 +271,7 @@ IDENTIFIER {LETTER}(({LETTER}|{DIGIT})*("_"({LETTER}|{DIGIT}))*)*
 								/* Restore the initial state */
    								BEGIN(INITIAL);
 							}
+
+{IDENTIFIER_ERR}			{ warning("Identificador incorrecto", yytext); }
 %%
 

@@ -10,6 +10,7 @@
 #define _AST_HPP_
 
 #include <iostream>
+#include <string>
 #include <stdlib.h>
 #include <string>
 #include <list>
@@ -238,6 +239,56 @@ class NumberNode : public ExpNode
 		\sa		 print
 	*/
 	double evaluateNumber();
+};
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+/*!	
+  \class StringNode
+  \brief Definition of atributes and methods of StringNode class
+  \note  StringNode Class publicly inherits from ExpNode class
+*/
+class StringNode : public ExpNode 
+{
+ private: 	
+   std::string _string; //!< \brief string of the StringNode
+ 
+ public:
+
+	/*!		
+		\brief Constructor of NumberNode
+		\param value: double
+		\post  A new NumberNode is created with the value of the parameter
+		\note  Inline function
+	*/
+  	StringNode(std::string value)
+	{
+	    this->_string = value;
+	};
+
+	/*!	
+	\brief   Get the type of the expression: STRING
+	\return  int
+	\sa		 print
+	*/
+	int getType();
+
+	/*!
+		\brief   Print the expression
+		\return  void
+		\sa		 evaluate()
+	*/
+	void print();
+
+	/*!	
+		\brief   Evaluate the expression
+		\return  double
+		\sa		 print
+	*/
+	std::string evaluateString();
 };
 
 
