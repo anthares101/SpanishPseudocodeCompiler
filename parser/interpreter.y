@@ -148,8 +148,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 
 %type <stmts> stmtlist
 
-// New in example 17: if, while
-%type <st> stmt asgn print read if while
+%type <st> stmt asgn print read if while repeatUntil for
 
 %type <prog> program
 
@@ -173,6 +172,12 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 
 // Tokens for while loop
 %token WHILE DO ENDWHILE
+
+// Tokens for repeat-until loop
+%token REPEAT UNTIL
+
+// Tokens for for loop
+%token FOR START INC ENDFOR
 
 // NEW in example 17
 //%token LETFCURLYBRACKET RIGHTCURLYBRACKET
@@ -304,6 +309,16 @@ stmt: SEMICOLON  /* Empty statement: ";" */
 		// Default action
 		// $$ = $1;
 	 }
+	| repeatUntil 
+	 {
+		// Default action
+		// $$ = $1;
+	 }
+	| for 
+	 {
+		// Default action
+		// $$ = $1;
+	 }
 ;
  
 	/*  NEW in example 17 */
@@ -328,6 +343,29 @@ while:  WHILE cond DO stmtlist ENDWHILE
 			// Create a new while statement node
 			$$ = new lp::WhileStmt($2, $4);
         }
+;
+
+repeatUntil: REPEAT stmtlist UNTIL cond
+		{
+
+			// Create a new do-until statement node
+			$$ = new lp::RepeatUntilStmt($2, $4);
+		}
+;	
+
+for: FOR VARIABLE START exp UNTIL exp INC exp DO stmtlist ENDFOR
+		{
+
+			// Create a new do-until statement node
+			$$ = new lp::ForStmt($2, $4, $6, $8, $10);
+		}
+		/* Bucle for sin incremento */
+		| FOR VARIABLE START exp UNTIL exp DO stmtlist ENDFOR
+		{
+
+			// Create a new do-until statement node
+			$$ = new lp::ForStmt($2, $4, $6, $8);
+		}
 ;
 
 	/*  NEW in example 17 */
