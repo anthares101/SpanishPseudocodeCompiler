@@ -148,8 +148,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 
 %type <stmts> stmtlist
 
-// New in example 17: if, while
-%type <st> stmt asgn print read if while
+%type <st> stmt asgn print read if while repeatUntil
 
 %type <prog> program
 
@@ -173,6 +172,9 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 
 // Tokens for while loop
 %token WHILE DO ENDWHILE
+
+// Tokens for repeat-until loop
+%token REPEAT UNTIL
 
 // NEW in example 17
 //%token LETFCURLYBRACKET RIGHTCURLYBRACKET
@@ -303,6 +305,11 @@ stmt: SEMICOLON  /* Empty statement: ";" */
 		// Default action
 		// $$ = $1;
 	 }
+	| repeatUntil 
+	 {
+		// Default action
+		// $$ = $1;
+	 }
 ;
  
 	/*  NEW in example 17 */
@@ -328,6 +335,14 @@ while:  WHILE cond DO stmtlist ENDWHILE
 			$$ = new lp::WhileStmt($2, $4);
         }
 ;
+
+repeatUntil: REPEAT stmtlist UNTIL cond
+		{
+
+			// Create a new do-until statement node
+			$$ = new lp::RepeatUntilStmt($2, $4);
+		}
+;	
 
 	/*  NEW in example 17 */
 cond: 	LPAREN exp RPAREN

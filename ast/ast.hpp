@@ -1728,6 +1728,52 @@ class WhileStmt : public StatementList
 };
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+/*!	
+  \class   RepeatUntilStmt
+  \brief   Definition of atributes and methods of RepeatUntilStmt class
+  \note    RepeatUntilStmt Class publicly inherits from Statement class 
+		   and adds its own print and evaluate functions
+*/
+
+class RepeatUntilStmt : public StatementList {
+
+private:
+	ExpNode * _cond; //!< Condicion of the do-until statement
+	StatementList * _stmts; //!< Statements of the body of the do-until loop
+
+public:
+
+	/*!		
+	\brief Constructor of  RepeatUntilStmt
+	\param condition: ExpNode of the condition
+	\param statement: Statement of the body of the loop 
+	\post  A new RepeatUntilStmt is created with the parameters
+*/
+  RepeatUntilStmt(StatementList *statements, ExpNode *condition)
+	{
+		this->_stmts = statements;
+		this->_cond = condition;
+	}
+
+
+/*!
+	\brief   Print the RepeatUntilStmt
+	\return  void
+	\sa		 evaluate
+*/
+  void print();
+
+/*!	
+	\brief   Evaluate the RepeatUntilStmt
+	\return  void
+	\sa		 print
+*/
+  void evaluate();
+
+};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////

@@ -94,6 +94,11 @@ static struct {
 						"fin_mientras", ENDWHILE,
 						//////////////////////
 
+						//DO-WHILE LOOP
+						"repetir",	REPEAT,
+						"hasta",	UNTIL,
+						//////////////////////
+
 	                    "",      0
 	                   };
 
