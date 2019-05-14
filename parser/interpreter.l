@@ -67,7 +67,7 @@ NUMBER1 {DIGIT}+\.?
 
 NUMBER2 {DIGIT}*\.{DIGIT}+
 
-IDENTIFIER {LETTER}+(({LETTER}|{DIGIT})+"_"({LETTER}|{DIGIT})+)*
+IDENTIFIER {LETTER}(({LETTER}|{DIGIT})*("_"({LETTER}|{DIGIT}))*)*
 
 /* NEW in example 3 */
 /* STATE  */
@@ -110,7 +110,6 @@ IDENTIFIER {LETTER}+(({LETTER}|{DIGIT})+"_"({LETTER}|{DIGIT})+)*
 {IDENTIFIER}   		 {
 						 /* NEW in example 7 */
 						 std::string identifier(yytext);
-//std::cout << "soy yytext en IDENTIFIER --> " << yytext << std::endl;
 						/* 
                           strdup() function returns a pointer to a new string 
                           which  is a duplicate of the string yytext
