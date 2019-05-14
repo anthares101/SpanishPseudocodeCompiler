@@ -483,17 +483,17 @@ double lp::DivisionNode::evaluateNumber()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-void lp::WholeDivisionNode::print()
+void lp::IntegerDivisionNode::print()
 {
-  std::cout << "DivisionNode: " << std::endl;
+  std::cout << "IntegerDivisionNode: " << std::endl;
   this->_left->print();
   std::cout << " / ";
   this->_right->print();
 }
 
-double lp::WholeDivisionNode::evaluateNumber() 
+double lp::IntegerDivisionNode::evaluateNumber() 
 {
-	double result = 0.0;
+	int result = 0;
 
 	// Ckeck the types of the expressions
 	if (this->getType() == NUMBER)
@@ -515,7 +515,7 @@ double lp::WholeDivisionNode::evaluateNumber()
 	}
 	else
 	{
-		warning("Runtime error: the expressions are not numeric for", "Division");
+		warning("Runtime error: the expressions are not numeric for", "IntegerDivision");
 	}
 
   return result;

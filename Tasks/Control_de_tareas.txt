@@ -20,7 +20,7 @@ NO EXISTEN CONFLICTOS EN LAS REGLAS DE PRODUCCIÓN:		[ ]
 PALABRAS RESERVADAS:		[ ]							CHECK
 -----------------------------------------------------------------
 	_mod												[OK]
-	_div												[ ]
+	_div												[OK]
 
 	_o 													[OK]
 	_y													[OK]
@@ -103,7 +103,7 @@ OPERADORES:				[ ]								CHECK
 			BINARIO 2-3									[ ]
 		PRODUCTO *										[OK]
 		DIVISION /										[OK]
-		DIVISION_ENTERA _div							[ ]
+		DIVISION_ENTERA _div							[OK]
 		MODULO _mod										[OK]
 		POTENCIA **										[OK]
 

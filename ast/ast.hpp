@@ -720,12 +720,12 @@ class DivisionNode : public NumericOperatorNode
 };
 
 /*!	
-  \class   WholeDivisionNode
-  \brief   Definition of atributes and methods of WholeDivisionNode class
-  \note    WholeDivisionNode Class publicly inherits from NumericOperatorNode class 
+  \class   IntegerDivisionNode
+  \brief   Definition of atributes and methods of IntegerDivisionNode class
+  \note    IntegerDivisionNode Class publicly inherits from NumericOperatorNode class 
 		   and adds its own print and evaluate functions
 */
-class WholeDivisionNode : public NumericOperatorNode 
+class IntegerDivisionNode : public NumericOperatorNode 
 {
   public:
 /*!		
@@ -734,7 +734,7 @@ class WholeDivisionNode : public NumericOperatorNode
 	\param R: pointer to ExpNode
 	\post  A new DivisionNode is created with the parameter
 */
-  WholeDivisionNode(ExpNode *L, ExpNode *R): NumericOperatorNode(L,R) 
+  IntegerDivisionNode(ExpNode *L, ExpNode *R): NumericOperatorNode(L,R) 
   {
 		// Empty
   }

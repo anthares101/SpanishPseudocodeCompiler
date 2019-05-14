@@ -164,7 +164,7 @@ IDENTIFIER {LETTER}(({LETTER}|{DIGIT})*("_"({LETTER}|{DIGIT}))*)*
 
 "*"	    { return MULTIPLICATION; } 	/* NEW in example 3 */
 "/"  	{ return DIVISION; } 		/* NEW in example 3 */
-"_div"  { return DIVISION_ENTERA; }
+"_div"  { return DIVISION_INTEGER; }
 
 "("     { return LPAREN; } 			/* NEW in example 3 */
 ")"	    { return RPAREN; } 			/* NEW in example 3 */
