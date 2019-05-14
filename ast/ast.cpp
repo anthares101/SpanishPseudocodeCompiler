@@ -1309,7 +1309,7 @@ void lp::WhileStmt::evaluate()
 
 void lp::RepeatUntilStmt::print() 
 {
-  std::cout << "DoUntilStmt: "  << std::endl;
+  std::cout << "RepeatUntilStmt: "  << std::endl;
   // Condition
   this->_cond->print();
 
@@ -1328,6 +1328,95 @@ void lp::RepeatUntilStmt::evaluate()
   	this->_stmts->evaluate();
 
   }while(!this->_cond->evaluateBool());
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+// NEW in example 17
+
+void lp::ForStmt::print() 
+{
+  std::cout << "ForStmt: "  << std::endl;
+
+  // Variable
+  std::cout << this->_var << std::endl;
+
+  // Start
+  this->_start->print();
+
+  // End
+  this->_end->print();
+
+  // Increment
+  this->_inc->print();
+
+  // Body of the while loop
+  this->_stmts->print();
+
+  std::cout << std::endl;
+}
+
+
+void lp::ForStmt::evaluate() 
+{
+
+	double start = 0.0, end = 0.0, inc = 0.0;
+
+	//Primero se comprueba que cada elemento del bucle for sea
+	//una expresión numérica y, si lo son, se obtienen sus valores
+	if(this->_inc != NULL) {
+		if(this->_start->getType() != NUMBER ||
+			this->_end->getType() != NUMBER ||
+			this->_inc->getType() != NUMBER) {
+			warning("Error de compilación: tipo incompatible para ", "for");
+		}
+		else {
+			start = this->_start->evaluateNumber();
+			end = this->_end->evaluateNumber();
+			inc = this->_inc->evaluateNumber();
+		}
+	}
+	else {
+		if(this->_start->getType() != NUMBER ||
+			this->_end->getType() != NUMBER) {
+			warning("Error de compilación: tipo incompatible para ", "for");
+		}
+		else {
+			start = this->_start->evaluateNumber();
+			end = this->_end->evaluateNumber();
+			inc = 1.0;
+		}
+	}
+
+	if((start > end && inc > 0.0) || (start < end && inc < 0)) {
+		warning("Error de compilación: el comienzo es mayor que el fin para ", "for");
+	}
+
+	//Se comprueba si la tabla contiene el simbolo
+	//y se borra
+	if(table.lookupSymbol(this->_var)) {
+		table.eraseSymbol(this->_var);
+	}
+
+	//Se crea una nueva variable numérica con el mismo
+	//identificador y se instala en la tabla de símbolos
+	lp::NumericVariable *v = new lp::NumericVariable(this->_var,
+											VARIABLE,NUMBER,start);
+
+	table.installSymbol(v);
+
+	if(inc >= 0) {
+		for(double i = start; i < end; i = i + inc) {
+			v->setValue(i);
+			this->_stmts->evaluate();
+		}
+	}
+	else {
+		for(double i = start; i > end; i = i + inc) {
+			v->setValue(i);
+			this->_stmts->evaluate();
+		}
+	}
 }
 
 

@@ -1775,6 +1775,76 @@ public:
 
 };
 
+/*!	
+  \class   ForStmt
+  \brief   Definition of atributes and methods of ForStmt class
+  \note    ForStmt Class publicly inherits from Statement class 
+		   and adds its own print and evaluate functions
+*/
+
+class ForStmt : public StatementList {
+
+private:
+	std::string _var; //!< Variable for the for loop
+	ExpNode * _start; //!< Start value for variable
+	ExpNode * _end; //!< End of the for statement
+	ExpNode * _inc; //!< Increment value of the for statement
+	StatementList * _stmts; //!< Statements of the body of the for loop
+
+public:
+
+	/*!		
+	\brief Constructor of  ForStmt
+	\param var: string of the variable
+	\param start: ExpNode of the start of the loop 
+	\param end: ExpNode of the end of the loop
+	\param inc: ExpNode of the increment of the loop
+	\param statements: StatementList of the body of the loop
+	\post  A new ForStmt is created with the parameters
+*/
+	ForStmt(std::string var, ExpNode * start, ExpNode * end, ExpNode * inc, StatementList * statements)
+	{
+		this->_var = var;
+		this->_start = start;
+		this->_end = end;
+		this->_inc = inc;
+		this->_stmts = statements;
+	}
+
+	/*!		
+	\brief Constructor of  ForStmt
+	\param var: string of the variable
+	\param start: ExpNode of the start of the loop 
+	\param end: ExpNode of the end of the loop
+	\param statements: StatementList of the body of the loop
+	\post  A new ForStmt is created with the parameters
+*/
+	ForStmt(std::string var, ExpNode * start, ExpNode * end, StatementList * statements)
+	{
+		this->_var = var;
+		this->_start = start;
+		this->_end = end;
+		this->_inc = NULL;
+		this->_stmts = statements;
+	}
+
+
+/*!
+	\brief   Print the ForStmt
+	\return  void
+	\sa		 evaluate
+*/
+  void print();
+
+/*!	
+	\brief   Evaluate the ForStmt
+	\return  void
+	\sa		 print
+*/
+  void evaluate();
+
+};
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // NEW in example 17

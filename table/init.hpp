@@ -78,25 +78,32 @@ static struct {
 	                    //////////////////////
 
 	                    //PRINT SENTENCE
-	                    "read",  READ,
+	                    "read", READ,
 	                    //////////////////////
 
 	                    //CONDITIONAL SENTENCE
-						"si",	 IF,   		// NEW in example 17
-						"entonces",	THEN,
+						"si", IF,   		// NEW in example 17
+						"entonces", THEN,
 						"si_no", ELSE, 		// NEW in example 17
 						"fin_si", ENDIF,
 						//////////////////////
 
 						//WHILE LOOP
-						"mientras",  WHILE,	// NEW in example 17
+						"mientras", WHILE,	// NEW in example 17
 						"hacer", DO,
 						"fin_mientras", ENDWHILE,
 						//////////////////////
 
-						//DO-WHILE LOOP
-						"repetir",	REPEAT,
-						"hasta",	UNTIL,
+						//REPEAT-UNTIL LOOP
+						"repetir", REPEAT,
+						"hasta", UNTIL,
+						//////////////////////
+
+						//FOR LOOP
+						"para", FOR,
+						"desde", START,
+						"paso", INC,
+						"fin_para", ENDFOR,
 						//////////////////////
 
 	                    "",      0
