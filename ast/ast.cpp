@@ -1379,7 +1379,7 @@ void lp::ForStmt::evaluate()
 	else {
 		if(this->_start->getType() != NUMBER ||
 			this->_end->getType() != NUMBER) {
-			warning("Error de compilación: tipo incompatible para ", "for");
+			warning("Error en tiempo de ejecución: tipo incompatible para ", "for");
 		}
 		else {
 			start = this->_start->evaluateNumber();
@@ -1389,7 +1389,7 @@ void lp::ForStmt::evaluate()
 	}
 
 	if((start > end && inc > 0.0) || (start < end && inc < 0)) {
-		warning("Error de compilación: el comienzo es mayor que el fin para ", "for");
+		warning("Error en tiempo de ejecución: el comienzo no concuerda con el fin según el paso para ", "for");
 	}
 
 	//Se comprueba si la tabla contiene el simbolo
