@@ -19,12 +19,12 @@ NO EXISTEN CONFLICTOS EN LAS REGLAS DE PRODUCCIÓN:		[ ]
 -----------------------------------------------------------------
 PALABRAS RESERVADAS:		[ ]							CHECK
 -----------------------------------------------------------------
-	_mod												[ ]
+	_mod												[OK]
 	_div												[ ]
 
-	_o 													[ ]
-	_y													[ ]
-	_no													[ ]
+	_o 													[OK]
+	_y													[OK]
+	_no													[OK]
 
 	leer												[ ]
 	leer_cadena											[ ]
@@ -94,33 +94,33 @@ CADENA:					[ ]								CHECK
 OPERADORES:				[ ]								CHECK
 -----------------------------------------------------------------
 	NUMERICOS											[ ]
-		ASIGNACION :=									[ ]
-		SUMA +											[ ]
+		ASIGNACION :=									[OK]
+		SUMA +											[OK]
 			UNARIO +2									[ ]
 			BINARIO 2+3									[ ]
-		RESTA -											[ ]
+		RESTA -											[OK]
 			UNARIO -2									[ ]
 			BINARIO 2-3									[ ]
-		PRODUCTO *										[ ]
-		DIVISION /										[ ]
+		PRODUCTO *										[OK]
+		DIVISION /										[OK]
 		DIVISION_ENTERA _div							[ ]
-		MODULO _mod										[ ]
-		POTENCIA **										[ ]
+		MODULO _mod										[OK]
+		POTENCIA **										[OK]
 
 	ALFANUMERICOS										[ ]
 		CONCATENACION ||								[ ]
 
-	RELACIONALES NÚMEROS Y CADENAS						[ ]
-		MENOR QUE <										[ ]
-		MENOR O IGUAL QUE <=							[ ]
-		MAYOR QUE >										[ ]
-		MAYOR O IGUAL QUE >=							[ ]
-		DISTINTO DE <>									[ ]
+	RELACIONALES NÚMEROS Y CADENAS						[OK]
+		MENOR QUE <										[OK]
+		MENOR O IGUAL QUE <=							[OK]
+		MAYOR QUE >										[OK]
+		MAYOR O IGUAL QUE >=							[OK]
+		DISTINTO DE <>									[OK]
 
 	LOGICOS												[ ]
-		DISYUNCIÓN _o									[ ]
-		CONJUNCIÓN _y									[ ]
-		NEGACIÓN   _no									[ ]
+		DISYUNCIÓN _o									[OK]
+		CONJUNCIÓN _y									[OK]
+		NEGACIÓN   _no									[OK]
 
 -----------------------------------------------------------------
 OTROS:					[ ]								CHECK

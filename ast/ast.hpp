@@ -719,6 +719,40 @@ class DivisionNode : public NumericOperatorNode
   double evaluateNumber();
 };
 
+/*!	
+  \class   WholeDivisionNode
+  \brief   Definition of atributes and methods of WholeDivisionNode class
+  \note    WholeDivisionNode Class publicly inherits from NumericOperatorNode class 
+		   and adds its own print and evaluate functions
+*/
+class WholeDivisionNode : public NumericOperatorNode 
+{
+  public:
+/*!		
+	\brief Constructor of DivisionNode uses NumericOperatorNode's constructor as members initializer
+	\param L: pointer to ExpNode
+	\param R: pointer to ExpNode
+	\post  A new DivisionNode is created with the parameter
+*/
+  WholeDivisionNode(ExpNode *L, ExpNode *R): NumericOperatorNode(L,R) 
+  {
+		// Empty
+  }
+/*!
+	\brief   Print the DivisionNode
+	\return  void
+	\sa		 evaluate()
+*/
+  void print();
+
+/*!	
+	\brief   Evaluate the DivisionNode
+	\return  double
+	\sa		 print
+*/
+  double evaluateNumber();
+};
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
