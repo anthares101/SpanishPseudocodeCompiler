@@ -63,9 +63,13 @@ DIGIT  [0-9]
 
 LETTER [a-zA-Z]
 
-NUMBER1 {DIGIT}+\.?
+	/*NUMBER1 {DIGIT}+\.?*/
 
-NUMBER2 {DIGIT}*\.{DIGIT}+
+	/*NUMBER2 {DIGIT}*\.{DIGIT}+*/
+
+NUMBER {DIGIT}+(\.{DIGIT}+)?(e[+\-]?{DIGIT}+)?
+
+NUMBER_ERR \.*{NUMBER}(\.{NUMBER}+|(\.|{NUMBER})*)*
 
 IDENTIFIER {LETTER}(({LETTER}|{DIGIT})*("_"({LETTER}|{DIGIT}))*)*
 
@@ -101,7 +105,7 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 			return COMMA;
 		}
 
-{NUMBER1}|{NUMBER2}  {
+{NUMBER}  {
 					  /* MODIFIED in example 4 */
 					  /* Conversion of type and sending of the numerical value to the parser */
 					   yylval.number = atof(yytext); 
@@ -273,5 +277,9 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 							}
 
 {IDENTIFIER_ERR}			{ warning("Identificador incorrecto", yytext); }
+
+
+{NUMBER_ERR}				{ warning("Número incorrecto", yytext); }
+
 %%
 
