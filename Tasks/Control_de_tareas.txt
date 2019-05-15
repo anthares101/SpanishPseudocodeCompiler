@@ -26,10 +26,10 @@ PALABRAS RESERVADAS:		[ ]							CHECK
 	_y													[OK]
 	_no													[OK]
 
-	leer												[ ]
+	leer												[OK]
 	leer_cadena											[ ]
 
-	escribir											[ ]
+	escribir											[OK]
 	escribir_cadena										[ ]
 
 	SENTENCIA CONDICIONAL:								[0K]
@@ -125,9 +125,9 @@ OPERADORES:				[ ]								CHECK
 -----------------------------------------------------------------
 OTROS:					[ ]								CHECK
 -----------------------------------------------------------------
-	COMENTARIOS											[ ]
-		VARIAS LINEAS: DELIMITADORES #	.... #			[ ]
-		UNA LÍNEA: DELIMITADOR @						[ ]
+	COMENTARIOS											[OK]
+		VARIAS LINEAS: DELIMITADORES #	.... #			[OK]
+		UNA LÍNEA: DELIMITADOR @						[OK]
 
 	FIN DE LINEA ;										[ ]
 

@@ -74,11 +74,11 @@ static struct {
 	      int token;
 	      } keyword[] = {
 	      				//READ SENTENCE
-	                    "print", PRINT,
+	                    "escribir", PRINT,
 	                    //////////////////////
 
 	                    //PRINT SENTENCE
-	                    "read", READ,
+	                    "leer", READ,
 	                    //////////////////////
 
 	                    //CONDITIONAL SENTENCE
