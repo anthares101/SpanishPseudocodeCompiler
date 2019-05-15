@@ -27,6 +27,7 @@
 // 
 #include "../table/numericVariable.hpp"
 #include "../table/logicalVariable.hpp"
+#include "../table/stringVariable.hpp"
 
 #include "../table/numericConstant.hpp"
 #include "../table/logicalConstant.hpp"
@@ -113,6 +114,29 @@ bool lp::VariableNode::evaluateBool()
 	}
 
 	// Return the value of the LogicalVariable
+	return result;
+}
+
+
+std::string lp::VariableNode::evaluateString() 
+{ 
+	std::string result = "";
+
+	if (this->getType() == STRING)
+	{
+		// Get the identifier in the table of symbols as NumericVariable
+		lp::StringVariable *var = (lp::StringVariable *) table.getSymbol(this->_id);
+
+		// Copy the value of the NumericVariable
+		result = var->getValue();
+	}
+	else
+	{
+		warning("Runtime error in evaluateNumber(): the variable is not string", 
+				   this->_id);
+	}
+
+	// Return the value of the NumericVariable
 	return result;
 }
 
@@ -1084,6 +1108,36 @@ void lp::AssignmentStmt::evaluate()
 			}
 			break;
 
+			case STRING:
+			{
+				std::string value;
+				// evaluate the expression as STRING
+			 	value = this->_exp->evaluateString();
+
+				// Check the type of the first varible
+				if (firstVar->getType() == STRING)
+				{
+				  	// Get the identifier in the table of symbols as StringVariable
+					lp::StringVariable *v = (lp::StringVariable *) table.getSymbol(this->_id);
+
+					// Assignment the value to the identifier in the table of symbols
+					v->setValue(value);
+				}
+				// The type of variable is not NUMBER
+				else
+				{
+					// Delete the variable from the table of symbols 
+					table.eraseSymbol(this->_id);
+
+					// Insert the variable in the table of symbols as NumericVariable 
+					// with the type NUMBER and the value 
+					lp::StringVariable *v = new lp::StringVariable(this->_id,
+											VARIABLE,STRING,value);
+					table.installSymbol(v);
+				}
+			}
+			break;
+
 			case BOOL:
 			{
 				bool value;
@@ -1166,6 +1220,37 @@ void lp::AssignmentStmt::evaluate()
 			}
 			break;
 
+			case STRING:
+			{
+				/* Get the identifier of the previous asgn in the table of symbols as StringVariable */
+				lp::StringVariable *secondVar = (lp::StringVariable *) table.getSymbol(this->_asgn->_id);
+				// Check the type of the first variable
+				if (firstVar->getType() == STRING)
+				{
+				/* Get the identifier of the first variable in the table of symbols as StringVariable */
+				lp::StringVariable *firstVar = (lp::StringVariable *) table.getSymbol(this->_id);
+				  	// Get the identifier o f the in the table of symbols as NumericVariable
+//					lp::StringVariable *n = (lp::StringVariable *) table.getSymbol(this->_id);
+
+					// Assignment the value of the second variable to the first variable
+					firstVar->setValue(secondVar->getValue());
+
+				}
+				// The type of variable is not STRING
+				else
+				{
+					// Delete the first variable from the table of symbols 
+					table.eraseSymbol(this->_id);
+
+					// Insert the first variable in the table of symbols as NumericVariable 
+					// with the type NUMBER and the value of the previous variable 
+					lp::StringVariable *firstVar = new lp::StringVariable(this->_id,
+											VARIABLE,STRING,secondVar->getValue());
+					table.installSymbol(firstVar);
+				}
+			}
+			break;
+
 			case BOOL:
 			{
 				/* Get the identifier of the previous asgn in the table of symbols as LogicalVariable */
@@ -1226,6 +1311,9 @@ void lp::PrintStmt::evaluate()
 	{
 		case NUMBER:
 				std::cout << this->_exp->evaluateNumber() << std::endl;
+				break;
+		case STRING:
+				std::cout << this->_exp->evaluateString() << std::endl;
 				break;
 		case BOOL:
 			if (this->_exp->evaluateBool())

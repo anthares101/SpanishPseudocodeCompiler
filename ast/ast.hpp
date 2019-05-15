@@ -76,6 +76,17 @@ namespace lp
 		return false;
 	}
 
+	/*!	
+		\brief   Evaluate the expression as STRING
+		\warning Virtual function: could be redefined in the heir classes
+		\return  bool
+		\sa		 print
+	*/
+    virtual std::string evaluateString()
+	{
+		return "";
+	}
+
 };
 
 
@@ -132,6 +143,13 @@ class VariableNode : public ExpNode
 		\sa		 print
 	*/
 	  bool evaluateBool();
+
+	  /*!	
+		\brief   Evaluate the Variable as STRING
+		\return  bool
+		\sa		 print
+	*/
+	  std::string evaluateString();
 
 };
 
@@ -264,7 +282,7 @@ class StringNode : public ExpNode
 		\post  A new NumberNode is created with the value of the parameter
 		\note  Inline function
 	*/
-  	StringNode(std::string value)
+  	StringNode(const std::string & value)
 	{
 	    this->_string = value;
 	};
