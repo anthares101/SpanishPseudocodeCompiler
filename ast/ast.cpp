@@ -1303,9 +1303,6 @@ void lp::PrintStmt::print()
 
 void lp::PrintStmt::evaluate() 
 {
-	std::cout << BIYELLOW; 
-	std::cout << "Print: ";
-	std::cout << RESET; 
 
 	switch(this->_exp->getType())
 	{
@@ -1372,6 +1369,47 @@ void lp::ReadStmt::evaluate()
 									  VARIABLE,NUMBER,value);
 
 		table.installSymbol(n);
+	}
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+void lp::EraseStmt::print() 
+{
+  std::cout << "EraseStmt: "  << std::endl;
+  std::cout << " _borrar()";
+  std::cout << std::endl;
+}
+
+
+void lp::EraseStmt::evaluate() 
+{   
+	std::cout << CLEAR_SCREEN << std::endl;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+void lp::PositionStmt::print() 
+{
+  std::cout << "PositionStmt: "  << std::endl;
+  std::cout << " _lugar(" << (int) this->_x->evaluateNumber() << ", " << (int) this->_y->evaluateNumber() << ")";
+  std::cout << std::endl;
+}
+
+
+void lp::PositionStmt::evaluate() 
+{   
+
+	if(this->_x->getType() == NUMBER && this->_y->getType() == NUMBER) {
+		//printf("\033[%d;%dH", (int) this->_x->evaluateNumber(), (int) this->_y->evaluateNumber());
+		PLACE((int) this->_x->evaluateNumber(), (int) this->_y->evaluateNumber());
+	}
+	else {
+		warning("Error en tiempo de ejecución: tipos incompatibles para ", "_lugar");
 	}
 }
 

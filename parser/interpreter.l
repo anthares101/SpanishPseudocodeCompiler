@@ -238,9 +238,12 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 
 (?i:_y)	{ return AND; }				/* NEW in example 15 */
 
-	/*(?i:_borrar)	{ return ERASE; } //no le hagas mucho caso*/
 
-	/*(?i:_lugar)	{ return POSITION; } //no le hagas mucho caso*/
+	/* FUNCIONES DE MACROS */
+
+(?i:_borrar)	{ return ERASE; }
+
+(?i:_lugar)	{ return POSITION; }
 
 
 	/* COMENTARIO DE VARIAS LÍNEAS */

@@ -148,7 +148,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 
 %type <stmts> stmtlist
 
-%type <st> stmt asgn print read if while repeatUntil for
+%type <st> stmt asgn print read if while repeatUntil for erase position
 
 %type <prog> program
 
@@ -178,6 +178,9 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 
 // Tokens for for loop
 %token FOR START INC ENDFOR
+
+// Tokens for macros
+%token ERASE POSITION
 
 // NEW in example 17
 //%token LETFCURLYBRACKET RIGHTCURLYBRACKET
@@ -319,6 +322,16 @@ stmt: SEMICOLON  /* Empty statement: ";" */
 		// Default action
 		// $$ = $1;
 	 }
+	| erase 
+	 {
+		// Default action
+		// $$ = $1;
+	 }
+	 | position 
+	 {
+		// Default action
+		// $$ = $1;
+	 }
 ;
  
 	/*  NEW in example 17 */
@@ -418,6 +431,31 @@ read:  READ LPAREN VARIABLE RPAREN
 	| READ LPAREN CONSTANT RPAREN  
 		{   
  			execerror("Semantic error in \"read statement\": it is not allowed to modify a constant ",$3);
+		}
+;
+
+
+erase: ERASE LPAREN RPAREN {
+
+			$$ = new lp::EraseStmt();
+		}
+;
+
+
+position: POSITION LPAREN listOfExp RPAREN {
+
+			if($3->size() != 2) {
+				execerror("Error de sintaxis: número incompatible de argumentos para la función ","_lugar");
+			}
+			else {
+
+				// Get the expressions from the list of expressions
+				lp::ExpNode *e1 = $3->front();
+				$3->pop_front();
+				lp::ExpNode *e2 = $3->front();
+
+				$$ = new lp::PositionStmt(e1, e2);
+			}
 		}
 ;
 
