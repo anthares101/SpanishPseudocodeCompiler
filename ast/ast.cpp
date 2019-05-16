@@ -784,7 +784,7 @@ bool lp::GreaterOrEqualNode::evaluateBool()
 		leftNumber = this->_left->evaluateNumber();
 		rightNumber = this->_right->evaluateNumber();
 
-		result = (leftNumber >= rightNumber);
+		result = ((leftNumber > rightNumber) || (std::abs( (leftNumber - rightNumber)) < ERROR_BOUND));
 	}
 	else
 	{
@@ -849,7 +849,7 @@ bool lp::LessOrEqualNode::evaluateBool()
 		leftNumber = this->_left->evaluateNumber();
 		rightNumber = this->_right->evaluateNumber();
 
-		result = (leftNumber <= rightNumber);
+		result = ((leftNumber < rightNumber) || (std::abs( (leftNumber - rightNumber)) < ERROR_BOUND));
 	}
 	else
 	{
