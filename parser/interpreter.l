@@ -63,9 +63,13 @@ DIGIT  [0-9]
 
 LETTER [a-zA-Z]
 
-NUMBER1 {DIGIT}+\.?
+	/*NUMBER1 {DIGIT}+\.?*/
 
-NUMBER2 {DIGIT}*\.{DIGIT}+
+	/*NUMBER2 {DIGIT}*\.{DIGIT}+*/
+
+NUMBER {DIGIT}+(\.{DIGIT}+)?(e[+\-]?{DIGIT}+)?
+
+NUMBER_ERR \.*{NUMBER}(\.{NUMBER}+|(\.|{NUMBER})*)*
 
 IDENTIFIER {LETTER}(({LETTER}|{DIGIT})*("_"({LETTER}|{DIGIT}))*)*
 
@@ -75,6 +79,8 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 /* STATE  */
 %x ERROR
 %x STRING_STATE
+%x COMMENT
+%x LONG_COMMENT
 
 /*! \name REGULAR EXPRESSIONS  */
 %%
@@ -101,7 +107,10 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 			return COMMA;
 		}
 
-{NUMBER1}|{NUMBER2}  {
+
+	/* NÚMEROS */
+
+{NUMBER}  {
 					  /* MODIFIED in example 4 */
 					  /* Conversion of type and sending of the numerical value to the parser */
 					   yylval.number = atof(yytext); 
@@ -110,6 +119,7 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
                       }
 
 
+    /* IDENTIFICADORES */
 
 
 {IDENTIFIER}   		 {
@@ -157,6 +167,9 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 							}
                      }
 
+
+    /* CADENAS */
+
 "'"		{ 	/* String recognition on */
 			BEGIN STRING_STATE; 
 		}
@@ -175,24 +188,34 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 
 <STRING_STATE>\n         {yymore();}
 
-"-"		{ return MINUS;  } 			/* NEW in example 3 */
-"+"		{ return PLUS;   } 			/* NEW in example 3 */
 
-"*"	    { return MULTIPLICATION; } 	/* NEW in example 3 */
-"/"  	{ return DIVISION; } 		/* NEW in example 3 */
-"_div"  { return DIVISION_INTEGER; }
+	/* PARÉNTESIS */
 
 "("     { return LPAREN; } 			/* NEW in example 3 */
+
 ")"	    { return RPAREN; } 			/* NEW in example 3 */
 
 
+	/* OPERADORES ARITMÉTICOS */
 
-"_mod"  { return MODULO; }			/* NEW in example 5 */
+"-"		{ return MINUS;  } 			/* NEW in example 3 */
+
+"+"		{ return PLUS;   } 			/* NEW in example 3 */
+
+"*"	    { return MULTIPLICATION; } 	/* NEW in example 3 */
+
+"/"  	{ return DIVISION; } 		/* NEW in example 3 */
+
+(?i:_div)  	{ return DIVISION_INTEGER; }
+
+(?i:_mod)  { return MODULO; }			/* NEW in example 5 */
 
 "**"	{ return POWER; }			/* NEW in example 5 */
 
 ":=" 	{ return ASSIGNMENT; }		/* NEW in example 7 */
 
+
+	/* OPERADORES RELACIONALES */
 
 "=="	{ return EQUAL; }			/* NEW in example 15 */
 
@@ -206,14 +229,46 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 
 "<"		{ return LESS_THAN; }		/* NEW in example 15 */
 
-"_no"	{ return NOT; }				/* NEW in example 15 */
 
-"_o"	{ return OR; }				/* NEW in example 15 */
+	/* OPERADORES LÓGICOS */
 
-"_y"	{ return AND; }				/* NEW in example 15 */
+(?i:_no)	{ return NOT; }				/* NEW in example 15 */
+
+(?i:_o)	{ return OR; }				/* NEW in example 15 */
+
+(?i:_y)	{ return AND; }				/* NEW in example 15 */
+
+	/*(?i:_borrar)	{ return ERASE; } //no le hagas mucho caso*/
+
+	/*(?i:_lugar)	{ return POSITION; } //no le hagas mucho caso*/
 
 
-^# { /* The interpreter finishes when the symbol # is written at the beginning of the line */
+	/* COMENTARIO DE VARIAS LÍNEAS */
+
+"#" { BEGIN(LONG_COMMENT); }
+
+<LONG_COMMENT>"#" { BEGIN(0); }
+
+<LONG_COMMENT>. ;
+
+<LONG_COMMENT>\n { lineNumber++;  }
+
+
+	/* COMENTARIO DE UNA LÍNEA */
+
+"@"		{ BEGIN(COMMENT); }
+
+<COMMENT>"@"/(.|\n) { warning("Aviso de comentario anidado", yytext); }
+
+<COMMENT>\n {
+
+	BEGIN(0); 
+	lineNumber++; 
+}
+
+<COMMENT>. ;
+
+		/*^# {  The interpreter finishes when the symbol # is written at the beginning of the line 
 	// std::cout << CLEAR_SCREEN; 
 	//  PLACE(24,10);
   	  std::cout <<  BIYELLOW;
@@ -223,7 +278,7 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 	 // PLACE(25,1);
 
   	  return 0;
-	}
+		}*/
 
 <<EOF>> { /* The interpreter finishes when finds the end of file character */
 		/*  PLACE(24,10);
@@ -250,7 +305,7 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 									yymore();  
 								}
 
-<ERROR>[^0-9+\-*/()\^% \t\n\;a-zA-Z=<>!&]	{ /* MODIFIED in examples 5, 7, 15 */
+<ERROR>[^0-9+\-*/()\^% \t\n\;a-zA-Z=<>!&@#]	{ /* MODIFIED in examples 5, 7, 15 */
 								  /* NEW in example 3 */
 								  /* 
 									The current value of yytext 
@@ -273,5 +328,9 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 							}
 
 {IDENTIFIER_ERR}			{ warning("Identificador incorrecto", yytext); }
+
+
+{NUMBER_ERR}				{ warning("Número incorrecto", yytext); }
+
 %%
 
