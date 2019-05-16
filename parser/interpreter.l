@@ -177,16 +177,42 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 			         BEGIN 0; 
 			         yytext[yyleng-1]='\0';
 
+			         std::string aux;
+
+			         //Parse the string searching \n or \t write like 2 characters
+			         for(unsigned i = 0; i < yyleng; i++){
+						if(yytext[i] == '\\'){
+							switch(yytext[i+1]){
+								case 'n':
+									aux.push_back('\n');
+
+									break;
+								case 't':
+									aux.push_back('\t');
+
+									break;
+								default:
+									aux.push_back(yytext[i+1]);
+
+									break;
+							}
+
+							i++;
+						}
+						else
+							aux.push_back(yytext[i]);
+					}
+
 			         //Use the same type as an identifier id (String)
-			         yylval.identifier =  strdup(yytext);
+			         yylval.identifier =  strdup(aux.c_str());
 			         return STRING;
 					}      
 
 <STRING_STATE>"\\\'"     {yymore();}
 
-<STRING_STATE>.          {yymore();}
-
 <STRING_STATE>\n         {yymore();}
+
+<STRING_STATE>.          {yymore();}
 
 
 	/* PARÉNTESIS */
