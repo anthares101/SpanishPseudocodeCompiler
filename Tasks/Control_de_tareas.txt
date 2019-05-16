@@ -135,8 +135,8 @@ OTROS:					[ ]								CHECK
 SENTENCIAS DE CONTROL:	[ ]								CHECK
 -----------------------------------------------------------------
 	ASIGNACION											[ ]
-		IDENTIFICADOR := EXPR NUMÉRICA					[ ]
-		IDENTIFICADOR := EXPR ALFANUMÉRICA				[ ]
+		IDENTIFICADOR := EXPR NUMÉRICA					[OK]
+		IDENTIFICADOR := EXPR ALFANUMÉRICA				[OK]
 
 	LECTURA												[ ]
 		Leer(identificador)								[ ]
