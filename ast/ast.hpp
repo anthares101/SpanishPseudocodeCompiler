@@ -1679,6 +1679,91 @@ class ReadStmt : public Statement
 };
 
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/*!	
+  \class   EraseStmt
+  \brief   Definition of atributes and methods of EraseStmt class
+  \note    EraseStmt Class publicly inherits from Statement class 
+		   and adds its own print and evaluate functions
+*/
+class EraseStmt : public Statement 
+{	
+
+  public:
+/*!		
+	\brief Constructor of EraseStmt
+	\param id: string, name of the variable of the EraseStmt
+	\post  A new EraseStmt is created with the parameter
+*/
+  EraseStmt()
+	{
+		//Empty
+	}
+
+/*!
+	\brief   Print the EraseStmt
+	\return  void
+	\sa		 evaluate()
+*/
+  void print();
+
+/*!	
+	\brief   Evaluate the EraseStmt
+	\return  void
+	\sa		 print
+*/
+  void evaluate();
+};
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/*!	
+  \class   PositionStmt
+  \brief   Definition of atributes and methods of PositionStmt class
+  \note    PositionStmt Class publicly inherits from Statement class 
+		   and adds its own print and evaluate functions
+*/
+class PositionStmt : public Statement 
+{
+  private:
+	ExpNode * _x;
+	ExpNode * _y;	
+
+  public:
+/*!		
+	\brief Constructor of PositionStmt
+	\param id: string, name of the variable of the PositionStmt
+	\post  A new PositionStmt is created with the parameter
+*/
+  PositionStmt(ExpNode * x, ExpNode * y)
+	{
+		this->_x = x;
+		this->_y = y;
+	}
+
+/*!
+	\brief   Print the PositionStmt
+	\return  void
+	\sa		 evaluate()
+*/
+  void print();
+
+/*!	
+	\brief   Evaluate the PositionStmt
+	\return  void
+	\sa		 print
+*/
+  void evaluate();
+};
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
