@@ -334,6 +334,17 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 									yymore();  
 								}
 
+<ERROR>{IDENTIFIER_ERR}			{ warning("Identificador incorrecto", yytext);
+								  /* Restore the initial state */
+   								  BEGIN(INITIAL);
+								}
+
+
+<ERROR>{NUMBER_ERR}				{ warning("Número incorrecto", yytext);
+								  /* Restore the initial state */
+   								  BEGIN(INITIAL);
+								}
+
 <ERROR>[^0-9+\-*/()\^% \t\n\;a-zA-Z=<>!&@#]	{ /* MODIFIED in examples 5, 7, 15 */
 								  /* NEW in example 3 */
 								  /* 
@@ -348,18 +359,11 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 								/* NEW in example 3 */
 								/* Rewind one position */
 								yyless(yyleng-1); 
-//std::cout << "soy yytext en ERROR --> " << yytext << std::endl;
 								/* Display the error message */
 								warning("Lexical error", yytext);
 
 								/* Restore the initial state */
    								BEGIN(INITIAL);
 							}
-
-{IDENTIFIER_ERR}			{ warning("Identificador incorrecto", yytext); }
-
-
-{NUMBER_ERR}				{ warning("Número incorrecto", yytext); }
-
 %%
 
