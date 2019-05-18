@@ -1679,6 +1679,49 @@ class ReadStmt : public Statement
 };
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/*!	
+  \class   ReadStringStmt
+  \brief   Definition of atributes and methods of ReadStringStmt class
+  \note    ReadStringStmt Class publicly inherits from Statement class 
+		   and adds its own print and evaluate functions
+*/
+class ReadStringStmt : public Statement 
+{
+  private:
+	std::string _id; //!< Name of the ReadStmt
+	
+
+  public:
+/*!		
+	\brief Constructor of ReadStmt
+	\param id: string, name of the variable of the ReadStmt
+	\post  A new ReadStmt is created with the parameter
+*/
+  ReadStringStmt(std::string id)
+	{
+		this->_id = id;
+	}
+
+/*!
+	\brief   Print the ReadStringStmt
+	\return  void
+	\sa		 evaluate()
+*/
+  void print();
+
+/*!	
+	\brief   Evaluate the ReadStringStmt
+	\return  void
+	\sa		 print
+*/
+  void evaluate();
+};
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////

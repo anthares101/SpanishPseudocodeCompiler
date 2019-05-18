@@ -166,6 +166,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 
 // Tokens for read sentence
 %token READ
+%token READ_STRING
 
 // Tokens for conditional sentence
 %token IF THEN ELSE ENDIF
@@ -425,6 +426,12 @@ read:  READ LPAREN VARIABLE RPAREN
 		{
 			// Create a new read node
 			 $$ = new lp::ReadStmt($3);
+		}
+
+	| READ_STRING LPAREN VARIABLE RPAREN 
+		{
+			// Create a new read string node
+			 $$ = new lp::ReadStringStmt($3);
 		}
 
   	  /* NEW rule in example 11 */

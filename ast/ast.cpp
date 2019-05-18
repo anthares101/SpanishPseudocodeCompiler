@@ -1332,7 +1332,7 @@ void lp::PrintStmt::evaluate()
 void lp::ReadStmt::print() 
 {
   std::cout << "ReadStmt: "  << std::endl;
-  std::cout << " read (" << this->_id << ")";
+  std::cout << " leer (" << this->_id << ")";
   std::cout << std::endl;
 }
 
@@ -1341,7 +1341,7 @@ void lp::ReadStmt::evaluate()
 {   
 	double value;
 	std::cout << BIYELLOW; 
-	std::cout << "Insert a numeric value --> " ;
+	std::cout << "Inserta un valor numérico --> " ;
 	std::cout << RESET; 
 	std::cin >> value;
 
@@ -1367,6 +1367,53 @@ void lp::ReadStmt::evaluate()
 		// with the type NUMBER and the read value 
 		lp::NumericVariable *n = new lp::NumericVariable(this->_id, 
 									  VARIABLE,NUMBER,value);
+
+		table.installSymbol(n);
+	}
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+void lp::ReadStringStmt::print() 
+{
+  std::cout << "ReadStringStmt: "  << std::endl;
+  std::cout << " leer_cadena (" << this->_id << ")";
+  std::cout << std::endl;
+}
+
+
+void lp::ReadStringStmt::evaluate() 
+{   
+	std::string value;
+	std::cout << BIYELLOW; 
+	std::cout << "Inserta una cadena --> " ;
+	std::cout << RESET; 
+	std::cin >> value;
+
+	/* Get the identifier in the table of symbols as Variable */
+	lp::Variable *var = (lp::Variable *) table.getSymbol(this->_id);
+
+	// Check if the type of the variable is STRING
+	if (var->getType() == STRING)
+	{
+		/* Get the identifier in the table of symbols as NumericVariable */
+		lp::StringVariable *n = (lp::StringVariable *) table.getSymbol(this->_id);
+						
+		/* Assignment the read value to the identifier */
+		n->setValue(value);
+	}
+	// The type of variable is not STRING
+	else
+	{
+		// Delete $1 from the table of symbols as Variable
+		table.eraseSymbol(this->_id);
+
+			// Insert $1 in the table of symbols as StringVariable 
+		// with the type STRING and the read value 
+		lp::StringVariable *n = new lp::StringVariable(this->_id, 
+									  VARIABLE,STRING,value);
 
 		table.installSymbol(n);
 	}

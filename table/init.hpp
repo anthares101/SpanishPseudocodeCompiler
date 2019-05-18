@@ -79,6 +79,7 @@ static struct {
 
 	                    //PRINT SENTENCE
 	                    "leer", READ,
+	                    "leer_cadena", READ_STRING,
 	                    //////////////////////
 
 	                    //CONDITIONAL SENTENCE
