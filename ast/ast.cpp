@@ -1386,11 +1386,38 @@ void lp::ReadStringStmt::print()
 
 void lp::ReadStringStmt::evaluate() 
 {   
+	std::string in_string;
 	std::string value;
+
 	std::cout << BIYELLOW; 
 	std::cout << "Inserta una cadena --> " ;
-	std::cout << RESET; 
-	std::cin >> value;
+	std::cout << RESET;
+	std::cin.ignore();
+	std::getline(std::cin, in_string);
+
+    //Parse in_string searching \n or \t write like 2 characters
+    for(unsigned i = 0; i < in_string.size(); i++){
+		if(in_string[i] == '\\'){
+			switch(in_string[i+1]){
+				case 'n':
+					value.push_back('\n');
+
+					break;
+				case 't':
+					value.push_back('\t');
+
+					break;
+				default:
+					value.push_back(in_string[i+1]);
+
+					break;
+			}
+
+			i++;
+		}
+		else
+			value.push_back(in_string[i]);
+	}
 
 	/* Get the identifier in the table of symbols as Variable */
 	lp::Variable *var = (lp::Variable *) table.getSymbol(this->_id);
