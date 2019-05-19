@@ -339,6 +339,25 @@ int lp::LogicalOperatorNode:: getType()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+int lp::StringOperatorNode:: getType()
+{
+	int result = 0;
+		
+	if ( (this->_left->getType() == STRING) and (this->_right->getType() == STRING))
+	{
+		// 
+		result = STRING;
+	}
+	else
+		warning("Runtime error: incompatible types for", "String Operator");
+
+	return	result;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
 
 void lp::UnaryMinusNode::print() 
 {
@@ -629,6 +648,34 @@ double lp::PowerNode::evaluateNumber()
 	else
 	{
 		warning("Runtime error: the expressions are not numeric for", "Power");
+	}
+
+  return result;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+void lp::ConcatenateNode::print() 
+{
+  std::cout << "ConcatenateNode: "  << std::endl;
+  this->_left->print();
+  std::cout << " || ";
+  this->_right->print();
+}
+
+std::string lp::ConcatenateNode::evaluateString()
+{
+	std::string result = "";
+
+	// Ckeck the types of the expressions
+	if (this->getType() == STRING)
+	{
+		result = this->_left->evaluateString() + this->_right->evaluateString();
+	}
+	else
+	{
+		warning("Runtime error: the expressions are not aplhanumeric for ", "Concatenate");
 	}
 
   return result;

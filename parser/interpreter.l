@@ -255,6 +255,9 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 
 "<"		{ return LESS_THAN; }		/* NEW in example 15 */
 
+	/* OPERADOR DE CONCATENACIÓN */
+"||"	{ return CONCATENATE; }
+
 
 	/* OPERADORES LÓGICOS */
 

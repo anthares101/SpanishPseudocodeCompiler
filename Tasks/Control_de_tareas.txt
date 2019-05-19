@@ -108,7 +108,7 @@ OPERADORES:				[ ]								CHECK
 		POTENCIA **										[OK]
 
 	ALFANUMERICOS										[ ]
-		CONCATENACION ||								[ ]
+		CONCATENACION ||								[OK]
 
 	RELACIONALES NÚMEROS Y CADENAS						[OK]
 		MENOR QUE <										[OK]
@@ -129,7 +129,7 @@ OTROS:					[ ]								CHECK
 		VARIAS LINEAS: DELIMITADORES #	.... #			[OK]
 		UNA LÍNEA: DELIMITADOR @						[OK]
 
-	FIN DE LINEA ;										[ ]
+	FIN DE LINEA ;										[OK]
 
 -----------------------------------------------------------------
 SENTENCIAS DE CONTROL:	[ ]								CHECK

@@ -220,7 +220,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 /*******************************************************/
 
 /* MODIFIED in example 3 */
-%left PLUS MINUS 
+%left PLUS MINUS CONCATENATE
 
 /* MODIFIED in example 5 */
 %left MULTIPLICATION DIVISION MODULO DIVISION_INTEGER
@@ -537,6 +537,12 @@ exp:	NUMBER
 		{ 
 			// Create a new string node
 			$$ = new lp::StringNode($1);
+		}
+	|
+		exp CONCATENATE exp 
+		{ 
+			// Create a new plus node
+			 $$ = new lp::ConcatenateNode($1, $3);
 		}
 
 	 | VARIABLE
