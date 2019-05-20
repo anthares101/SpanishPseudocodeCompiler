@@ -180,8 +180,8 @@ SENTENCIAS DE CONTROL:	[ ]								CHECK
 -----------------------------------------------------------------
 COMANDOS ESPECIALES:	[ ]								CHECK
 -----------------------------------------------------------------
-	_borrar												[ ]
-	_lugar(expr numérica 1, expr numérica 2)			[ ]
+	_borrar												[OK]
+	_lugar(expr numérica 1, expr numérica 2)			[OK]
 
 -----------------------------------------------------------------
 OBSERVACIONES:			[ ]								CHECK
