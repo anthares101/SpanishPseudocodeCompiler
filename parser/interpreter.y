@@ -442,7 +442,7 @@ read:  READ LPAREN VARIABLE RPAREN
 ;
 
 
-erase: ERASE LPAREN RPAREN {
+erase: ERASE {
 
 			$$ = new lp::EraseStmt();
 		}
