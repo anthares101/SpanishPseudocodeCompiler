@@ -1391,6 +1391,7 @@ void lp::ReadStmt::evaluate()
 	std::cout << "Inserta un valor numérico --> " ;
 	std::cout << RESET; 
 	std::cin >> value;
+	std::cin.ignore();
 
 	/* Get the identifier in the table of symbols as Variable */
 	lp::Variable *var = (lp::Variable *) table.getSymbol(this->_id);
@@ -1439,7 +1440,6 @@ void lp::ReadStringStmt::evaluate()
 	std::cout << BIYELLOW; 
 	std::cout << "Inserta una cadena --> " ;
 	std::cout << RESET;
-	std::cin.ignore();
 	std::getline(std::cin, in_string);
 
     //Parse in_string searching \n or \t write like 2 characters
