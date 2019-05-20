@@ -54,11 +54,11 @@ PALABRAS RESERVADAS:		[ ]							CHECK
 		paso											[OK]
 		fin_para										[OK]
 
-	MACROS:												[ ]
-		_borrar											[ ]
-		_lugar											[ ]
+	MACROS:												[OK]
+		_borrar											[OK]
+		_lugar											[OK]
 
-	NO SE DISTINGUE ENTRE MAYÚSCULAS Y MINÚSCULAS		[ ]
+	NO SE DISTINGUE ENTRE MAYÚSCULAS Y MINÚSCULAS		[OK]
 	LAS PALABRAS RESERVADAS NO SON IDENTIFICADORES		[OK]
 
 
