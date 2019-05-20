@@ -1,6 +1,6 @@
-read(dato);
+leer(dato);
 
-print dato;
+escribir dato;
 
 si (dato < 0) entonces f := 0 ;
 si_no
@@ -14,4 +14,4 @@ si_no
     fin_mientras
 fin_si
 
-print f;
+escribir f;

@@ -339,6 +339,25 @@ int lp::LogicalOperatorNode:: getType()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+int lp::StringOperatorNode:: getType()
+{
+	int result = 0;
+		
+	if ( (this->_left->getType() == STRING) and (this->_right->getType() == STRING))
+	{
+		// 
+		result = STRING;
+	}
+	else
+		warning("Runtime error: incompatible types for", "String Operator");
+
+	return	result;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
 
 void lp::UnaryMinusNode::print() 
 {
@@ -629,6 +648,34 @@ double lp::PowerNode::evaluateNumber()
 	else
 	{
 		warning("Runtime error: the expressions are not numeric for", "Power");
+	}
+
+  return result;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+void lp::ConcatenateNode::print() 
+{
+  std::cout << "ConcatenateNode: "  << std::endl;
+  this->_left->print();
+  std::cout << " || ";
+  this->_right->print();
+}
+
+std::string lp::ConcatenateNode::evaluateString()
+{
+	std::string result = "";
+
+	// Ckeck the types of the expressions
+	if (this->getType() == STRING)
+	{
+		result = this->_left->evaluateString() + this->_right->evaluateString();
+	}
+	else
+	{
+		warning("Runtime error: the expressions are not aplhanumeric for ", "Concatenate");
 	}
 
   return result;
@@ -1332,7 +1379,7 @@ void lp::PrintStmt::evaluate()
 void lp::ReadStmt::print() 
 {
   std::cout << "ReadStmt: "  << std::endl;
-  std::cout << " read (" << this->_id << ")";
+  std::cout << " leer (" << this->_id << ")";
   std::cout << std::endl;
 }
 
@@ -1341,7 +1388,7 @@ void lp::ReadStmt::evaluate()
 {   
 	double value;
 	std::cout << BIYELLOW; 
-	std::cout << "Insert a numeric value --> " ;
+	std::cout << "Inserta un valor numérico --> " ;
 	std::cout << RESET; 
 	std::cin >> value;
 
@@ -1367,6 +1414,80 @@ void lp::ReadStmt::evaluate()
 		// with the type NUMBER and the read value 
 		lp::NumericVariable *n = new lp::NumericVariable(this->_id, 
 									  VARIABLE,NUMBER,value);
+
+		table.installSymbol(n);
+	}
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+void lp::ReadStringStmt::print() 
+{
+  std::cout << "ReadStringStmt: "  << std::endl;
+  std::cout << " leer_cadena (" << this->_id << ")";
+  std::cout << std::endl;
+}
+
+
+void lp::ReadStringStmt::evaluate() 
+{   
+	std::string in_string;
+	std::string value;
+
+	std::cout << BIYELLOW; 
+	std::cout << "Inserta una cadena --> " ;
+	std::cout << RESET;
+	std::cin.ignore();
+	std::getline(std::cin, in_string);
+
+    //Parse in_string searching \n or \t write like 2 characters
+    for(unsigned i = 0; i < in_string.size(); i++){
+		if(in_string[i] == '\\'){
+			switch(in_string[i+1]){
+				case 'n':
+					value.push_back('\n');
+
+					break;
+				case 't':
+					value.push_back('\t');
+
+					break;
+				default:
+					value.push_back(in_string[i+1]);
+
+					break;
+			}
+
+			i++;
+		}
+		else
+			value.push_back(in_string[i]);
+	}
+
+	/* Get the identifier in the table of symbols as Variable */
+	lp::Variable *var = (lp::Variable *) table.getSymbol(this->_id);
+
+	// Check if the type of the variable is STRING
+	if (var->getType() == STRING)
+	{
+		/* Get the identifier in the table of symbols as NumericVariable */
+		lp::StringVariable *n = (lp::StringVariable *) table.getSymbol(this->_id);
+						
+		/* Assignment the read value to the identifier */
+		n->setValue(value);
+	}
+	// The type of variable is not STRING
+	else
+	{
+		// Delete $1 from the table of symbols as Variable
+		table.eraseSymbol(this->_id);
+
+			// Insert $1 in the table of symbols as StringVariable 
+		// with the type STRING and the read value 
+		lp::StringVariable *n = new lp::StringVariable(this->_id, 
+									  VARIABLE,STRING,value);
 
 		table.installSymbol(n);
 	}

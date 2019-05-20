@@ -27,10 +27,10 @@ PALABRAS RESERVADAS:		[ ]							CHECK
 	_no													[OK]
 
 	leer												[OK]
-	leer_cadena											[ ]
+	leer_cadena											[OK]
 
 	escribir											[OK]
-	escribir_cadena										[ ]
+	escribir_cadena										[OK]
 
 	SENTENCIA CONDICIONAL:								[0K]
 		si												[OK]
@@ -59,7 +59,7 @@ PALABRAS RESERVADAS:		[ ]							CHECK
 		_lugar											[ ]
 
 	NO SE DISTINGUE ENTRE MAYÚSCULAS Y MINÚSCULAS		[ ]
-	LAS PALABRAS RESERVADAS NO SON IDENTIFICADORES		[ ]
+	LAS PALABRAS RESERVADAS NO SON IDENTIFICADORES		[OK]
 
 
 -----------------------------------------------------------------
@@ -108,7 +108,7 @@ OPERADORES:				[ ]								CHECK
 		POTENCIA **										[OK]
 
 	ALFANUMERICOS										[ ]
-		CONCATENACION ||								[ ]
+		CONCATENACION ||								[OK]
 
 	RELACIONALES NÚMEROS Y CADENAS						[OK]
 		MENOR QUE <										[OK]
@@ -129,7 +129,7 @@ OTROS:					[ ]								CHECK
 		VARIAS LINEAS: DELIMITADORES #	.... #			[OK]
 		UNA LÍNEA: DELIMITADOR @						[OK]
 
-	FIN DE LINEA ;										[ ]
+	FIN DE LINEA ;										[OK]
 
 -----------------------------------------------------------------
 SENTENCIAS DE CONTROL:	[ ]								CHECK
@@ -139,12 +139,12 @@ SENTENCIAS DE CONTROL:	[ ]								CHECK
 		IDENTIFICADOR := EXPR ALFANUMÉRICA				[OK]
 
 	LECTURA												[ ]
-		Leer(identificador)								[ ]
-		Leer_cadena(identificador)						[ ]
+		Leer(identificador)								[OK]
+		Leer_cadena(identificador)						[OK]
 
 	ESCRITURA											[ ]
-		Escribir										[ ]
-		Escribir_cadena									[ ]
+		Escribir										[OK]
+		Escribir_cadena									[OK]
 
 	SENTENCIAS DE CONTROL								[ ]
 		CONDICIONAL SIMPLE								[ ]

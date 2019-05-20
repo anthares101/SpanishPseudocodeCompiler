@@ -177,16 +177,42 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 			         BEGIN 0; 
 			         yytext[yyleng-1]='\0';
 
+			         std::string aux;
+
+			         //Parse the string searching \n or \t write like 2 characters
+			         for(unsigned i = 0; i < yyleng; i++){
+						if(yytext[i] == '\\'){
+							switch(yytext[i+1]){
+								case 'n':
+									aux.push_back('\n');
+
+									break;
+								case 't':
+									aux.push_back('\t');
+
+									break;
+								default:
+									aux.push_back(yytext[i+1]);
+
+									break;
+							}
+
+							i++;
+						}
+						else
+							aux.push_back(yytext[i]);
+					}
+
 			         //Use the same type as an identifier id (String)
-			         yylval.identifier =  strdup(yytext);
+			         yylval.identifier =  strdup(aux.c_str());
 			         return STRING;
 					}      
 
 <STRING_STATE>"\\\'"     {yymore();}
 
-<STRING_STATE>.          {yymore();}
-
 <STRING_STATE>\n         {yymore();}
+
+<STRING_STATE>.          {yymore();}
 
 
 	/* PARÉNTESIS */
@@ -228,6 +254,9 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 ">"		{ return GREATER_THAN; }	/* NEW in example 15 */
 
 "<"		{ return LESS_THAN; }		/* NEW in example 15 */
+
+	/* OPERADOR DE CONCATENACIÓN */
+"||"	{ return CONCATENATE; }
 
 
 	/* OPERADORES LÓGICOS */
@@ -308,6 +337,17 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 									yymore();  
 								}
 
+<ERROR>{IDENTIFIER_ERR}			{ warning("Identificador incorrecto", yytext);
+								  /* Restore the initial state */
+   								  BEGIN(INITIAL);
+								}
+
+
+<ERROR>{NUMBER_ERR}				{ warning("Número incorrecto", yytext);
+								  /* Restore the initial state */
+   								  BEGIN(INITIAL);
+								}
+
 <ERROR>[^0-9+\-*/()\^% \t\n\;a-zA-Z=<>!&@#]	{ /* MODIFIED in examples 5, 7, 15 */
 								  /* NEW in example 3 */
 								  /* 
@@ -322,18 +362,11 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 								/* NEW in example 3 */
 								/* Rewind one position */
 								yyless(yyleng-1); 
-//std::cout << "soy yytext en ERROR --> " << yytext << std::endl;
 								/* Display the error message */
 								warning("Lexical error", yytext);
 
 								/* Restore the initial state */
    								BEGIN(INITIAL);
 							}
-
-{IDENTIFIER_ERR}			{ warning("Identificador incorrecto", yytext); }
-
-
-{NUMBER_ERR}				{ warning("Número incorrecto", yytext); }
-
 %%
 

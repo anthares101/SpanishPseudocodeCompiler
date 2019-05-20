@@ -632,6 +632,39 @@ class LogicalOperatorNode : public OperatorNode
 };
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+/*!	
+  \class   StringOperatorNode
+  \brief   Definition of atributes and methods of StringOperatorNode class
+  \note    StringOperatorNode Class publicly inherits from OperatorNode class
+  \warning Abstract class, because it does not redefine the print method of ExpNode
+*/
+class StringOperatorNode : public OperatorNode 
+{
+	public:
+
+	/*!		
+		\brief Constructor of StringOperatorNode uses OperatorNode's constructor as members initializer
+		\param L: pointer to ExpNode
+		\param R: pointer to ExpNode
+		\post  A new StringOperatorNode is created with the parameters
+	*/
+    StringOperatorNode(ExpNode *L, ExpNode *R): OperatorNode(L,R) 
+	{
+		//	Empty
+	}
+
+	/*!	
+	\brief   Get the type of the children expressions
+	\return  int
+	\sa		 print()
+	*/
+	int getType();
+};
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -897,6 +930,45 @@ class PowerNode : public NumericOperatorNode
 	\sa		 print
 */
   double evaluateNumber();
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/*!	
+  \class   ConcatenateNode
+  \brief   Definition of atributes and methods of ConcatenateNode class
+  \note    ConcatenateNode Class publicly inherits from StringOperatorNode class 
+		   and adds its own print and evaluate functions
+*/
+class ConcatenateNode : public StringOperatorNode
+{
+  public:
+/*!		
+	\brief Constructor of ConcatenateNode uses StringOperatorNode's constructor as members initializer
+	\param L: pointer to ExpNode
+	\param R: pointer to ExpNode
+	\post  A new ConcatenateNode is created with the parameter
+*/
+  ConcatenateNode(ExpNode *L, ExpNode *R) : StringOperatorNode(L,R) 
+  {
+		// Empty
+  }
+
+/*!
+	\brief   Print the ConcatenateNode
+	\return  void
+	\sa		 evaluate()
+*/
+  void print();
+
+/*!	
+	\brief   Evaluate the ConcatenateNode
+	\return  string
+	\sa		 print
+*/
+  std::string evaluateString();
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1672,6 +1744,49 @@ class ReadStmt : public Statement
 
 /*!	
 	\brief   Evaluate the ReadStmt
+	\return  void
+	\sa		 print
+*/
+  void evaluate();
+};
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/*!	
+  \class   ReadStringStmt
+  \brief   Definition of atributes and methods of ReadStringStmt class
+  \note    ReadStringStmt Class publicly inherits from Statement class 
+		   and adds its own print and evaluate functions
+*/
+class ReadStringStmt : public Statement 
+{
+  private:
+	std::string _id; //!< Name of the ReadStmt
+	
+
+  public:
+/*!		
+	\brief Constructor of ReadStmt
+	\param id: string, name of the variable of the ReadStmt
+	\post  A new ReadStmt is created with the parameter
+*/
+  ReadStringStmt(std::string id)
+	{
+		this->_id = id;
+	}
+
+/*!
+	\brief   Print the ReadStringStmt
+	\return  void
+	\sa		 evaluate()
+*/
+  void print();
+
+/*!	
+	\brief   Evaluate the ReadStringStmt
 	\return  void
 	\sa		 print
 */
