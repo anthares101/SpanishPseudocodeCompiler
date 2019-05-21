@@ -243,7 +243,7 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 
 	/* OPERADORES RELACIONALES */
 
-"=="	{ return EQUAL; }			/* NEW in example 15 */
+"="	{ return EQUAL; }			/* NEW in example 15 */
 
 "<>"	{ return NOT_EQUAL; }		/* NEW in example 15 */
 
