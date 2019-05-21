@@ -1303,7 +1303,7 @@ void lp::AssignmentStmt::evaluate()
 				/* Get the identifier of the previous asgn in the table of symbols as LogicalVariable */
 				lp::LogicalVariable *secondVar = (lp::LogicalVariable *) table.getSymbol(this->_asgn->_id);
 				// Check the type of the first variable
-				if (firstVar->getType() == NUMBER)
+				if (firstVar->getType() == BOOL)
 				{
 				/* Get the identifier of the first variable in the table of symbols as LogicalVariable */
 				lp::LogicalVariable *firstVar = (lp::LogicalVariable *) table.getSymbol(this->_id);
@@ -1314,7 +1314,7 @@ void lp::AssignmentStmt::evaluate()
 					firstVar->setValue(secondVar->getValue());
 
 				}
-				// The type of variable is not NUMBER
+				// The type of variable is not BOOL
 				else
 				{
 					// Delete the first variable from the table of symbols 
