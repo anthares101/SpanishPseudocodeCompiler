@@ -308,7 +308,8 @@ int lp::RelationalOperatorNode::getType()
 {
 	int result = 0;
 		
-	if ( (this->_left->getType() == NUMBER) and (this->_right->getType() == NUMBER))
+	if ( ((this->_left->getType() == NUMBER) and (this->_right->getType() == NUMBER)) or
+		 ((this->_left->getType() == STRING) and (this->_right->getType() == STRING)) )
 		result = BOOL;
 	else
 		warning("Runtime error: incompatible types for", "Relational Operator");
@@ -818,12 +819,22 @@ bool lp::GreaterThanNode::evaluateBool()
 	bool result = false;
 
 	if (this->getType() == BOOL)
-	{
-		double leftNumber, rightNumber;
-		leftNumber = this->_left->evaluateNumber();
-		rightNumber = this->_right->evaluateNumber();
+	{	//getType already check if left and right parameter are string or number. This is used to know if they are string or number
+		if (this->_left->getType() == NUMBER){
+			double leftNumber, rightNumber;
+			leftNumber = this->_left->evaluateNumber();
+			rightNumber = this->_right->evaluateNumber();
 
-		result = (leftNumber > rightNumber);
+			result = (leftNumber > rightNumber);
+		}
+		else{
+			std::string leftString, rightString;
+
+			leftString = this->_left->evaluateString();
+			rightString = this->_right->evaluateString();
+
+			result = (leftString > rightString);
+		}
 	}
 	else
 	{
@@ -850,12 +861,22 @@ bool lp::GreaterOrEqualNode::evaluateBool()
 	bool result = false;
 
 	if (this->getType() == BOOL)
-	{
-		double leftNumber, rightNumber;
-		leftNumber = this->_left->evaluateNumber();
-		rightNumber = this->_right->evaluateNumber();
+	{	//getType already check if left and right parameter are string or number. This is used to know if they are string or number
+		if (this->_left->getType() == NUMBER){
+			double leftNumber, rightNumber;
+			leftNumber = this->_left->evaluateNumber();
+			rightNumber = this->_right->evaluateNumber();
 
-		result = ((leftNumber > rightNumber) || (std::abs( (leftNumber - rightNumber)) < ERROR_BOUND));
+			result = ((leftNumber > rightNumber) || (std::abs( (leftNumber - rightNumber)) < ERROR_BOUND));
+		}
+		else{
+			std::string leftString, rightString;
+
+			leftString = this->_left->evaluateString();
+			rightString = this->_right->evaluateString();
+
+			result = (leftString >= rightString);
+		}
 	}
 	else
 	{
@@ -883,12 +904,22 @@ bool lp::LessThanNode::evaluateBool()
 	bool result = false;
 
 	if (this->getType() == BOOL)
-	{
-		double leftNumber, rightNumber;
-		leftNumber = this->_left->evaluateNumber();
-		rightNumber = this->_right->evaluateNumber();
+	{	//getType already check if left and right parameter are string or number. This is used to know if they are string or number
+		if (this->_left->getType() == NUMBER){
+			double leftNumber, rightNumber;
+			leftNumber = this->_left->evaluateNumber();
+			rightNumber = this->_right->evaluateNumber();
 
-		result = (leftNumber < rightNumber);
+			result = (leftNumber < rightNumber);
+		}
+		else{
+			std::string leftString, rightString;
+
+			leftString = this->_left->evaluateString();
+			rightString = this->_right->evaluateString();
+
+			result = (leftString < rightString);
+		}
 	}
 	else
 	{
@@ -915,12 +946,22 @@ bool lp::LessOrEqualNode::evaluateBool()
 	bool result = false;
 
 	if (this->getType() == BOOL)
-	{
-		double leftNumber, rightNumber;
-		leftNumber = this->_left->evaluateNumber();
-		rightNumber = this->_right->evaluateNumber();
+	{	//getType already check if left and right parameter are string or number. This is used to know if they are string or number
+		if (this->_left->getType() == NUMBER){
+			double leftNumber, rightNumber;
+			leftNumber = this->_left->evaluateNumber();
+			rightNumber = this->_right->evaluateNumber();
 
-		result = ((leftNumber < rightNumber) || (std::abs( (leftNumber - rightNumber)) < ERROR_BOUND));
+			result = ((leftNumber < rightNumber) || (std::abs( (leftNumber - rightNumber)) < ERROR_BOUND));
+		}
+		else{
+			std::string leftString, rightString;
+
+			leftString = this->_left->evaluateString();
+			rightString = this->_right->evaluateString();
+
+			result = (leftString <= rightString);
+		}
 	}
 	else
 	{
@@ -948,13 +989,23 @@ bool lp::EqualNode::evaluateBool()
 	bool result = false;
 
 	if (this->getType() == BOOL)
-	{
-		double leftNumber, rightNumber;
-		leftNumber = this->_left->evaluateNumber();
-		rightNumber = this->_right->evaluateNumber();
+	{	//getType already check if left and right parameter are string or number. This is used to know if they are string or number
+		if (this->_left->getType() == NUMBER){
+			double leftNumber, rightNumber;
+			leftNumber = this->_left->evaluateNumber();
+			rightNumber = this->_right->evaluateNumber();
 
-		// ERROR_BOUND to control the precision of real numbers
-		result = std::abs( (leftNumber - rightNumber)) < ERROR_BOUND ;
+			// ERROR_BOUND to control the precision of real numbers
+			result = std::abs( (leftNumber - rightNumber)) < ERROR_BOUND ;
+		}
+		else{
+			std::string leftString, rightString;
+
+			leftString = this->_left->evaluateString();
+			rightString = this->_right->evaluateString();
+
+			result = (leftString == rightString);
+		}
 	}
 	else
 	{
@@ -981,13 +1032,23 @@ bool lp::NotEqualNode::evaluateBool()
 	bool result = false;
 
 	if (this->getType() == BOOL)
-	{
-		double leftNumber, rightNumber;
-		leftNumber = this->_left->evaluateNumber();
-		rightNumber = this->_right->evaluateNumber();
+	{	//getType already check if left and right parameter are string or number. This is used to know if they are string or number
+		if (this->_left->getType() == NUMBER){
+			double leftNumber, rightNumber;
+			leftNumber = this->_left->evaluateNumber();
+			rightNumber = this->_right->evaluateNumber();
 
-		// ERROR_BOUND to control the precision of real numbers
-		result = std::abs( (leftNumber - rightNumber)) >= ERROR_BOUND;
+			// ERROR_BOUND to control the precision of real numbers
+			result = std::abs( (leftNumber - rightNumber)) >= ERROR_BOUND;
+		}
+		else{
+			std::string leftString, rightString;
+
+			leftString = this->_left->evaluateString();
+			rightString = this->_right->evaluateString();
+
+			result = (leftString != rightString);
+		}
 	}
 	else
 	{
