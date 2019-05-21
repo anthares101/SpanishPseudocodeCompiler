@@ -1673,18 +1673,18 @@ void lp::ForStmt::evaluate()
 		if(this->_start->getType() != NUMBER ||
 			this->_end->getType() != NUMBER ||
 			this->_inc->getType() != NUMBER) {
-			warning("Error de compilación: tipo incompatible para ", "for");
+			warning("Error de compilación: tipo incompatible para ", "para");
 		}
 		else {
-			start = this->_start->evaluateNumber();
-			end = this->_end->evaluateNumber();
-			inc = this->_inc->evaluateNumber();
+				start = this->_start->evaluateNumber();
+				end = this->_end->evaluateNumber();
+				inc = this->_inc->evaluateNumber();
 		}
 	}
 	else {
 		if(this->_start->getType() != NUMBER ||
 			this->_end->getType() != NUMBER) {
-			warning("Error en tiempo de ejecución: tipo incompatible para ", "for");
+			warning("Error en tiempo de ejecución: tipo incompatible para ", "para");
 		}
 		else {
 			start = this->_start->evaluateNumber();
@@ -1693,8 +1693,14 @@ void lp::ForStmt::evaluate()
 		}
 	}
 
-	if((start > end && inc > 0.0) || (start < end && inc < 0)) {
-		warning("Error en tiempo de ejecución: el comienzo no concuerda con el fin según el paso para ", "for");
+	if((start > end && inc > 0.0) || (start < end && inc < 0.0)) {
+		warning("Error en tiempo de ejecución: el comienzo no concuerda con el fin según el paso para ", "para");
+		return;
+	}
+
+	if(std::abs(0.0 - inc) < ERROR_BOUND) {
+		warning("Error de bucle infinito para ", "para");
+		return;
 	}
 
 	//Se comprueba si la tabla contiene el simbolo

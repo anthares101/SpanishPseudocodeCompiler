@@ -194,19 +194,19 @@ CONTROL DE ERRORES:		[ ]								CHECK
 -----------------------------------------------------------------
 	LÉXICOS
 		IDENTIFICADOR MAL ESCRITO 						[OK]
-		SIMBOLO NO PERMITIDO							[ ]
+		SIMBOLO NO PERMITIDO							[OK]
 		OTROS											[ ]
 
 	SINTÁCTICOS											[ ]
 		SENTENCIA DE CONTROL MAL ESCRITA				[ ]
-		SENTENCIA CON ARGUMENTOS INCOMPATIBLES			[ ]
+		SENTENCIA CON ARGUMENTOS INCOMPATIBLES			[OK]
 		OTROS											[ ]
 
 	SEMÁNTICOS											[ ]
-		ARGUMENTOS U OPERANDOS INCOMPATIBLES			[ ]
+		ARGUMENTOS U OPERANDOS INCOMPATIBLES			[OK]
 
 	DE EJECUCIÓN										[ ]
-		SENTENCIA "PARA" CON BUCLE INFINITO				[ ]
+		SENTENCIA "PARA" CON BUCLE INFINITO				[OK]
 		FICHERO INEXISTENTE								[ ]
 		FICHERO CON EXTENSIÓN INCORRECTA				[ ]
 		OTROS											[ ]
@@ -214,7 +214,7 @@ CONTROL DE ERRORES:		[ ]								CHECK
 -----------------------------------------------------------------
 MODOS DE EJECUCIÓN:		[ ]								CHECK
 -----------------------------------------------------------------
-	INTERACTIVO											[ ]
+	INTERACTIVO											[OK]
 	DESDE FICHERO										[OK]
 
 -----------------------------------------------------------------

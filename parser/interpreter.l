@@ -315,7 +315,7 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 <<EOF>> { /* The interpreter finishes when finds the end of file character */
 		/*  PLACE(24,10);
 	  	  std::cout <<  BICYAN;
-	   	  std::cout <<  ">>>>>>> End of file <<<<<<<";
+	   	  std::cout <<  ">>>>>>> Fin de fichero <<<<<<<";
 	 	  std::cout << std::endl;
 	   	  std::cout << RESET;
 		  PLACE(25,1);
@@ -323,6 +323,17 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 	  	  return 0;
 	}
 
+
+{IDENTIFIER_ERR}			{ warning("Identificador incorrecto", yytext);
+								  /* Restore the initial state */
+   								  BEGIN(INITIAL);
+								}
+
+
+{NUMBER_ERR}				{ warning("Número incorrecto", yytext);
+								  /* Restore the initial state */
+   								  BEGIN(INITIAL);
+								}
 
 .								{ 	
 									/* Any other character */
@@ -337,18 +348,7 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 									yymore();  
 								}
 
-<ERROR>{IDENTIFIER_ERR}			{ warning("Identificador incorrecto", yytext);
-								  /* Restore the initial state */
-   								  BEGIN(INITIAL);
-								}
-
-
-<ERROR>{NUMBER_ERR}				{ warning("Número incorrecto", yytext);
-								  /* Restore the initial state */
-   								  BEGIN(INITIAL);
-								}
-
-<ERROR>[^0-9+\-*/()\^% \t\n\;a-zA-Z=<>!&@#]	{ /* MODIFIED in examples 5, 7, 15 */
+<ERROR>[^0-9+\-*/()\^% \t\n\;a-zA-Z=<>!&@#|]	{ /* MODIFIED in examples 5, 7, 15 */
 								  /* NEW in example 3 */
 								  /* 
 									The current value of yytext 
@@ -363,7 +363,7 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 								/* Rewind one position */
 								yyless(yyleng-1); 
 								/* Display the error message */
-								warning("Lexical error", yytext);
+								warning("Símbolo no permitido", yytext);
 
 								/* Restore the initial state */
    								BEGIN(INITIAL);

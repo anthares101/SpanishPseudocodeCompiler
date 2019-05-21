@@ -33,9 +33,9 @@ extern int errno; //!<  ReferenceReference to the global variable that controls 
 void warning(std::string errorMessage1,std::string errorMessage2)
 {
   std::cerr << IGREEN; 
-  std::cerr << " Program: " << progname << std::endl;
+  std::cerr << " Programa: " << progname << std::endl;
   std::cerr << BIRED; 
-  std::cerr << " Error line " << lineNumber 
+  std::cerr << " Línea de error " << lineNumber 
             << " --> " << errorMessage1 << std::endl;
   std::cerr << RESET; 
 
@@ -46,7 +46,7 @@ void warning(std::string errorMessage1,std::string errorMessage2)
 
 void yyerror(std::string errorMessage)
 {
-	warning("Parser error",errorMessage);
+	warning("Error de analizador",errorMessage);
 }
 
 
@@ -59,7 +59,7 @@ void execerror(std::string errorMessage1,std::string errorMessage2)
 
 void fpecatch(int signum)     
 {
- execerror("Run time","floating point error");
+ execerror("Tiempo de ejecución","error de punto flotante");
 }
 
 
@@ -70,14 +70,14 @@ double errcheck(double d, std::string s)
   if (errno==EDOM)
     {
      errno=0;
-     std::string msg("Runtime error --> argument out of domain");
+     std::string msg("Error en tiempo de ejecución --> argumento fuera de dominio");
  
      std::cout << msg << std::endl;
      execerror(s,msg);
     }
    else if (errno==ERANGE)
            {
-		 	std::string msg("Runtime error --> result out of range");
+		 	std::string msg("Error en tiempo de ejecución --> resultado fuera de rango");
             errno=0;
             execerror(s,msg);
            }

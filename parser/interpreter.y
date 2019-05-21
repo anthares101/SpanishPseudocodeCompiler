@@ -349,6 +349,7 @@ if:	/* Simple conditional statement */
 		// Create a new if statement node
 		$$ = new lp::IfStmt($2, $4, $6);
 	 }
+
 ;
 
 	/*  NEW in example 17 */
@@ -365,6 +366,11 @@ repeatUntil: REPEAT stmtlist UNTIL cond
 			// Create a new do-until statement node
 			$$ = new lp::RepeatUntilStmt($2, $4);
 		}
+		| REPEAT stmtlist UNTIL NUMBER
+		{
+
+			warning("Error sintáctico: se espera un paréntesis izquierdo ", "");
+		}
 ;	
 
 for: FOR VARIABLE START exp UNTIL exp INC exp DO stmtlist ENDFOR
@@ -380,6 +386,26 @@ for: FOR VARIABLE START exp UNTIL exp INC exp DO stmtlist ENDFOR
 			// Create a new do-until statement node
 			$$ = new lp::ForStmt($2, $4, $6, $8);
 		}
+		| FOR STRING START exp UNTIL exp INC exp DO stmtlist ENDFOR 
+		{
+			execerror("Error sintáctico: se espera una variable y se proporcionó una cadena ", "");
+		}
+		| FOR STRING START exp UNTIL exp DO stmtlist ENDFOR 
+		{
+			execerror("Error sintáctico: se espera una variable y se proporcionó una cadena ", "");
+		}
+		| FOR NUMBER START exp UNTIL exp INC exp DO stmtlist ENDFOR 
+		{
+			execerror("Error sintáctico: se espera una variable y se proporcionó un número ", "");
+		}
+		| FOR NUMBER START exp UNTIL exp DO stmtlist ENDFOR 
+		{
+			execerror("Error sintáctico: se espera una variable y se proporcionó un número ", "");
+		}
+
+			/*
+				Resto de reglas de exp
+			*/
 ;
 
 	/*  NEW in example 17 */
@@ -405,12 +431,12 @@ asgn:   VARIABLE ASSIGNMENT exp
 	   /* NEW in example 11 */ 
 	| CONSTANT ASSIGNMENT exp 
 		{   
- 			execerror("Semantic error in assignment: it is not allowed to modify a constant ", $1);
+ 			execerror("Error semántico en asignación: no se permite modificar una constante ", $1);
 		}
 	   /* NEW in example 11 */ 
 	| CONSTANT ASSIGNMENT asgn 
 		{   
- 			execerror("Semantic error in multiple assignment: it is not allowed to modify a constant ",$1);
+ 			execerror("Error semántico en asignación múltiple: no se permite modificar una constante ",$1);
 		}
 ;
 
@@ -437,8 +463,41 @@ read:  READ LPAREN VARIABLE RPAREN
   	  /* NEW rule in example 11 */
 	| READ LPAREN CONSTANT RPAREN  
 		{   
- 			execerror("Semantic error in \"read statement\": it is not allowed to modify a constant ",$3);
+			execerror("Error semántico en \"sentencia de lectura\": no se permite modificar una constante ", $3);
 		}
+
+	| READ LPAREN NUMBER RPAREN
+		{
+			execerror("Error semántico en \"sentencia de lectura\": no se puede leer una expresión ", "");
+		}
+
+	| READ LPAREN STRING RPAREN
+		{
+			execerror("Error semántico en \"sentencia de lectura\": no se puede leer una expresión ", "");
+		}
+
+			/*
+				Resto de reglas de exp
+			*/
+
+	| READ_STRING LPAREN CONSTANT RPAREN  
+		{   
+			execerror("Error semántico en \"sentencia de lectura\": no se permite modificar una constante ", $3);
+		}
+
+	| READ_STRING LPAREN NUMBER RPAREN
+		{
+			execerror("Error semántico en \"sentencia de lectura\": no se puede leer una expresión ", "");
+		}
+
+	| READ_STRING LPAREN STRING RPAREN
+		{
+			execerror("Error semántico en \"sentencia de lectura\": no se puede leer una expresión ", "");
+		}
+
+			/*
+				Resto de reglas de exp
+			*/
 ;
 
 
@@ -452,7 +511,7 @@ erase: ERASE {
 position: POSITION LPAREN listOfExp RPAREN {
 
 			if($3->size() != 2) {
-				execerror("Error de sintaxis: número incompatible de argumentos para la función ","_lugar");
+				execerror("Error sintáctico: número incompatible de argumentos para la función ","_lugar");
 			}
 			else {
 
@@ -598,11 +657,11 @@ exp:	NUMBER
 						break;
 
 					default:
-				  			 execerror("Syntax error: too many parameters for function ", $1);
+							execerror("Error sintáctico: demasiados parámetros para la función ", $1);
 				} 
 			}
 			else
-	  			 execerror("Syntax error: incompatible number of parameters for function", $1);
+				execerror("Error sintáctico: número de parámetros incompatible para la función ", $1);
 		}
 
 	| exp GREATER_THAN exp
