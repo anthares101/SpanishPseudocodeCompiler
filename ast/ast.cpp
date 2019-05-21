@@ -309,7 +309,8 @@ int lp::RelationalOperatorNode::getType()
 	int result = 0;
 		
 	if ( ((this->_left->getType() == NUMBER) and (this->_right->getType() == NUMBER)) or
-		 ((this->_left->getType() == STRING) and (this->_right->getType() == STRING)) )
+		 ((this->_left->getType() == STRING) and (this->_right->getType() == STRING)) or
+		 ((this->_left->getType() == BOOL) and (this->_right->getType() == BOOL)) )
 		result = BOOL;
 	else
 		warning("Runtime error: incompatible types for", "Relational Operator");
@@ -820,20 +821,39 @@ bool lp::GreaterThanNode::evaluateBool()
 
 	if (this->getType() == BOOL)
 	{	//getType already check if left and right parameter are string or number. This is used to know if they are string or number
-		if (this->_left->getType() == NUMBER){
-			double leftNumber, rightNumber;
-			leftNumber = this->_left->evaluateNumber();
-			rightNumber = this->_right->evaluateNumber();
+		switch(this->_left->getType()){
+			case NUMBER:{
+				double leftNumber, rightNumber;
 
-			result = (leftNumber > rightNumber);
-		}
-		else{
-			std::string leftString, rightString;
+				leftNumber = this->_left->evaluateNumber();
+				rightNumber = this->_right->evaluateNumber();
 
-			leftString = this->_left->evaluateString();
-			rightString = this->_right->evaluateString();
+				result = (leftNumber > rightNumber);
 
-			result = (leftString > rightString);
+				break;
+			}
+			case STRING:{
+				std::string leftString, rightString;
+
+				leftString = this->_left->evaluateString();
+				rightString = this->_right->evaluateString();
+
+				result = (leftString > rightString);
+
+				break;
+			}
+			case BOOL:{
+				bool leftBool, rightBool;
+
+				leftBool = this->_left->evaluateBool();
+				rightBool = this->_right->evaluateBool();
+
+				result = (leftBool > rightBool);
+
+				break;
+			}
+			default:
+				warning("Runtime error: incompatible types of parameters for ", "operator Greater than");
 		}
 	}
 	else
@@ -862,20 +882,39 @@ bool lp::GreaterOrEqualNode::evaluateBool()
 
 	if (this->getType() == BOOL)
 	{	//getType already check if left and right parameter are string or number. This is used to know if they are string or number
-		if (this->_left->getType() == NUMBER){
-			double leftNumber, rightNumber;
-			leftNumber = this->_left->evaluateNumber();
-			rightNumber = this->_right->evaluateNumber();
+		switch(this->_left->getType()){
+			case NUMBER:{
+				double leftNumber, rightNumber;
 
-			result = ((leftNumber > rightNumber) || (std::abs( (leftNumber - rightNumber)) < ERROR_BOUND));
-		}
-		else{
-			std::string leftString, rightString;
+				leftNumber = this->_left->evaluateNumber();
+				rightNumber = this->_right->evaluateNumber();
 
-			leftString = this->_left->evaluateString();
-			rightString = this->_right->evaluateString();
+				result = ((leftNumber > rightNumber) || (std::abs( (leftNumber - rightNumber)) < ERROR_BOUND));
 
-			result = (leftString >= rightString);
+				break;
+			}
+			case STRING:{
+				std::string leftString, rightString;
+
+				leftString = this->_left->evaluateString();
+				rightString = this->_right->evaluateString();
+
+				result = (leftString >= rightString);
+
+				break;
+			}
+			case BOOL:{
+				bool leftBool, rightBool;
+
+				leftBool = this->_left->evaluateBool();
+				rightBool = this->_right->evaluateBool();
+
+				result = (leftBool >= rightBool);
+
+				break;
+			}
+			default:
+				warning("Runtime error: incompatible types of parameters for ", "operator Greater than or equal than");
 		}
 	}
 	else
@@ -905,20 +944,39 @@ bool lp::LessThanNode::evaluateBool()
 
 	if (this->getType() == BOOL)
 	{	//getType already check if left and right parameter are string or number. This is used to know if they are string or number
-		if (this->_left->getType() == NUMBER){
-			double leftNumber, rightNumber;
-			leftNumber = this->_left->evaluateNumber();
-			rightNumber = this->_right->evaluateNumber();
+		switch(this->_left->getType()){
+			case NUMBER:{
+				double leftNumber, rightNumber;
 
-			result = (leftNumber < rightNumber);
-		}
-		else{
-			std::string leftString, rightString;
+				leftNumber = this->_left->evaluateNumber();
+				rightNumber = this->_right->evaluateNumber();
 
-			leftString = this->_left->evaluateString();
-			rightString = this->_right->evaluateString();
+				result = (leftNumber < rightNumber);
 
-			result = (leftString < rightString);
+				break;
+			}
+			case STRING:{
+				std::string leftString, rightString;
+
+				leftString = this->_left->evaluateString();
+				rightString = this->_right->evaluateString();
+
+				result = (leftString < rightString);
+
+				break;
+			}
+			case BOOL:{
+				bool leftBool, rightBool;
+
+				leftBool = this->_left->evaluateBool();
+				rightBool = this->_right->evaluateBool();
+
+				result = (leftBool < rightBool);
+
+				break;
+			}
+			default:
+				warning("Runtime error: incompatible types of parameters for ", "operator Less than");
 		}
 	}
 	else
@@ -947,20 +1005,39 @@ bool lp::LessOrEqualNode::evaluateBool()
 
 	if (this->getType() == BOOL)
 	{	//getType already check if left and right parameter are string or number. This is used to know if they are string or number
-		if (this->_left->getType() == NUMBER){
-			double leftNumber, rightNumber;
-			leftNumber = this->_left->evaluateNumber();
-			rightNumber = this->_right->evaluateNumber();
+		switch(this->_left->getType()){
+			case NUMBER:{
+				double leftNumber, rightNumber;
 
-			result = ((leftNumber < rightNumber) || (std::abs( (leftNumber - rightNumber)) < ERROR_BOUND));
-		}
-		else{
-			std::string leftString, rightString;
+				leftNumber = this->_left->evaluateNumber();
+				rightNumber = this->_right->evaluateNumber();
 
-			leftString = this->_left->evaluateString();
-			rightString = this->_right->evaluateString();
+				result = ((leftNumber < rightNumber) || (std::abs( (leftNumber - rightNumber)) < ERROR_BOUND));
 
-			result = (leftString <= rightString);
+				break;
+			}
+			case STRING:{
+				std::string leftString, rightString;
+
+				leftString = this->_left->evaluateString();
+				rightString = this->_right->evaluateString();
+
+				result = (leftString <= rightString);
+
+				break;
+			}
+			case BOOL:{
+				bool leftBool, rightBool;
+
+				leftBool = this->_left->evaluateBool();
+				rightBool = this->_right->evaluateBool();
+
+				result = (leftBool <= rightBool);
+
+				break;
+			}
+			default:
+				warning("Runtime error: incompatible types of parameters for ", "operator Less than or equal than");
 		}
 	}
 	else
@@ -990,21 +1067,40 @@ bool lp::EqualNode::evaluateBool()
 
 	if (this->getType() == BOOL)
 	{	//getType already check if left and right parameter are string or number. This is used to know if they are string or number
-		if (this->_left->getType() == NUMBER){
-			double leftNumber, rightNumber;
-			leftNumber = this->_left->evaluateNumber();
-			rightNumber = this->_right->evaluateNumber();
+		switch(this->_left->getType()){
+			case NUMBER:{
+				double leftNumber, rightNumber;
 
-			// ERROR_BOUND to control the precision of real numbers
-			result = std::abs( (leftNumber - rightNumber)) < ERROR_BOUND ;
-		}
-		else{
-			std::string leftString, rightString;
+				leftNumber = this->_left->evaluateNumber();
+				rightNumber = this->_right->evaluateNumber();
 
-			leftString = this->_left->evaluateString();
-			rightString = this->_right->evaluateString();
+				// ERROR_BOUND to control the precision of real numbers
+				result = std::abs( (leftNumber - rightNumber)) < ERROR_BOUND ;
 
-			result = (leftString == rightString);
+				break;
+			}
+			case STRING:{
+				std::string leftString, rightString;
+
+				leftString = this->_left->evaluateString();
+				rightString = this->_right->evaluateString();
+
+				result = (leftString == rightString);
+
+				break;
+			}
+			case BOOL:{
+				bool leftBool, rightBool;
+
+				leftBool = this->_left->evaluateBool();
+				rightBool = this->_right->evaluateBool();
+
+				result = (leftBool == rightBool);
+
+				break;
+			}
+			default:
+				warning("Runtime error: incompatible types of parameters for ", "operator Equal");
 		}
 	}
 	else
@@ -1033,21 +1129,40 @@ bool lp::NotEqualNode::evaluateBool()
 
 	if (this->getType() == BOOL)
 	{	//getType already check if left and right parameter are string or number. This is used to know if they are string or number
-		if (this->_left->getType() == NUMBER){
-			double leftNumber, rightNumber;
-			leftNumber = this->_left->evaluateNumber();
-			rightNumber = this->_right->evaluateNumber();
+		switch(this->_left->getType()){
+			case NUMBER:{
+				double leftNumber, rightNumber;
 
-			// ERROR_BOUND to control the precision of real numbers
-			result = std::abs( (leftNumber - rightNumber)) >= ERROR_BOUND;
-		}
-		else{
-			std::string leftString, rightString;
+				leftNumber = this->_left->evaluateNumber();
+				rightNumber = this->_right->evaluateNumber();
 
-			leftString = this->_left->evaluateString();
-			rightString = this->_right->evaluateString();
+				// ERROR_BOUND to control the precision of real numbers
+				result = std::abs( (leftNumber - rightNumber)) >= ERROR_BOUND;
 
-			result = (leftString != rightString);
+				break;
+			}
+			case STRING:{
+				std::string leftString, rightString;
+
+				leftString = this->_left->evaluateString();
+				rightString = this->_right->evaluateString();
+
+				result = (leftString != rightString);
+
+				break;
+			}
+			case BOOL:{
+				bool leftBool, rightBool;
+
+				leftBool = this->_left->evaluateBool();
+				rightBool = this->_right->evaluateBool();
+
+				result = (leftBool != rightBool);
+
+				break;
+			}
+			default:
+				warning("Runtime error: incompatible types of parameters for ", "operator Not equal");
 		}
 	}
 	else

@@ -59,8 +59,8 @@ static struct {
           std::string name ;
 	      bool value;
 	      } logicalConstant[] = { 
-	                    "true", true,
-	                    "false", false,
+	                    "verdadero", true,
+	                    "falso", false,
 	                    "",      0
 	                   };
 
