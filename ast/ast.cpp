@@ -1711,13 +1711,13 @@ void lp::ForStmt::evaluate()
 	table.installSymbol(v);
 
 	if(inc >= 0) {
-		for(double i = start; i < end; i = i + inc) {
+		for(double i = start; i <= end; i = i + inc) {
 			v->setValue(i);
 			this->_stmts->evaluate();
 		}
 	}
 	else {
-		for(double i = start; i > end; i = i + inc) {
+		for(double i = start; i >= end; i = i + inc) {
 			v->setValue(i);
 			this->_stmts->evaluate();
 		}

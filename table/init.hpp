@@ -73,11 +73,12 @@ static struct {
           std::string name ;
 	      int token;
 	      } keyword[] = {
-	      				//READ SENTENCE
+	      				//PRINT SENTENCE
 	                    "escribir", PRINT,
+	                    "escribir_cadena", PRINT,
 	                    //////////////////////
 
-	                    //PRINT SENTENCE
+	                    //READ SENTENCE
 	                    "leer", READ,
 	                    "leer_cadena", READ_STRING,
 	                    //////////////////////

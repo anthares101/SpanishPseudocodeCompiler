@@ -1,18 +1,17 @@
-read(dato);
+leer(dato);
 
-print dato;
+escribir dato;
 
-if (dato < 0) f = 0 
-else
-    {
+si (dato < 0) entonces f := 0 
+si_no
      i = dato;
      f = 1;
 
-     while i>1)
+     mientras i>1)
        
         f = f * i;
         i = i - 1;
-      }
-    }
+     fin_mientras
+fin_si
 
-print f; 
+escribir f; 
