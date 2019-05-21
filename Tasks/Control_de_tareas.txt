@@ -147,27 +147,27 @@ SENTENCIAS DE CONTROL:	[ ]								CHECK
 		Escribir_cadena									[OK]
 
 	SENTENCIAS DE CONTROL								[ ]
-		CONDICIONAL SIMPLE								[ ]
+		CONDICIONAL SIMPLE								[OK]
 			si cond
 				entonces sentencias
 			fin_si
 
-		CONDICIONAL COMPUESTA							[ ]
+		CONDICIONAL COMPUESTA							[OK]
 			si cond
 				entonces sentencias
 				si_no sentencias
 			fin_si
 
-		BUCLE "mientras"								[ ]
+		BUCLE "mientras"								[OK]
 			mientras cond hacer
 						sentencias
 			fin_mientras
-
+		(Violacion si no se ponen los parentesis de la cond)
 		BUCLE "repetir"									[ ]
 			repetir
 				sentencias
 			hasta cond
-
+		(Se pueden usar cadenas en vez de numeros)
 		BUCLE "para"									[ ]
 			para identificador
 				desde expr numerica 1
