@@ -134,19 +134,19 @@ OTROS:					[ ]								CHECK
 -----------------------------------------------------------------
 SENTENCIAS DE CONTROL:	[ ]								CHECK
 -----------------------------------------------------------------
-	ASIGNACION											[ ]
+	ASIGNACION											[OK]
 		IDENTIFICADOR := EXPR NUMÉRICA					[OK]
 		IDENTIFICADOR := EXPR ALFANUMÉRICA				[OK]
 
-	LECTURA												[ ]
+	LECTURA												[OK]
 		Leer(identificador)								[OK]
 		Leer_cadena(identificador)						[OK]
 
-	ESCRITURA											[ ]
+	ESCRITURA											[OK]
 		Escribir										[OK]
 		Escribir_cadena									[OK]
 
-	SENTENCIAS DE CONTROL								[ ]
+	SENTENCIAS DE CONTROL								[OK]
 		CONDICIONAL SIMPLE								[OK]
 			si cond
 				entonces sentencias
