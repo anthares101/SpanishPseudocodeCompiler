@@ -26,6 +26,7 @@
 
 /* Macros for the screen */
 #include "../includes/macros.hpp"
+#include "../includes/states.hpp"
 
 
 /*******************************************/
@@ -266,7 +267,9 @@ stmtlist:  /* empty: epsilon rule */
 
 			// Control the interative mode of execution of the interpreter
 			if (interactiveMode == true)
- 			   $2->evaluate();
+				if(stackedStmts.empty()) {
+ 			  		$2->evaluate();
+				}
            }
 
 
@@ -440,11 +443,10 @@ asgn:   VARIABLE ASSIGNMENT exp
 		}
 ;
 
-
 print:  PRINT exp 
 		{
 			// Create a new print node
-			 $$ = new lp::PrintStmt($2);
+			$$ = new lp::PrintStmt($2);
 		}
 ;	
 

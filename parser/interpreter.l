@@ -21,8 +21,11 @@
 #include <stdlib.h>
 /*********************/
 
+#include <stack>
+
 /* Macros for the screen */
 #include "../includes/macros.hpp"
+#include "../includes/states.hpp"
 
 /*********************/
 /* 
@@ -53,6 +56,11 @@ extern lp::Table table; //!< External Table of Symbols
 /*********************************************/
 
 extern int lineNumber; //!< External line counter
+
+//Definition of the statement stack
+std::stack <int> stackedStmts;
+
+bool repeatState = false;
 
 %}
 
@@ -160,6 +168,28 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 						*/
 						else 
 							{
+
+								if(identifier == "si" || identifier == "mientras" ||
+								   identifier == "repetir" || identifier == "para") {
+
+									stackedStmts.push(1);
+
+									if(identifier == "repetir") {
+										repeatState = true;
+									}
+								}
+
+								if((identifier == "fin_si" || identifier == "fin_mientras" ||
+									(repeatState && identifier == "hasta") || identifier == "fin_para") && 
+									!stackedStmts.empty()) {
+
+									stackedStmts.pop();
+
+									if(repeatState && identifier == "hasta") {
+										repeatState = false;
+									}
+								}
+
 								lp::Symbol	*s = table.getSymbol(identifier);
 
 								/*  If the identifier is in the table then its token is returned  */

@@ -1872,13 +1872,17 @@ void lp::ForStmt::evaluate()
 		}
 	}
 
-	if(((start > end && inc > 0.0) || (start < end && inc < 0.0)) && !error) {
-		warning("Error en tiempo de ejecución: el comienzo no concuerda con el fin según el paso para ", "para");
+	if((start > end && inc > 0.0) || (start < end && inc < 0.0)) {
+		if(!error) {
+			warning("Error en tiempo de ejecución: el comienzo no concuerda con el fin según el paso para ", "para");
+		}
 		return;
 	}
 
-	if((std::abs(0.0 - inc) < ERROR_BOUND) && !error) {
-		warning("Error de bucle infinito para ", "para");
+	if(std::abs(0.0 - inc) < ERROR_BOUND) {
+		if(!error) {
+			warning("Error de bucle infinito para ", "para");
+		}
 		return;
 	}
 
