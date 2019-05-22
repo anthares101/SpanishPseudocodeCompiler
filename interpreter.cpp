@@ -13,7 +13,7 @@
 	+ New statements: if, while, block
 */
 
-
+#include "./includes/macros.hpp"
 
 // New in example 2
 #include <stdio.h>
@@ -107,9 +107,28 @@ int main(int argc, char *argv[])
  */
  if (argc == 2) 
  {
-     yyin = fopen(argv[1],"r");
 
-	 interactiveMode = false;
+ 	std::string filename = argv[1];
+
+	if(filename.find_last_of(".") != std::string::npos &&
+	   filename.substr(filename.find_last_of(".")+1) != "e") {
+
+		std::cout << BIRED << 
+		"Error: la extensión del fichero no es la correcta\nSaliendo del programa..."
+		<< RESET << std::endl;
+		exit(EXIT_FAILURE);
+	}
+
+	yyin = fopen(argv[1],"r");
+
+	if(yyin != NULL) {
+		interactiveMode = false;
+	}
+	else {
+		std::cout << BIRED << "Error: el fichero no existe\nSaliendo del programa..." << RESET << std::endl;
+		exit(EXIT_FAILURE);
+	}
+	 
  }
 else
  {
@@ -141,7 +160,9 @@ else
  {
   /* NEW in example 15 */
   /*  root->print(); */
-   root->evaluate();
+ 	if(root != NULL) {
+ 		root->evaluate();
+ 	}
  }
 
  /* End of program */
