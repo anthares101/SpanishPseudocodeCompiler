@@ -117,7 +117,7 @@ OPERADORES:				[ ]								CHECK
 		MAYOR O IGUAL QUE >=							[OK]
 		DISTINTO DE <>									[OK]
 
-	LOGICOS												[ ]
+	LOGICOS												[OK]
 		DISYUNCIÓN _o									[OK]
 		CONJUNCIÓN _y									[OK]
 		NEGACIÓN   _no									[OK]
@@ -134,19 +134,19 @@ OTROS:					[ ]								CHECK
 -----------------------------------------------------------------
 SENTENCIAS DE CONTROL:	[ ]								CHECK
 -----------------------------------------------------------------
-	ASIGNACION											[ ]
+	ASIGNACION											[OK]
 		IDENTIFICADOR := EXPR NUMÉRICA					[OK]
 		IDENTIFICADOR := EXPR ALFANUMÉRICA				[OK]
 
-	LECTURA												[ ]
+	LECTURA												[OK]
 		Leer(identificador)								[OK]
 		Leer_cadena(identificador)						[OK]
 
-	ESCRITURA											[ ]
+	ESCRITURA											[OK]
 		Escribir										[OK]
 		Escribir_cadena									[OK]
 
-	SENTENCIAS DE CONTROL								[ ]
+	SENTENCIAS DE CONTROL								[OK]
 		CONDICIONAL SIMPLE								[OK]
 			si cond
 				entonces sentencias
@@ -162,13 +162,11 @@ SENTENCIAS DE CONTROL:	[ ]								CHECK
 			mientras cond hacer
 						sentencias
 			fin_mientras
-		(Violacion si no se ponen los parentesis de la cond)
-		BUCLE "repetir"									[ ]
+		BUCLE "repetir"									[OK]
 			repetir
 				sentencias
 			hasta cond
-		(Se pueden usar cadenas en vez de numeros)
-		BUCLE "para"									[ ]
+		BUCLE "para"									[OK]
 			para identificador
 				desde expr numerica 1
 				hasta expr numerica 2
