@@ -162,13 +162,11 @@ SENTENCIAS DE CONTROL:	[ ]								CHECK
 			mientras cond hacer
 						sentencias
 			fin_mientras
-		(Violacion si no se ponen los parentesis de la cond)
-		BUCLE "repetir"									[ ]
+		BUCLE "repetir"									[OK]
 			repetir
 				sentencias
 			hasta cond
-		(Se pueden usar cadenas en vez de numeros)
-		BUCLE "para"									[ ]
+		BUCLE "para"									[OK]
 			para identificador
 				desde expr numerica 1
 				hasta expr numerica 2
