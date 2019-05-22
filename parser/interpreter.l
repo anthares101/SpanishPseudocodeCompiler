@@ -169,8 +169,10 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 						else 
 							{
 
-								if(identifier == "si" || identifier == "mientras" ||
-								   identifier == "repetir" || identifier == "para") {
+								if(identifier == "si" ||
+								   identifier == "mientras" ||
+								   identifier == "repetir" ||
+								   identifier == "para") {
 
 									stackedStmts.push(1);
 
@@ -179,8 +181,10 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 									}
 								}
 
-								if((identifier == "fin_si" || identifier == "fin_mientras" ||
-									(repeatState && identifier == "hasta") || identifier == "fin_para") && 
+								if((identifier == "fin_si" ||
+									identifier == "fin_mientras" ||
+									(repeatState && identifier == "hasta") ||
+									identifier == "fin_para") && 
 									!stackedStmts.empty()) {
 
 									stackedStmts.pop();
