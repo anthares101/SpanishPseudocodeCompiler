@@ -117,7 +117,7 @@ OPERADORES:				[ ]								CHECK
 		MAYOR O IGUAL QUE >=							[OK]
 		DISTINTO DE <>									[OK]
 
-	LOGICOS												[ ]
+	LOGICOS												[OK]
 		DISYUNCIÓN _o									[OK]
 		CONJUNCIÓN _y									[OK]
 		NEGACIÓN   _no									[OK]
