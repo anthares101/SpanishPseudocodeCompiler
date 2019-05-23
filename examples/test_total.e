@@ -223,6 +223,123 @@ tests := tests + 1;
 
 escribir_cadena '---------\n';
 
+escribir_cadena 'mientras no hace siempre una primera iteración\n';
+contador := 0;
+mientras(falso) hacer
+	contador := contador + 1;
+fin_mientras
+si (contador = 0) entonces
+	testsCorrectos := testsCorrectos + 1;
+	escribir_cadena '¡Éxito!\n';
+si_no
+	escribir_cadena 'Error\n';
+fin_si
+tests := tests + 1;
+
+escribir_cadena '---------\n';
+
+escribir_cadena 'repetir hasta\n';
+repeticiones := 5;
+contador := 0;
+repetir
+	repeticiones := repeticiones - 1;
+	contador := contador + 1;
+hasta (repeticiones = 0);
+si (contador = 5) entonces
+	testsCorrectos := testsCorrectos + 1;
+	escribir_cadena '¡Éxito!\n';
+si_no
+	escribir_cadena 'Error\n';
+fin_si
+tests := tests + 1;
+
+escribir_cadena '---------\n';
+
+escribir_cadena 'repetir si hace siempre una primera iteración\n';
+contador := 0;
+repetir
+	contador := contador + 1;
+hasta(verdadero);
+si (contador = 1) entonces
+	testsCorrectos := testsCorrectos + 1;
+	escribir_cadena '¡Éxito!\n';
+si_no
+	escribir_cadena 'Error\n';
+fin_si
+tests := tests + 1;
+
+escribir_cadena '---------\n';
+
+escribir_cadena 'para con paso por defecto\n';
+contador := 0;
+para i desde 0 hasta 5 hacer
+	contador := contador + 1;
+fin_para;
+escribir contador;
+escribir_cadena '/n';
+si (contador = 6 _y i = 6) entonces
+	testsCorrectos := testsCorrectos + 1;
+	escribir_cadena '¡Éxito!\n';
+si_no
+	escribir_cadena 'Error\n';
+	escribir_cadena 'contador:' || contador || '\n';
+	escribir_cadena 'i:' || i || '\n';
+fin_si
+tests := tests + 1;
+
+escribir_cadena '---------\n';
+
+escribir_cadena 'para con paso 3\n';
+contador := 0;
+para i desde 0 hasta 5 paso 3 hacer
+	contador := contador + 1;
+fin_para;
+escribir contador;
+escribir_cadena '/n';
+si (contador = 2 _y i = 6) entonces
+	testsCorrectos := testsCorrectos + 1;
+	escribir_cadena '¡Éxito!\n';
+si_no
+	escribir_cadena 'Error\n';
+fin_si
+tests := tests + 1;
+
+escribir_cadena '---------\n';
+
+escribir_cadena 'para con paso -1\n';
+contador := 0;
+para i desde 5 hasta 0 paso -1 hacer
+	contador := contador + 1;
+fin_para;
+escribir contador;
+escribir_cadena '/n';
+si (contador = 6 _y i = -1) entonces
+	testsCorrectos := testsCorrectos + 1;
+	escribir_cadena '¡Éxito!\n';
+si_no
+	escribir_cadena 'Error\n';
+fin_si
+tests := tests + 1;
+
+escribir_cadena '---------\n';
+
+escribir_cadena 'para con paso -3\n';
+contador := 0;
+para i desde 5 hasta 0 paso -3 hacer
+	contador := contador + 1;
+fin_para;
+escribir contador;
+escribir_cadena '/n';
+si (contador = 2 _y i = -1) entonces
+	testsCorrectos := testsCorrectos + 1;
+	escribir_cadena '¡Éxito!\n';
+si_no
+	escribir_cadena 'Error\n';
+fin_si
+tests := tests + 1;
+
+escribir_cadena '---------\n';
+
 escribir_cadena 'Pulse intro para probar las macros _borrar y _lugar \n';
 leer(intro);
 _borrar;
@@ -316,6 +433,244 @@ fin_si
 tests := tests + 1;
 
 escribir_cadena '---------\n';
+
+escribir_cadena 'Asignación\n';
+dato := 3;
+escribir dato;
+escribir_cadena '\n';
+cadena := 'cadena';
+escribir_cadena cadena;
+escribir_cadena '\n';
+
+si ((cadena = 'cadena') _y (dato = 3)) entonces
+	testsCorrectos := testsCorrectos + 1;
+	escribir_cadena '¡Éxito!\n';
+si_no
+	escribir_cadena 'Error\n';
+fin_si
+tests := tests + 1;
+
+escribir_cadena '---------\n';
+
+escribir_cadena '3 + 2\n';
+dato1 := 3;
+dato2 := 2;
+escribir dato1 + dato2;
+escribir_cadena '\n';
+
+si ((dato1 + dato2) = 5) entonces
+	testsCorrectos := testsCorrectos + 1;
+	escribir_cadena '¡Éxito!\n';
+si_no
+	escribir_cadena 'Error\n';
+fin_si
+tests := tests + 1;
+
+escribir_cadena '---------\n';
+
+escribir_cadena '3 + +2\n';
+dato1 := 3;
+dato2 := +2;
+escribir dato1 + dato2;
+escribir_cadena '\n';
+
+si ((dato1 + dato2) = 5) entonces
+	testsCorrectos := testsCorrectos + 1;
+	escribir_cadena '¡Éxito!\n';
+si_no
+	escribir_cadena 'Error\n';
+fin_si
+tests := tests + 1;
+
+escribir_cadena '---------\n';
+
+escribir_cadena '2 - 3\n';
+dato1 := 2;
+dato2 := 3;
+escribir dato1 - dato2;
+escribir_cadena '\n';
+
+si ((dato1 - dato2) = -1) entonces
+	testsCorrectos := testsCorrectos + 1;
+	escribir_cadena '¡Éxito!\n';
+si_no
+	escribir_cadena 'Error\n';
+fin_si
+tests := tests + 1;
+
+escribir_cadena '---------\n';
+
+escribir_cadena '2 - -3\n';
+dato1 := 2;
+dato2 := -3;
+escribir dato1 - dato2;
+escribir_cadena '\n';
+
+si ((dato1 - dato2) = 5) entonces
+	testsCorrectos := testsCorrectos + 1;
+	escribir_cadena '¡Éxito!\n';
+si_no
+	escribir_cadena 'Error\n';
+fin_si
+tests := tests + 1;
+
+escribir_cadena '---------\n';
+
+escribir_cadena '2 * 3\n';
+dato1 := 2;
+dato2 := 3;
+escribir dato1 * dato2;
+escribir_cadena '\n';
+
+si ((dato1 * dato2) = 6) entonces
+	testsCorrectos := testsCorrectos + 1;
+	escribir_cadena '¡Éxito!\n';
+si_no
+	escribir_cadena 'Error\n';
+fin_si
+tests := tests + 1;
+
+escribir_cadena '---------\n';
+
+escribir_cadena '2 / 3\n';
+dato1 := 2;
+dato2 := 3;
+escribir dato1 / dato2;
+escribir_cadena '\n';
+
+si ((dato1 / dato2) = 0.6666666) entonces
+	testsCorrectos := testsCorrectos + 1;
+	escribir_cadena '¡Éxito!\n';
+si_no
+	escribir_cadena 'Error\n';
+fin_si
+tests := tests + 1;
+
+escribir_cadena '---------\n';
+
+escribir_cadena '2 ** 3\n';
+dato1 := 2;
+dato2 := 3;
+escribir dato1 ** dato2;
+escribir_cadena '\n';
+
+si ((dato1 ** dato2) = 8) entonces
+	testsCorrectos := testsCorrectos + 1;
+	escribir_cadena '¡Éxito!\n';
+si_no
+	escribir_cadena 'Error\n';
+fin_si
+tests := tests + 1;
+
+escribir_cadena '---------\n';
+
+escribir_cadena 'cadena || 3e-3 || verdadero\n';
+cadena := 'cadena' || 3e-3 || verdadero;
+escribir_cadena cadena;
+escribir_cadena '\n';
+
+si (cadena = 'cadena0.003verdadero') entonces
+	testsCorrectos := testsCorrectos + 1;
+	escribir_cadena '¡Éxito!\n';
+si_no
+	escribir_cadena 'Error\n';
+fin_si
+tests := tests + 1;
+
+escribir_cadena '---------\n';
+
+escribir_cadena '2 < 3 _y \'hola\' < \'buenos_dias\'';
+escribir_cadena '\n';
+
+si (2 < 3 _y 'hola' < 'buenos_dias') entonces
+	testsCorrectos := testsCorrectos + 1;
+	escribir_cadena '¡Éxito!\n';
+si_no
+	escribir_cadena 'Error\n';
+fin_si
+tests := tests + 1;
+
+escribir_cadena '---------\n';
+
+escribir_cadena '3 > 2 _y \'buenos_dias\' > \'hola\'';
+escribir_cadena '\n';
+
+si (3 > 2 _y 'buenos_dias' > 'hola') entonces
+	testsCorrectos := testsCorrectos + 1;
+	escribir_cadena '¡Éxito!\n';
+si_no
+	escribir_cadena 'Error\n';
+fin_si
+tests := tests + 1;
+
+escribir_cadena '---------\n';
+
+
+escribir_cadena '2 <= 2 _y \'hola\' <= \'buenos_dias\'';
+escribir_cadena '\n';
+
+si (2 < 3 _y 'hola' < 'buenos_dias') entonces
+	testsCorrectos := testsCorrectos + 1;
+	escribir_cadena '¡Éxito!\n';
+si_no
+	escribir_cadena 'Error\n';
+fin_si
+tests := tests + 1;
+
+escribir_cadena '---------\n';
+
+escribir_cadena '3 >= 3 _y \'buenos_dias\' >= \'hola\'';
+escribir_cadena '\n';
+
+si (3 >= 3 _y 'buenos_dias' >= 'hola') entonces
+	testsCorrectos := testsCorrectos + 1;
+	escribir_cadena '¡Éxito!\n';
+si_no
+	escribir_cadena 'Error\n';
+fin_si
+tests := tests + 1;
+
+escribir_cadena '---------\n';
+
+escribir_cadena '3 <> 2 _y \'buenos_dias\' <> \'hola\'';
+escribir_cadena '\n';
+
+si (3 <> 2 _y 'buenos_dias' <> 'hola') entonces
+	testsCorrectos := testsCorrectos + 1;
+	escribir_cadena '¡Éxito!\n';
+si_no
+	escribir_cadena 'Error\n';
+fin_si
+tests := tests + 1;
+
+escribir_cadena '---------\n';
+
+escribir_cadena 'Cambio dinámico de tipo\n';
+
+dato := 'cadena';
+escribir_cadena dato;
+escribir_cadena '\n';
+
+dato := 1;
+
+si (dato < 3) entonces
+	testsCorrectos := testsCorrectos + 1;
+	escribir_cadena '¡Éxito!\n';
+si_no
+	escribir_cadena 'Error\n';
+fin_si
+tests := tests + 1;
+
+escribir_cadena '---------\n';
+
+#
+comentario
+de
+varias
+lineas
+#
+
+@ Comentario de una linea
 
 escribir_cadena 'Se han pasado ';
 escribir testsCorrectos;

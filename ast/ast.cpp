@@ -7,6 +7,7 @@
 */
 
 #include <iostream>
+#include <sstream>
 #include <stdlib.h>
 #include <string>
 #include <list>
@@ -345,7 +346,13 @@ int lp::StringOperatorNode:: getType()
 {
 	int result = 0;
 		
-	if ( (this->_left->getType() == STRING) and (this->_right->getType() == STRING))
+	if ( ((this->_left->getType() == STRING) and (this->_right->getType() == STRING)) or 
+		 ((this->_left->getType() == NUMBER) and (this->_right->getType() == STRING)) or
+		 ((this->_left->getType() == STRING) and (this->_right->getType() == NUMBER)) or
+		 ((this->_left->getType() == NUMBER) and (this->_right->getType() == NUMBER)) or
+		 ((this->_left->getType() == BOOL) and (this->_right->getType() == STRING)) or
+		 ((this->_left->getType() == STRING) and (this->_right->getType() == BOOL)) or
+		 ((this->_left->getType() == BOOL) and (this->_right->getType() == BOOL)) )
 	{
 		// 
 		result = STRING;
@@ -673,7 +680,36 @@ std::string lp::ConcatenateNode::evaluateString()
 	// Ckeck the types of the expressions
 	if (this->getType() == STRING)
 	{
-		result = this->_left->evaluateString() + this->_right->evaluateString();
+		std::ostringstream aux;
+  		
+		if((this->_left->getType() == NUMBER) and (this->_right->getType() == STRING)){
+			aux << this->_left->evaluateNumber() << this->_right->evaluateString();
+			result = aux.str();
+		}
+		else if((this->_left->getType() == STRING) and (this->_right->getType() == NUMBER)){
+			aux << this->_left->evaluateString() << this->_right->evaluateNumber();
+			result = aux.str();
+		}
+		else if((this->_left->getType() == NUMBER) and (this->_right->getType() == NUMBER)){
+			aux << this->_left->evaluateNumber() << this->_right->evaluateNumber();
+			result = aux.str();
+		}
+		else if((this->_left->getType() == STRING) and (this->_right->getType() == BOOL)){
+			aux << this->_left->evaluateString() << this->_right->evaluateBool();
+			result = aux.str();
+		}
+		else if((this->_left->getType() == BOOL) and (this->_right->getType() == STRING)){
+			aux << this->_left->evaluateBool() << this->_right->evaluateString();
+			result = aux.str();
+		}
+		else if((this->_left->getType() == BOOL) and (this->_right->getType() == BOOL)){
+			aux << this->_left->evaluateBool() << this->_right->evaluateBool();
+			result = aux.str();
+		}
+		else if((this->_left->getType() == STRING) and (this->_right->getType() == STRING))
+			result = this->_left->evaluateString() + this->_right->evaluateString();
+		else
+			warning("Error en tiempo de ejecución: las expresiones no son alfanuméricas para ", "Concatenar");
 	}
 	else
 	{
@@ -2342,18 +2378,20 @@ void lp::ForStmt::evaluate()
 
 	table.installSymbol(v);
 
+	double i;
 	if(inc >= 0) {
-		for(double i = start; i <= end; i = i + inc) {
+		for(i = start; i <= end; i = i + inc) {
 			v->setValue(i);
 			this->_stmts->evaluate();
 		}
 	}
 	else {
-		for(double i = start; i >= end; i = i + inc) {
+		for(i = start; i >= end; i = i + inc) {
 			v->setValue(i);
 			this->_stmts->evaluate();
 		}
 	}
+	v->setValue(i);
 }
 
 
