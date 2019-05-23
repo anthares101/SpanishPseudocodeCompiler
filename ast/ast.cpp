@@ -7,6 +7,7 @@
 */
 
 #include <iostream>
+#include <sstream>
 #include <stdlib.h>
 #include <string>
 #include <list>
@@ -345,7 +346,9 @@ int lp::StringOperatorNode:: getType()
 {
 	int result = 0;
 		
-	if ( (this->_left->getType() == STRING) and (this->_right->getType() == STRING))
+	if ( ((this->_left->getType() == STRING) and (this->_right->getType() == STRING)) or 
+		 ((this->_left->getType() == NUMBER) and (this->_right->getType() == STRING)) or
+		 ((this->_left->getType() == STRING) and (this->_right->getType() == NUMBER)) )
 	{
 		// 
 		result = STRING;
@@ -673,11 +676,22 @@ std::string lp::ConcatenateNode::evaluateString()
 	// Ckeck the types of the expressions
 	if (this->getType() == STRING)
 	{
-		result = this->_left->evaluateString() + this->_right->evaluateString();
+		std::ostringstream aux;
+  		
+		if((this->_left->getType() == NUMBER) and (this->_right->getType() == STRING)){
+			aux << this->_left->evaluateNumber();
+			result = aux.str() + this->_right->evaluateString();
+		}
+		else if((this->_left->getType() == STRING) and (this->_right->getType() == NUMBER)){
+			aux << this->_right->evaluateNumber();
+			result = this->_left->evaluateString() + aux.str();
+		}
+		else
+			result = this->_left->evaluateString() + this->_right->evaluateString();
 	}
 	else
 	{
-		warning("Runtime error: the expressions are not aplhanumeric for ", "Concatenate");
+		warning("Error en tiempo de ejecución: las expresiones no son alfanuméricas para ", "Concatenar");
 	}
 
   return result;
