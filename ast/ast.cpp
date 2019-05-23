@@ -348,7 +348,11 @@ int lp::StringOperatorNode:: getType()
 		
 	if ( ((this->_left->getType() == STRING) and (this->_right->getType() == STRING)) or 
 		 ((this->_left->getType() == NUMBER) and (this->_right->getType() == STRING)) or
-		 ((this->_left->getType() == STRING) and (this->_right->getType() == NUMBER)) )
+		 ((this->_left->getType() == STRING) and (this->_right->getType() == NUMBER)) or
+		 ((this->_left->getType() == NUMBER) and (this->_right->getType() == NUMBER)) or
+		 ((this->_left->getType() == BOOL) and (this->_right->getType() == STRING)) or
+		 ((this->_left->getType() == STRING) and (this->_right->getType() == BOOL)) or
+		 ((this->_left->getType() == BOOL) and (this->_right->getType() == BOOL)) )
 	{
 		// 
 		result = STRING;
@@ -679,15 +683,33 @@ std::string lp::ConcatenateNode::evaluateString()
 		std::ostringstream aux;
   		
 		if((this->_left->getType() == NUMBER) and (this->_right->getType() == STRING)){
-			aux << this->_left->evaluateNumber();
-			result = aux.str() + this->_right->evaluateString();
+			aux << this->_left->evaluateNumber() << this->_right->evaluateString();
+			result = aux.str();
 		}
 		else if((this->_left->getType() == STRING) and (this->_right->getType() == NUMBER)){
-			aux << this->_right->evaluateNumber();
-			result = this->_left->evaluateString() + aux.str();
+			aux << this->_left->evaluateString() << this->_right->evaluateNumber();
+			result = aux.str();
 		}
-		else
+		else if((this->_left->getType() == NUMBER) and (this->_right->getType() == NUMBER)){
+			aux << this->_left->evaluateNumber() << this->_right->evaluateNumber();
+			result = aux.str();
+		}
+		else if((this->_left->getType() == STRING) and (this->_right->getType() == BOOL)){
+			aux << this->_left->evaluateString() << this->_right->evaluateBool();
+			result = aux.str();
+		}
+		else if((this->_left->getType() == BOOL) and (this->_right->getType() == STRING)){
+			aux << this->_left->evaluateBool() << this->_right->evaluateString();
+			result = aux.str();
+		}
+		else if((this->_left->getType() == BOOL) and (this->_right->getType() == BOOL)){
+			aux << this->_left->evaluateBool() << this->_right->evaluateBool();
+			result = aux.str();
+		}
+		else if((this->_left->getType() == STRING) and (this->_right->getType() == STRING))
 			result = this->_left->evaluateString() + this->_right->evaluateString();
+		else
+			warning("Error en tiempo de ejecución: las expresiones no son alfanuméricas para ", "Concatenar");
 	}
 	else
 	{
