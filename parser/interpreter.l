@@ -276,6 +276,8 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 
 "+:="	{ return PLUSASSIGNMENT; }
 
+"-:="	{ return MINUSASSIGNMENT; }
+
 
 	/* OPERADORES RELACIONALES */
 

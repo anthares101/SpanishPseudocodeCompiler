@@ -188,7 +188,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 //%token LETFCURLYBRACKET RIGHTCURLYBRACKET
 
 /* NEW in example 7 */
-%right ASSIGNMENT PLUSASSIGNMENT
+%right ASSIGNMENT PLUSASSIGNMENT MINUSASSIGNMENT
 
 /* NEW in example 14 */
 %token COMMA
@@ -458,6 +458,26 @@ asgn:   VARIABLE ASSIGNMENT exp
 		}
 	   /* NEW in example 11 */ 
 	| CONSTANT PLUSASSIGNMENT asgn 
+		{   
+ 			execerror("Error semántico en asignación múltiple: no se permite modificar una constante ",$1);
+		}
+
+	| VARIABLE MINUSASSIGNMENT exp
+		{
+			$$ = new lp::MinusAssignmentStmt($1, $3);
+		}
+
+	| VARIABLE MINUSASSIGNMENT asgn
+		{
+			$$ = new lp::MinusAssignmentStmt($1, (lp::AssignmentStmt *) $3);
+		}
+
+	| CONSTANT MINUSASSIGNMENT exp 
+		{   
+ 			execerror("Error semántico en asignación: no se permite modificar una constante ", $1);
+		}
+	   /* NEW in example 11 */ 
+	| CONSTANT MINUSASSIGNMENT asgn 
 		{   
  			execerror("Error semántico en asignación múltiple: no se permite modificar una constante ",$1);
 		}

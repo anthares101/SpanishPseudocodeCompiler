@@ -1510,7 +1510,7 @@ void lp::AssignmentStmt::evaluate()
 		}
 	}
 
-	else { //if this->plusAsgn is not NULL
+	else if(this->_plusAsgn != NULL) { //if this->plusAsgn is not NULL
 
 		// IMPORTANT
 		//  evaluate the assigment child
@@ -1525,6 +1525,41 @@ void lp::AssignmentStmt::evaluate()
 			{
 				/* Get the identifier of the previous asgn in the table of symbols as NumericVariable */
 				lp::NumericVariable *secondVar = (lp::NumericVariable *) table.getSymbol(this->_plusAsgn->getId());
+				// Check the type of the first variable
+				if (firstVar->getType() == NUMBER)
+				{
+					/* Get the identifier of the first variable in the table of symbols as NumericVariable */
+					lp::NumericVariable *firstVar = (lp::NumericVariable *) table.getSymbol(this->_id);
+				  	// Get the identifier o f the in the table of symbols as NumericVariable
+					//lp::NumericVariable *n = (lp::NumericVariable *) table.getSymbol(this->_id);
+
+					// Assignment the value of the second variable to the first variable
+					firstVar->setValue(secondVar->getValue());
+				}
+				else {
+					warning("Error en tiempo de ejecución: la variable no es numérica ", this->_id);
+				}
+			}
+			default:
+				warning("Error en tiempo de ejecución: tipo incompatible para ", "asignación");
+		}
+	}
+
+	else { //if this->minusAsgn is not NULL
+
+		// IMPORTANT
+		//  evaluate the assigment child
+		this->_minusAsgn->evaluate();
+
+
+		/* Get the identifier of the previous asgn in the table of symbols as Variable */
+		lp::Variable *secondVar = (lp::Variable *) table.getSymbol(this->_minusAsgn->getId());
+
+		switch(secondVar->getType()) {
+			case NUMBER:
+			{
+				/* Get the identifier of the previous asgn in the table of symbols as NumericVariable */
+				lp::NumericVariable *secondVar = (lp::NumericVariable *) table.getSymbol(this->_minusAsgn->getId());
 				// Check the type of the first variable
 				if (firstVar->getType() == NUMBER)
 				{
@@ -1650,7 +1685,7 @@ void lp::PlusAssignmentStmt::evaluate()
 				warning("Error en tiempo de ejecución: tipo incompatible para ", "asignación");
 		}
 	}
-	else { //this->_plusAsgn is not null
+	else if(this->_plusAsgn != NULL) { //this->_plusAsgn is not null
 
 		// IMPORTANT
 		//  evaluate the assigment child
@@ -1665,7 +1700,48 @@ void lp::PlusAssignmentStmt::evaluate()
 			case NUMBER:
 			{
 				/* Get the identifier of the previous asgn in the table of symbols as NumericVariable */
-				lp::NumericVariable *secondVar = (lp::NumericVariable *) table.getSymbol(this->_asgn->getId());
+				lp::NumericVariable *secondVar = (lp::NumericVariable *) table.getSymbol(this->_plusAsgn->_id);
+				// Check the type of the first variable
+				if (firstVar->getType() == NUMBER)
+				{
+				/* Get the identifier of the first variable in the table of symbols as NumericVariable */
+				lp::NumericVariable *firstVar = (lp::NumericVariable *) table.getSymbol(this->_id);
+				  	// Get the identifier o f the in the table of symbols as NumericVariable
+//					lp::NumericVariable *n = (lp::NumericVariable *) table.getSymbol(this->_id);
+
+					// Assignment the value of the second variable to the first variable
+					firstVar->setValue(firstVar->getValue() + secondVar->getValue());
+
+				}
+				// The type of variable is not NUMBER
+				else
+				{
+					warning("Error en tiempo de ejecución: la variable no es numérica ", this->_id);
+				}
+			}
+			break;
+
+			default:
+				warning("Error en tiempo de ejecución: tipo incompatible para ", "asignación");
+		}
+	}
+
+	else { //this->_minusAsgn is not null
+
+		// IMPORTANT
+		//  evaluate the assigment child
+		this->_minusAsgn->evaluate();
+
+		/* Get the identifier of the previous asgn in the table of symbols as Variable */
+		lp::Variable *secondVar = (lp::Variable *) table.getSymbol(this->_minusAsgn->getId());
+
+		// Get the type of the variable of the previous asgn
+		switch(secondVar->getType())
+		{
+			case NUMBER:
+			{
+				/* Get the identifier of the previous asgn in the table of symbols as NumericVariable */
+				lp::NumericVariable *secondVar = (lp::NumericVariable *) table.getSymbol(this->_minusAsgn->getId());
 				// Check the type of the first variable
 				if (firstVar->getType() == NUMBER)
 				{
@@ -1692,6 +1768,191 @@ void lp::PlusAssignmentStmt::evaluate()
 	}
 }
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+void lp::MinusAssignmentStmt::print() 
+{
+  std::cout << "minusAssignment_node: "  << std::endl;
+  std::cout << this->_id << " +:= ";
+  this->_exp->print();
+  std::cout << std::endl;
+}
+
+void lp::MinusAssignmentStmt::evaluate() 
+{
+	/* Get the identifier in the table of symbols as Variable */
+	/* 
+		a = 2;
+		a = b = 2;
+
+		a: firstVar
+		b: secondVar
+	*/
+	lp::Variable *firstVar = (lp::Variable *) table.getSymbol(this->_id);
+
+	// Check the expression
+	if (this->_exp != NULL)
+	{
+		// Check the type of the expression of the asgn
+		switch(this->_exp->getType())
+		{
+			case NUMBER:
+			{
+				double value;
+				// evaluate the expression as NUMBER
+			 	value = this->_exp->evaluateNumber();
+
+				// Check the type of the first varible
+				if (firstVar->getType() == NUMBER)
+				{
+				  	// Get the identifier in the table of symbols as NumericVariable
+					lp::NumericVariable *v = (lp::NumericVariable *) table.getSymbol(this->_id);
+
+					// Assignment the value to the identifier in the table of symbols
+					v->setValue(v->getValue() - value);
+				}
+				// The type of variable is not NUMBER
+				else
+				{
+					warning("Error en tiempo de ejecución: la variable no es numérica ", this->_id);
+				}
+			}
+			break;
+
+			default:
+				warning("Error en tiempo de ejecución: tipo incompatible para ", "asignación");
+		}
+
+	}
+
+	//////////////////////////////////////////////
+	// Allow multiple assigment -> a = b = c = 2;
+
+	else if(this->_asgn != NULL)// this->_asgn is not NULL
+	{
+		// IMPORTANT
+		//  evaluate the assigment child
+		this->_asgn->evaluate();
+
+
+		/* Get the identifier of the previous asgn in the table of symbols as Variable */
+		lp::Variable *secondVar = (lp::Variable *) table.getSymbol(this->_asgn->getId());
+
+		// Get the type of the variable of the previous asgn
+		switch(secondVar->getType())
+		{
+			case NUMBER:
+			{
+				/* Get the identifier of the previous asgn in the table of symbols as NumericVariable */
+				lp::NumericVariable *secondVar = (lp::NumericVariable *) table.getSymbol(this->_asgn->getId());
+				// Check the type of the first variable
+				if (firstVar->getType() == NUMBER)
+				{
+				/* Get the identifier of the first variable in the table of symbols as NumericVariable */
+				lp::NumericVariable *firstVar = (lp::NumericVariable *) table.getSymbol(this->_id);
+				  	// Get the identifier o f the in the table of symbols as NumericVariable
+//					lp::NumericVariable *n = (lp::NumericVariable *) table.getSymbol(this->_id);
+
+					// Assignment the value of the second variable to the first variable
+					firstVar->setValue(firstVar->getValue() - secondVar->getValue());
+
+				}
+				// The type of variable is not NUMBER
+				else
+				{
+					warning("Error en tiempo de ejecución: la variable no es numérica ", this->_id);
+				}
+			}
+			break;
+
+			default:
+				warning("Error en tiempo de ejecución: tipo incompatible para ", "asignación");
+		}
+	}
+	else if(this->_plusAsgn != NULL) { //this->_plusAsgn is not null
+
+		// IMPORTANT
+		//  evaluate the assigment child
+		this->_plusAsgn->evaluate();
+
+		/* Get the identifier of the previous asgn in the table of symbols as Variable */
+		lp::Variable *secondVar = (lp::Variable *) table.getSymbol(this->_plusAsgn->getId());
+
+		// Get the type of the variable of the previous asgn
+		switch(secondVar->getType())
+		{
+			case NUMBER:
+			{
+				/* Get the identifier of the previous asgn in the table of symbols as NumericVariable */
+				lp::NumericVariable *secondVar = (lp::NumericVariable *) table.getSymbol(this->_plusAsgn->getId());
+				// Check the type of the first variable
+				if (firstVar->getType() == NUMBER)
+				{
+				/* Get the identifier of the first variable in the table of symbols as NumericVariable */
+				lp::NumericVariable *firstVar = (lp::NumericVariable *) table.getSymbol(this->_id);
+				  	// Get the identifier o f the in the table of symbols as NumericVariable
+//					lp::NumericVariable *n = (lp::NumericVariable *) table.getSymbol(this->_id);
+
+					// Assignment the value of the second variable to the first variable
+					firstVar->setValue(firstVar->getValue() - secondVar->getValue());
+
+				}
+				// The type of variable is not NUMBER
+				else
+				{
+					warning("Error en tiempo de ejecución: la variable no es numérica ", this->_id);
+				}
+			}
+			break;
+
+			default:
+				warning("Error en tiempo de ejecución: tipo incompatible para ", "asignación");
+		}
+	}
+
+	else { //this->_minusAsgn is not null
+
+		// IMPORTANT
+		//  evaluate the assigment child
+		this->_minusAsgn->evaluate();
+
+		/* Get the identifier of the previous asgn in the table of symbols as Variable */
+		lp::Variable *secondVar = (lp::Variable *) table.getSymbol(this->_minusAsgn->_id);
+
+		// Get the type of the variable of the previous asgn
+		switch(secondVar->getType())
+		{
+			case NUMBER:
+			{
+				/* Get the identifier of the previous asgn in the table of symbols as NumericVariable */
+				lp::NumericVariable *secondVar = (lp::NumericVariable *) table.getSymbol(this->_minusAsgn->_id);
+				// Check the type of the first variable
+				if (firstVar->getType() == NUMBER)
+				{
+				/* Get the identifier of the first variable in the table of symbols as NumericVariable */
+				lp::NumericVariable *firstVar = (lp::NumericVariable *) table.getSymbol(this->_id);
+				  	// Get the identifier o f the in the table of symbols as NumericVariable
+//					lp::NumericVariable *n = (lp::NumericVariable *) table.getSymbol(this->_id);
+
+					// Assignment the value of the second variable to the first variable
+					firstVar->setValue(firstVar->getValue() - secondVar->getValue());
+
+				}
+				// The type of variable is not NUMBER
+				else
+				{
+					warning("Error en tiempo de ejecución: la variable no es numérica ", this->_id);
+				}
+			}
+			break;
+
+			default:
+				warning("Error en tiempo de ejecución: tipo incompatible para ", "asignación");
+		}
+	}
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
