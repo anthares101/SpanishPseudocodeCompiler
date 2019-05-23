@@ -274,6 +274,8 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 
 ":=" 	{ return ASSIGNMENT; }		/* NEW in example 7 */
 
+"+:="	{ return PLUSASSIGNMENT; }
+
 
 	/* OPERADORES RELACIONALES */
 

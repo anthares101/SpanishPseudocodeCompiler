@@ -86,7 +86,7 @@ double lp::VariableNode::evaluateNumber()
 	}
 	else
 	{
-		warning("Runtime error in evaluateNumber(): the variable is not numeric", 
+		warning("Error en tiempo de ejecución en evaluateNumber(): la variable no es numérica", 
 				   this->_id);
 	}
 
@@ -109,7 +109,7 @@ bool lp::VariableNode::evaluateBool()
 	}
 	else
 	{
-		warning("Runtime error in evaluateBool(): the variable is not boolean",
+		warning("Error en tiempo de ejecución en evaluateBool(): la variable no es booleana",
 				   this->_id);
 	}
 
@@ -132,7 +132,7 @@ std::string lp::VariableNode::evaluateString()
 	}
 	else
 	{
-		warning("Runtime error in evaluateNumber(): the variable is not string", 
+		warning("Error en tiempo de ejecución evaluateNumber(): la variable no es cadena", 
 				   this->_id);
 	}
 
@@ -174,7 +174,7 @@ double lp::ConstantNode::evaluateNumber()
 	}
 	else
 	{
-		warning("Runtime error in evaluateNumber(): the constant is not numeric", 
+		warning("Error en tiempo de ejecución en evaluateNumber(): la constante no es numérica", 
 				   this->_id);
 	}
 
@@ -196,7 +196,7 @@ bool lp::ConstantNode::evaluateBool()
 	}
 	else
 	{
-		warning("Runtime error in evaluateBool(): the constant is not boolean",
+		warning("Error en tiempo de ejecución en evaluateBool(): la constante no es booleana",
 				   this->_id);
 	}
 
@@ -259,7 +259,7 @@ int lp::NumericUnaryOperatorNode::getType()
 	}
 	else
 	{
-		warning("Runtime error: incompatible types for", "Numeric Unary Operator");
+		warning("Error en tiempo de ejecución: tipos incompatibles para ", "Operador Numérico Unario");
 	}
 
 	return result;
@@ -278,7 +278,7 @@ int lp::LogicalUnaryOperatorNode::getType()
 	}
 	else
 	{
-		warning("Runtime error: incompatible types for", "Logical Unary Operator");
+		warning("Error en tiempo de ejecución: tipos incompatibles para ", "Operador Lógico Unario");
 	}
 	
 	return result;
@@ -295,7 +295,7 @@ int lp::NumericOperatorNode::getType()
 	if ( (this->_left->getType() == NUMBER) and (this->_right->getType() == NUMBER))
 		result = NUMBER;
 	else
-		warning("Runtime error: incompatible types for", "Numeric Operator");
+		warning("Error en tiempo de ejecución: tipos incompatibles para ", "Operador Numérico");
 
 	return	result;
 }
@@ -313,7 +313,7 @@ int lp::RelationalOperatorNode::getType()
 		 ((this->_left->getType() == BOOL) and (this->_right->getType() == BOOL)) )
 		result = BOOL;
 	else
-		warning("Runtime error: incompatible types for", "Relational Operator");
+		warning("Error en tiempo de ejecución: tipos incompatibles para ", "Operador Relacional");
 
 	return	result;
 }
@@ -332,7 +332,7 @@ int lp::LogicalOperatorNode:: getType()
 		result = BOOL;
 	}
 	else
-		warning("Runtime error: incompatible types for", "Logical Operator");
+		warning("Error en tiempo de ejecución: tipos incompatibles para ", "Operador Lógico");
 
 	return	result;
 }
@@ -351,7 +351,7 @@ int lp::StringOperatorNode:: getType()
 		result = STRING;
 	}
 	else
-		warning("Runtime error: incompatible types for", "String Operator");
+		warning("Error en tiempo de ejecución: tipos incompatibles para ", "Operador de Cadenas");
 
 	return	result;
 }
@@ -380,7 +380,7 @@ double lp::UnaryMinusNode::evaluateNumber()
 	}
 	else
 	{
-		warning("Runtime error: the expressions are not numeric for ", "UnaryMinus");
+		warning("Error en tiempo de ejecución: las expresiones no son numéricas para ", "Menos Unario");
 	}
 
   return result;
@@ -408,7 +408,7 @@ double lp::UnaryPlusNode::evaluateNumber()
 	}
 	else
 	{
-		warning("Runtime error: the expressions are not numeric for ","UnaryPlus");
+		warning("Error en tiempo de ejecución: las expresiones no son numéricas para ","Más Unario");
 	}
 
   return result;
@@ -437,7 +437,7 @@ double lp::PlusNode::evaluateNumber()
 	}
 	else
 	{
-		warning("Runtime error: the expressions are not numeric for ", "Plus");
+		warning("Error en tiempo de ejecución: las expresiones no son numéricas para ", "Más");
 	}
 
   return result;
@@ -466,7 +466,7 @@ double lp::MinusNode::evaluateNumber()
 	}
 	else
 	{
-		warning("Runtime error: the expressions are not numeric for ", "Minus");
+		warning("Error en tiempo de ejecución: las expresiones no son numéricas para ", "Menos");
 	}
 
   return result;
@@ -495,7 +495,7 @@ double lp::MultiplicationNode::evaluateNumber()
 	}
 	else
 	{
-		warning("Runtime error: the expressions are not numeric for ","Multiplication");
+		warning("Error en tiempo de ejecución: las expresiones no son numéricas para ","Multiplicación");
 	}
 
   return result;
@@ -533,12 +533,12 @@ double lp::DivisionNode::evaluateNumber()
 		}
 		else
 		{
-			warning("Runtime error", "Division by zero");
+			warning("Error en tiempo de ejecución", "División por cero");
 		}
 	}
 	else
 	{
-		warning("Runtime error: the expressions are not numeric for", "Division");
+		warning("Error en tiempo de ejecución: las expresiones no son numéricas para ", "División");
 	}
 
   return result;
@@ -576,12 +576,12 @@ double lp::IntegerDivisionNode::evaluateNumber()
 		}
 		else
 		{
-			warning("Runtime error", "Division by zero");
+			warning("Error en tiempo de ejecución", "División por cero");
 		}
 	}
 	else
 	{
-		warning("Runtime error: the expressions are not numeric for", "IntegerDivision");
+		warning("Error en tiempo de ejecución: las expresiones no son numéricas para ", "División Entera");
 	}
 
   return result;
@@ -615,11 +615,11 @@ double lp::ModuloNode::evaluateNumber()
     	if(std::abs(rightNumber) > ERROR_BOUND)
 				result = (int) leftNumber % (int) rightNumber;
 		else
-			warning("Runtime error", "Division by zero");
+			warning("Error en tiempo de ejecución", "División por cero");
 	}
 	else
 	{
-		warning("Runtime error: the expressions are not numeric for", "Modulo");
+		warning("Error en tiempo de ejecución: las expresiones no son numéricas para ", "Módulo");
 	}
 
   return result;
@@ -649,7 +649,7 @@ double lp::PowerNode::evaluateNumber()
 	}
 	else
 	{
-		warning("Runtime error: the expressions are not numeric for", "Power");
+		warning("Error en tiempo de ejecución: las expresiones no son numéricas para ", "Potencia");
 	}
 
   return result;
@@ -677,7 +677,7 @@ std::string lp::ConcatenateNode::evaluateString()
 	}
 	else
 	{
-		warning("Runtime error: the expressions are not aplhanumeric for ", "Concatenate");
+		warning("Error en tiempo de ejecución: las expresiones no son alfanuméricas para ", "Concatenar");
 	}
 
   return result;
@@ -718,7 +718,7 @@ int lp::BuiltinFunctionNode_1::getType()
 	if (this->_exp->getType() == NUMBER)
 		result = NUMBER;
 	else
-		warning("Runtime error: incompatible type for", "BuiltinFunctionNode_1");
+		warning("Error en tiempo de ejecución: tipo incompatible para ", "BuiltinFunctionNode_1");
 
 	return	result;
 }
@@ -747,7 +747,7 @@ double lp::BuiltinFunctionNode_1::evaluateNumber()
 	}
 	else
 	{
-		warning("Runtime error: incompatible type of parameter for ", this->_id);
+		warning("Error en tiempo de ejecución: tipo de parámetro incompatible para ", this->_id);
 	}
 
 	return result;
@@ -764,7 +764,7 @@ int lp::BuiltinFunctionNode_2::getType()
 	if (this->_exp1->getType() == this->_exp2->getType())
 		result = this->_exp1->getType();
 	else
-		warning("Runtime error: incompatible types for", "BuiltinFunctionNode_2");
+		warning("Error en tiempo de ejecución: tipos incompatibles para ", "BuiltinFunctionNode_2");
 
 	return	result;
 }
@@ -796,7 +796,7 @@ double lp::BuiltinFunctionNode_2::evaluateNumber()
 	}
 	else
 	{
-		warning("Runtime error: incompatible types of parameters for ", this->_id);
+		warning("Error en tiempo de ejecución: tipos de parámetros incompatibles para ", this->_id);
 	}
 
   return result;
@@ -853,12 +853,12 @@ bool lp::GreaterThanNode::evaluateBool()
 				break;
 			}
 			default:
-				warning("Runtime error: incompatible types of parameters for ", "operator Greater than");
+				warning("Error en tiempo de ejecución: tipos de parámetros incompatibles para ", "operador Mayor que");
 		}
 	}
 	else
 	{
-		warning("Runtime error: incompatible types of parameters for ", "operator Greater than");
+		warning("Error en tiempo de ejecución: tipos de parámetros incompatibles para ", "operador Mayor que");
 	}
 
 	return result;
@@ -1399,7 +1399,7 @@ void lp::AssignmentStmt::evaluate()
 	//////////////////////////////////////////////
 	// Allow multiple assigment -> a = b = c = 2;
 
-	else // this->_asgn is not NULL
+	else if(this->_asgn != NULL)// this->_asgn is not NULL
 	{
 		// IMPORTANT
 		//  evaluate the assigment child
@@ -1501,6 +1501,187 @@ void lp::AssignmentStmt::evaluate()
 					lp::LogicalVariable *firstVar = new lp::LogicalVariable(this->_id,
 											VARIABLE,BOOL,secondVar->getValue());
 					table.installSymbol(firstVar);
+				}
+			}
+			break;
+
+			default:
+				warning("Error en tiempo de ejecución: tipo incompatible para ", "asignación");
+		}
+	}
+
+	else { //if this->plusAsgn is not NULL
+
+		// IMPORTANT
+		//  evaluate the assigment child
+		this->_plusAsgn->evaluate();
+
+
+		/* Get the identifier of the previous asgn in the table of symbols as Variable */
+		lp::Variable *secondVar = (lp::Variable *) table.getSymbol(this->_plusAsgn->getId());
+
+		switch(secondVar->getType()) {
+			case NUMBER:
+			{
+				/* Get the identifier of the previous asgn in the table of symbols as NumericVariable */
+				lp::NumericVariable *secondVar = (lp::NumericVariable *) table.getSymbol(this->_plusAsgn->getId());
+				// Check the type of the first variable
+				if (firstVar->getType() == NUMBER)
+				{
+					/* Get the identifier of the first variable in the table of symbols as NumericVariable */
+					lp::NumericVariable *firstVar = (lp::NumericVariable *) table.getSymbol(this->_id);
+				  	// Get the identifier o f the in the table of symbols as NumericVariable
+					//lp::NumericVariable *n = (lp::NumericVariable *) table.getSymbol(this->_id);
+
+					// Assignment the value of the second variable to the first variable
+					firstVar->setValue(secondVar->getValue());
+				}
+				else {
+					warning("Error en tiempo de ejecución: la variable no es numérica ", this->_id);
+				}
+			}
+			default:
+				warning("Error en tiempo de ejecución: tipo incompatible para ", "asignación");
+		}
+	}
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+void lp::PlusAssignmentStmt::print() 
+{
+  std::cout << "plusAssignment_node: "  << std::endl;
+  std::cout << this->_id << " +:= ";
+  this->_exp->print();
+  std::cout << std::endl;
+}
+
+void lp::PlusAssignmentStmt::evaluate() 
+{
+	/* Get the identifier in the table of symbols as Variable */
+	/* 
+		a = 2;
+		a = b = 2;
+
+		a: firstVar
+		b: secondVar
+	*/
+	lp::Variable *firstVar = (lp::Variable *) table.getSymbol(this->_id);
+
+	// Check the expression
+	if (this->_exp != NULL)
+	{
+		// Check the type of the expression of the asgn
+		switch(this->_exp->getType())
+		{
+			case NUMBER:
+			{
+				double value;
+				// evaluate the expression as NUMBER
+			 	value = this->_exp->evaluateNumber();
+
+				// Check the type of the first varible
+				if (firstVar->getType() == NUMBER)
+				{
+				  	// Get the identifier in the table of symbols as NumericVariable
+					lp::NumericVariable *v = (lp::NumericVariable *) table.getSymbol(this->_id);
+
+					// Assignment the value to the identifier in the table of symbols
+					v->setValue(v->getValue() + value);
+				}
+				// The type of variable is not NUMBER
+				else
+				{
+					warning("Error en tiempo de ejecución: la variable no es numérica ", this->_id);
+				}
+			}
+			break;
+
+			default:
+				warning("Error en tiempo de ejecución: tipo incompatible para ", "asignación");
+		}
+
+	}
+
+	//////////////////////////////////////////////
+	// Allow multiple assigment -> a = b = c = 2;
+
+	else if(this->_asgn != NULL)// this->_asgn is not NULL
+	{
+		// IMPORTANT
+		//  evaluate the assigment child
+		this->_asgn->evaluate();
+
+
+		/* Get the identifier of the previous asgn in the table of symbols as Variable */
+		lp::Variable *secondVar = (lp::Variable *) table.getSymbol(this->_id);
+
+		// Get the type of the variable of the previous asgn
+		switch(secondVar->getType())
+		{
+			case NUMBER:
+			{
+				/* Get the identifier of the previous asgn in the table of symbols as NumericVariable */
+				lp::NumericVariable *secondVar = (lp::NumericVariable *) table.getSymbol(this->_asgn->getId());
+				// Check the type of the first variable
+				if (firstVar->getType() == NUMBER)
+				{
+				/* Get the identifier of the first variable in the table of symbols as NumericVariable */
+				lp::NumericVariable *firstVar = (lp::NumericVariable *) table.getSymbol(this->_id);
+				  	// Get the identifier o f the in the table of symbols as NumericVariable
+//					lp::NumericVariable *n = (lp::NumericVariable *) table.getSymbol(this->_id);
+
+					// Assignment the value of the second variable to the first variable
+					firstVar->setValue(firstVar->getValue() + secondVar->getValue());
+
+				}
+				// The type of variable is not NUMBER
+				else
+				{
+					warning("Error en tiempo de ejecución: la variable no es numérica ", this->_id);
+				}
+			}
+			break;
+
+			default:
+				warning("Error en tiempo de ejecución: tipo incompatible para ", "asignación");
+		}
+	}
+	else { //this->_plusAsgn is not null
+
+		// IMPORTANT
+		//  evaluate the assigment child
+		this->_plusAsgn->evaluate();
+
+		/* Get the identifier of the previous asgn in the table of symbols as Variable */
+		lp::Variable *secondVar = (lp::Variable *) table.getSymbol(this->_plusAsgn->_id);
+
+		// Get the type of the variable of the previous asgn
+		switch(secondVar->getType())
+		{
+			case NUMBER:
+			{
+				/* Get the identifier of the previous asgn in the table of symbols as NumericVariable */
+				lp::NumericVariable *secondVar = (lp::NumericVariable *) table.getSymbol(this->_asgn->getId());
+				// Check the type of the first variable
+				if (firstVar->getType() == NUMBER)
+				{
+				/* Get the identifier of the first variable in the table of symbols as NumericVariable */
+				lp::NumericVariable *firstVar = (lp::NumericVariable *) table.getSymbol(this->_id);
+				  	// Get the identifier o f the in the table of symbols as NumericVariable
+//					lp::NumericVariable *n = (lp::NumericVariable *) table.getSymbol(this->_id);
+
+					// Assignment the value of the second variable to the first variable
+					firstVar->setValue(firstVar->getValue() + secondVar->getValue());
+
+				}
+				// The type of variable is not NUMBER
+				else
+				{
+					warning("Error en tiempo de ejecución: la variable no es numérica ", this->_id);
 				}
 			}
 			break;
@@ -1743,13 +1924,14 @@ void lp::IfStmt::print()
 void lp::IfStmt::evaluate() 
 {
    // If the condition is true,
-	if (this->_cond->evaluateBool() == true )
+	if (this->_cond->evaluateBool() == true ) {
      // the consequent is run 
 	  this->_consequent->evaluate();
-
+	}
     // Otherwise, the alternative is run if exists
-	else if (this->_alternative != NULL)
-		  this->_alternative->evaluate();
+	else if (this->_alternative != NULL) {
+		this->_alternative->evaluate();
+	}
 }
 
 
