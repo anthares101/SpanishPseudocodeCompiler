@@ -133,6 +133,13 @@ int main(int argc, char *argv[])
 else
  {
 	interactiveMode = true;
+	std::cout << CLEAR_SCREEN;
+	PLACE(2, 2);
+	std::cout << std::endl << BIPURPLE <<
+	"Bienvenido al modo interactivo de IPE (Intérprete de Pseudocódigo Español)" << std::endl <<
+	"--------------------------------------------------------------------------"
+	<< RESET << std::endl;
+	std::cout << std::endl << BIYELLOW << ">> " << RESET;
  }
 
  // Copy the name of the interpreter 

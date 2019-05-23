@@ -98,6 +98,7 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 \n      { 
 			/* Line counter */
            	lineNumber++; 
+           	std::cout << BIYELLOW << ">> " << RESET;
 	
 			/* MODIFIED in example 3 */
 			/* COMMENTED in example 5 */

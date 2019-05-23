@@ -268,7 +268,10 @@ stmtlist:  /* empty: epsilon rule */
 			// Control the interative mode of execution of the interpreter
 			if (interactiveMode == true)
 				if(stackedStmts.empty()) {
+
  			  		$2->evaluate();
+ 			  		std::cout << std::endl;
+
 				}
            }
 
