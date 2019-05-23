@@ -1935,18 +1935,20 @@ void lp::ForStmt::evaluate()
 
 	table.installSymbol(v);
 
+	double i;
 	if(inc >= 0) {
-		for(double i = start; i <= end; i = i + inc) {
+		for(i = start; i <= end; i = i + inc) {
 			v->setValue(i);
 			this->_stmts->evaluate();
 		}
 	}
 	else {
-		for(double i = start; i >= end; i = i + inc) {
+		for(i = start; i >= end; i = i + inc) {
 			v->setValue(i);
 			this->_stmts->evaluate();
 		}
 	}
+	v->setValue(i);
 }
 
 
