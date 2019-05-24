@@ -98,7 +98,10 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 \n      { 
 			/* Line counter */
            	lineNumber++; 
-           	std::cout << BIYELLOW << ">> " << RESET;
+
+           	if(yyin == stdin) {
+           		std::cout << BIYELLOW << ">> " << RESET;
+           	}
 	
 			/* MODIFIED in example 3 */
 			/* COMMENTED in example 5 */
@@ -173,7 +176,8 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 								if(identifier == "si" ||
 								   identifier == "mientras" ||
 								   identifier == "repetir" ||
-								   identifier == "para") {
+								   identifier == "para" ||
+								   identifier == "segun") {
 
 									stackedStmts.push(1);
 
@@ -185,7 +189,8 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 								if((identifier == "fin_si" ||
 									identifier == "fin_mientras" ||
 									(repeatState && identifier == "hasta") ||
-									identifier == "fin_para") && 
+									identifier == "fin_para" ||
+									identifier == "fin_segun") && 
 									!stackedStmts.empty()) {
 
 									stackedStmts.pop();
@@ -255,6 +260,11 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 "("     { return LPAREN; } 			/* NEW in example 3 */
 
 ")"	    { return RPAREN; } 			/* NEW in example 3 */
+
+
+	/* DOS PUNTOS */
+
+":"		{ return COLON; }
 
 
 	/* OPERADORES ARITMÉTICOS */
@@ -387,7 +397,7 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 									yymore();  
 								}
 
-<ERROR>[^0-9+\-*/()\^% \t\n\;a-zA-Z=<>!&@#|]	{ /* MODIFIED in examples 5, 7, 15 */
+<ERROR>[^0-9+\-*/()\^% \t\n\;a-zA-Z=<>!&@#|:]	{ /* MODIFIED in examples 5, 7, 15 */
 								  /* NEW in example 3 */
 								  /* 
 									The current value of yytext 

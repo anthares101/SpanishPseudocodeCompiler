@@ -7,6 +7,7 @@
 %{
 #include <iostream>
 #include <string>
+#include <vector>
 
 /*******************************************/
 /* NEW in example 5 */
@@ -91,6 +92,7 @@ extern int lineNumber; //!< External line counter
 /* NEW in example 15 */
 extern bool interactiveMode; //!< Control the interactive mode of execution of the interpreter
 
+std::vector <int> nDefaults; //!< Controls the number of default cases in switch-cases
 
 /***********************************************************/
 /* NEW in example 2 */
@@ -137,6 +139,8 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
   std::list<lp::ExpNode *>  *parameters;    // New in example 16; NOTE: #include<list> must be in interpreter.l, init.cpp, interpreter.cpp
   lp::StatementList *stmts; /* NEW in example 16 */
   lp::Statement *st;				 /* NEW in example 16 */
+  lp::IntCase * caseElement;
+  lp::IntCaseList * caseList;
   lp::AST *prog;					 /* NEW in example 16 */
 }
 
@@ -144,12 +148,16 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 // New in example 17: cond
 %type <expNode> exp cond 
 
+%type <caseElement> caseElmnt
+
+%type <caseList> caseLst
+
 /* New in example 14 */
 %type <parameters> listOfExp  restOfListOfExp
 
 %type <stmts> stmtlist
 
-%type <st> stmt asgn print read if while repeatUntil for erase position
+%type <st> stmt asgn print read if while repeatUntil for erase position switch
 
 %type <prog> program
 
@@ -159,7 +167,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 
 /*******************************************/
 /* NEW in example 5 */
-%token SEMICOLON
+%token SEMICOLON COLON
 /*******************************************/
 
 // Tokens for print sentence
@@ -180,6 +188,9 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 
 // Tokens for for loop
 %token FOR START INC ENDFOR
+
+// Tokens for switch-case
+%token SWITCH CASE BREAK DEFAULT ENDSWITCH
 
 // Tokens for macros
 %token ERASE POSITION
@@ -285,7 +296,58 @@ stmtlist:  /* empty: epsilon rule */
 			yyclearin; 
            } 
 ;
- 
+
+
+caseElmnt: CASE NUMBER COLON stmtlist BREAK SEMICOLON
+		   {
+		   	$$ = new lp::IntCase($4, new int((int) $2), true, false);
+		   }
+					   /*| CASE NUMBER COLON stmtlist  					2 CONFLICTOS DESPLAZAMIENTO/REDUCCION
+					   {
+					   	$$ = new lp::IntCase($4, (int*)(&$2), false);
+					   }*/
+		   | DEFAULT COLON stmtlist BREAK SEMICOLON
+		   {
+		   	$$ = new lp::IntCase($3, NULL, true, true);
+		   }
+					    /*| DEFAULT COLON stmtlist
+					   {
+					   	$$ = new lp::IntCase($3, NULL, true);
+					   }*/
+;
+
+caseLst:  /* empty: epsilon rule */
+		  { 
+			// create a empty list of statements
+			$$ = new lp::IntCaseList(); 
+			nDefaults.push_back(0);
+
+		  }  
+
+        | caseLst caseElmnt 
+		  { 
+			// copy up the list and add the stmt to it
+			$$ = $1;
+			$$->addCase($2);
+
+			if($2->isDefaultCase()) {
+				nDefaults.at(stackedStmts.size() - 1)++;
+			}
+
+			if(nDefaults.back() > 1) {
+				warning("Error en tiempo de compilación: hay más de un caso por defecto, el comportamiento del programa puede ser indefinido ", "segun");
+			}
+		  }
+
+        | caseLst error 
+           { 
+			// just copy up the stmtlist when an error occurs
+			$$ = $1;
+
+			// The previous look-ahead token ought to be discarded with `yyclearin;'
+			yyclearin; 
+           } 
+;
 
 stmt: SEMICOLON  /* Empty statement: ";" */
 	  {
@@ -325,6 +387,11 @@ stmt: SEMICOLON  /* Empty statement: ";" */
 		// $$ = $1;
 	 }
 	| for 
+	 {
+		// Default action
+		// $$ = $1;
+	 }
+	| switch 
 	 {
 		// Default action
 		// $$ = $1;
@@ -412,6 +479,14 @@ for: FOR VARIABLE START exp UNTIL exp INC exp DO stmtlist ENDFOR
 			/*
 				Resto de reglas de exp
 			*/
+;
+
+
+switch: SWITCH LPAREN exp RPAREN caseLst ENDSWITCH
+		{
+			$$ = new lp::SwitchStmt($3, $5);
+			nDefaults.pop_back();
+		}
 ;
 
 	/*  NEW in example 17 */

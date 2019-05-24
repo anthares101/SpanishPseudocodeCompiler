@@ -1567,7 +1567,7 @@ class Statement {
   \warning Abstract class
 */
 
-class StatementList : public Statement {
+class StatementList {
 
 private:
 	//! List with all the statements
@@ -1602,6 +1602,125 @@ void print();
 	\sa		 print
 */
 void evaluate();
+};
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/*!	
+  \class   IntCase
+  \brief   Definition of atributes and methods of IntCase class
+*/
+class IntCase : public Statement {
+
+private:
+	int * _value; //!< Case value
+	StatementList * _stmts; //!< Statements of the body of the case
+	bool _breakOpt; //!< Wether the case has a break option or not
+	bool _def; //!< Wether it is the default case or not
+
+public:
+
+	/*!		
+	\brief Constructor of IntCase 
+	\param value: int *, value of the IntCase
+	\param stmts: body of the IntCase
+	\param breakOpt: Wether the case has a break option or not
+	\post  A new IntCase is created with the parameters
+*/
+	IntCase(StatementList * stmts, int * value = NULL, bool breakOpt = false, bool def = NULL) {
+		this->_value = value;
+		this->_stmts = stmts;
+		this->_breakOpt = breakOpt;
+		this->_def = def;
+	}
+
+	/*!	
+		\brief   Gets the value of the IntCase
+		\return  int
+		\note 	 inline function
+	*/
+	inline int getValue() const {
+		return *this->_value;
+	}
+
+	/*!	
+		\brief   Gets the break option of the IntCase
+		\return  bool
+		\note 	 inline function
+	*/
+	inline bool getBreakOpt() const {
+		return this->_breakOpt;
+	}
+
+	/*!	
+		\brief   Tells if it is de default case or not
+		\return  bool
+		\note 	 inline function
+	*/
+	inline bool isDefaultCase() const {
+		return this->_def;
+	}
+
+	/*!	
+		\brief   Print the IntCase
+		\return  void
+		\sa		 evaluate
+	*/
+
+	void print();
+
+	/*!	
+		\brief   Evaluate the IntCase
+		\return  void
+		\sa		 print
+	*/
+	void evaluate();
+
+};
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+class IntCaseList {
+
+private:
+	std::list<lp::IntCase *> _caseList;
+
+public:
+
+	/*!
+		\brief Class constructor
+	*/
+	IntCaseList() {
+		//Empty 
+	}
+
+	/*!
+		\brief Adds a case to the list
+		\return void
+	*/
+	void addCase(lp::IntCase * caseElement);
+
+	/*!	
+		\brief   Print the IntCaseList
+		\return  void
+		\sa		 evaluate
+	*/
+
+	void print();
+
+	/*!	
+		\brief   Evaluate the IntCaseList
+		\param 	 var: int, value of the variable to be evaluated
+		\return  void
+		\sa		 print
+	*/
+	void evaluate(int var);
 };
 
 
@@ -2176,7 +2295,7 @@ class EmptyStmt : public Statement
   \note    IfStmt Class publicly inherits from Statement class 
 		   and adds its own print and evaluate functions
 */
-class IfStmt : public StatementList 
+class IfStmt : public Statement 
 {
  private:
   ExpNode *_cond; //!< Condicion of the if statement
@@ -2242,7 +2361,7 @@ class IfStmt : public StatementList
   \note    WhileStmt Class publicly inherits from Statement class 
 		   and adds its own print and evaluate functions
 */
-class WhileStmt : public StatementList 
+class WhileStmt : public Statement 
 {
  private:
   ExpNode *_cond; //!< Condicion of the while statement
@@ -2288,7 +2407,7 @@ class WhileStmt : public StatementList
 		   and adds its own print and evaluate functions
 */
 
-class RepeatUntilStmt : public StatementList {
+class RepeatUntilStmt : public Statement {
 
 private:
 	ExpNode * _cond; //!< Condicion of the do-until statement
@@ -2332,7 +2451,7 @@ public:
 		   and adds its own print and evaluate functions
 */
 
-class ForStmt : public StatementList {
+class ForStmt : public Statement {
 
 private:
 	std::string _var; //!< Variable for the for loop
@@ -2394,6 +2513,54 @@ public:
   void evaluate();
 
 };
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/*!	
+  \class   SwitchStmt
+  \brief   Definition of atributes and methods of SwitchStmt class
+  \note    SwitchStmt Class publicly inherits from IntCaseList class 
+		   and adds its own print and evaluate functions
+*/
+
+class SwitchStmt : public Statement {
+
+private:
+	ExpNode * _exp; //! Expression to be evaluated
+	lp::IntCaseList * _caseList; //! List of cases for the switch statement
+
+public:
+
+	/**
+	\brief Constructor of the SwitchStmt class
+	\param exp: Expression to be evaluated
+	\param caseList: List of cases for the switch statement
+	\post A new SwitchStmt is created with the parameters 
+	*/
+	SwitchStmt(ExpNode * exp, lp::IntCaseList * caseList) {
+		this->_exp = exp;
+		this->_caseList = caseList;
+	}
+
+
+	/*!
+		\brief   Print the SwitchStmt
+		\return  void
+		\sa		 evaluate
+	*/
+	  void print();
+
+	/*!	
+		\brief   Evaluate the SwitchStmt
+		\return  void
+		\sa		 print
+	*/
+	  void evaluate();
+};
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////

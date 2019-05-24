@@ -2015,9 +2015,9 @@ void lp::PrintStmt::evaluate()
 				break;
 		case BOOL:
 			if (this->_exp->evaluateBool())
-				std::cout << "true";
+				std::cout << "verdadero";
 			else
-				std::cout << "false";
+				std::cout << "falso";
 		
 			break;
 
@@ -2399,6 +2399,39 @@ void lp::ForStmt::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 
+void lp::SwitchStmt::print() 
+{
+  std::cout << "SwitchStmt: "  << std::endl;
+
+  // Variable
+  this->_exp->print();
+
+  // Start
+  this->_caseList->print();
+
+  std::cout << std::endl;
+}
+
+
+void lp::SwitchStmt::evaluate() {
+
+	if(this->_exp->getType() == NUMBER) {
+
+		double value = this->_exp->evaluateNumber();
+
+		this->_caseList->evaluate((int) value);
+
+	}
+	else {
+		warning("Error en tiempo de ejecución: la expresión a comprobar no es numérica ", "segun");
+	}
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
 void lp::StatementList::addStatement(lp::Statement * stmt) {
 	this->_stmts.push_back(stmt);
 }
@@ -2420,6 +2453,71 @@ void lp::StatementList::evaluate() {
   {
     (*stmtIter)->evaluate();
   }
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+void lp::IntCase::print() {
+	std::cout << "IntCase: " << std::endl;
+	if(this->_value != NULL) {
+		std::cout << "value: " << *(this->_value) << std::endl;
+	}
+	std::cout << "stmts: " << std::endl;
+	this->_stmts->print();
+	std::cout << "breakOpt: " << this->_breakOpt << std::endl;
+	std::cout << "default case: " << this->_def << std::endl;
+}
+
+void lp::IntCase::evaluate() {
+	this->_stmts->evaluate();
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+void lp::IntCaseList::addCase(lp::IntCase * caseElement) {
+	this->_caseList.push_back(caseElement);
+}
+
+void lp::IntCaseList::print() {
+std::cout << "Tamaño de la lista: " << this->_caseList.size() << std::endl;
+	std::list<IntCase *>::iterator caseIter;
+
+	std::cout << "IntCaseList: "  << std::endl;
+
+	for (caseIter = this->_caseList.begin(); caseIter != this->_caseList.end(); caseIter++) {
+	    (*caseIter)->print();
+	}
+}
+
+void lp::IntCaseList::evaluate(int var) {
+	std::list<IntCase *>::iterator caseIter;
+	bool brk = false;
+	int pos = this->_caseList.size() - 1;
+
+	for (caseIter = this->_caseList.begin();
+		caseIter != this->_caseList.end() && !brk;
+		caseIter++) 
+	{
+
+		if(!((*caseIter)->isDefaultCase()) && var == (*caseIter)->getValue()) {
+			(*caseIter)->evaluate();
+			brk = (*caseIter)->getBreakOpt();
+		}
+		else if((*caseIter)->isDefaultCase() && pos == 0) {
+			(*caseIter)->evaluate();
+		}
+		else if((*caseIter)->isDefaultCase() && pos != 0) {
+			warning("Error en tiemo de ejecución: el caso por defecto no es el último de todos ", "segun");
+		}
+
+		pos--;
+	}
 }
 
 
