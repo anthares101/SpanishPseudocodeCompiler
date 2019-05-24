@@ -425,6 +425,47 @@ double lp::UnaryPlusNode::evaluateNumber()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+
+void lp::UnaryPlusPlusNode::print() 
+{
+  std::cout << "UnaryPlusPlusNode: "  << std::endl;
+  std::cout << "++";
+  std::cout << "VariableNode: " << this->_id << std::endl;
+  std::cout << "Type: " << this->getType() << std::endl;
+}
+
+int lp::UnaryPlusPlusNode::getType() 
+{ 
+	// Get the identifier in the table of symbols as Constant
+	lp::Variable *var = (lp::Variable *) table.getSymbol(this->_id);
+
+	// Return the type of the Constant
+	return var->getType();
+}
+
+double lp::UnaryPlusPlusNode::evaluateNumber()
+{
+	double result = 0.0;
+
+	// Ckeck the type of the expression
+	if (this->getType() == NUMBER)
+	{
+		lp::NumericVariable *var = (lp::NumericVariable *) table.getSymbol(this->_id);
+		var->setValue(var->getValue() + 1);
+		result = var->getValue();
+	}
+	else
+	{
+		warning("Error en tiempo de ejecución: las expresiones no son numéricas para ","Más Más Unario");
+	}
+
+  return result;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
 void lp::PlusNode::print() 
 {
   std::cout << "PlusNode: "  << std::endl;

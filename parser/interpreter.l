@@ -263,6 +263,10 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 
 "+"		{ return PLUS;   } 			/* NEW in example 3 */
 
+"--"	{ return MINUSMINUS;  } 			
+
+"++"	{ return PLUSPLUS;   } 			
+
 "*"	    { return MULTIPLICATION; } 	/* NEW in example 3 */
 
 "/"  	{ return DIVISION; } 		/* NEW in example 3 */

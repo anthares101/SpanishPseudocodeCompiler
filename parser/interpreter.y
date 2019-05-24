@@ -228,7 +228,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 
 %left LPAREN RPAREN
 
-%nonassoc  UNARY
+%nonassoc  UNARY PLUSPLUS MINUSMINUS
 
 // Maximum precedence 
 /* MODIFIED in example 5 */
@@ -623,6 +623,12 @@ exp:	NUMBER
 		{ 
 		  // Create a new unary minus node	
   		  $$ = new lp::UnaryMinusNode($2);
+		}
+
+	| 	PLUSPLUS VARIABLE
+		{ 
+		  // Create a new unary plus plus node	
+  		  $$ = new lp::UnaryPlusPlusNode($2);
 		}
 
 	|	exp MODULO exp 

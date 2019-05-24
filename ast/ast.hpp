@@ -497,6 +497,53 @@ class UnaryPlusNode : public NumericUnaryOperatorNode
   double evaluateNumber();
 };
 
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+/*!	
+  \class   UnaryPlusPlusNode
+  \brief   Definition of atributes and methods of UnaryPlusPlusNode class
+  \note    UnaryPlusNode Class publicly inherits from ExpNode class
+*/
+class UnaryPlusPlusNode : public  ExpNode
+{
+
+ private:
+	  std::string _id; //!< VariableNode
+
+ public:
+
+/*!		
+	\brief Constructor of UnaryPlusPlusNode
+	\param id: string, variable name
+	\post  A new UnaryPlusPlusNode is created with the parameter
+*/
+  UnaryPlusPlusNode(std::string var)
+	{
+		this->_id = var;
+	}
+
+/*!
+	\brief   Print the expression
+	\return  void
+	\sa		 evaluate()
+*/
+  void print();
+
+/*!	
+	\brief   Type of  the expression
+	\return  int
+	\sa		 print
+*/
+  int getType();
+
+/*!	
+	\brief   Evaluate the expression
+	\return  double
+	\sa		 print
+*/
+  double evaluateNumber();
+};
 
 
 
