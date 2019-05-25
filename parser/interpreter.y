@@ -139,8 +139,8 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
   std::list<lp::ExpNode *>  *parameters;    // New in example 16; NOTE: #include<list> must be in interpreter.l, init.cpp, interpreter.cpp
   lp::StatementList *stmts; /* NEW in example 16 */
   lp::Statement *st;				 /* NEW in example 16 */
-  //lp::IntCase * caseElement;
-  lp::IntCaseList * caseList;
+  //lp::Case * caseElement;
+  lp::CaseList * caseList;
   lp::AST *prog;					 /* NEW in example 16 */
 }
 
@@ -300,35 +300,35 @@ stmtlist:  /* empty: epsilon rule */
 
 			/*aseElmnt: CASE NUMBER COLON stmtlist BREAK SEMICOLON
 					   {
-					   	$$ = new lp::IntCase($4, new int((int) $2), true, false);
+					   	$$ = new lp::Case($4, new int((int) $2), true, false);
 					   }
 								   | CASE NUMBER COLON stmtlist  					2 CONFLICTOS DESPLAZAMIENTO/REDUCCION
 								   {
-								   	$$ = new lp::IntCase($4, (int*)(&$2), false);
+								   	$$ = new lp::Case($4, (int*)(&$2), false);
 								   }
 					   | DEFAULT COLON stmtlist BREAK SEMICOLON
 					   {
-					   	$$ = new lp::IntCase($3, NULL, true, true);
+					   	$$ = new lp::Case($3, NULL, true, true);
 					   }
 								    | DEFAULT COLON stmtlist
 								   {
-								   	$$ = new lp::IntCase($3, NULL, true);
+								   	$$ = new lp::Case($3, NULL, true);
 								   }
 			;*/
 
 caseLst:  /* empty: epsilon rule */
 		  { 
 			// create a empty list of statements
-			$$ = new lp::IntCaseList(); 
+			$$ = new lp::CaseList(); 
 			nDefaults.push_back(0);
 
 		  }  
 
-        | caseLst CASE exp COLON stmtlist BREAK SEMICOLON 
+        | caseLst CASE NUMBER COLON stmtlist BREAK SEMICOLON 
 		  { 
 			// copy up the list and add the stmt to it
 			$$ = $1;
-			$$->addCase(new lp::IntCase($5, $3, true, false));
+			$$->addCase(new lp::Case($5, new int((int) $3), true, false));
 
 			if(nDefaults.at(stackedStmts.size() - 1) > 0) {
 				warning("Error en tiemo de ejecución: el caso por defecto no es el último de todos ", "segun");
@@ -340,7 +340,7 @@ caseLst:  /* empty: epsilon rule */
 		  { 
 			// copy up the list and add the stmt to it
 			$$ = $1;
-			$$->addCase(new lp::IntCase($4, NULL, true, true));
+			$$->addCase(new lp::Case($4, NULL, true, true));
 
 			nDefaults.at(stackedStmts.size() - 1)++;
 
@@ -348,15 +348,6 @@ caseLst:  /* empty: epsilon rule */
 				warning("Error en tiempo de compilación: hay más de un caso por defecto, el comportamiento del programa puede ser indefinido ", "segun");
 			}
 		  }
-
-        | caseLst error 
-           { 
-			// just copy up the stmtlist when an error occurs
-			$$ = $1;
-
-			// The previous look-ahead token ought to be discarded with `yyclearin;'
-			yyclearin; 
-           } 
 ;
 
 stmt: SEMICOLON  /* Empty statement: ";" */

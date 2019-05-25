@@ -1610,10 +1610,10 @@ void evaluate();
 
 
 /*!	
-  \class   IntCase
-  \brief   Definition of atributes and methods of IntCase class
+  \class   Case
+  \brief   Definition of atributes and methods of Case class
 */
-class IntCase : public Statement {
+class Case : public Statement {
 
 private:
 	int * _value; //!< Case value
@@ -1624,13 +1624,13 @@ private:
 public:
 
 	/*!		
-	\brief Constructor of IntCase 
-	\param value: int *, value of the IntCase
-	\param stmts: body of the IntCase
+	\brief Constructor of Case 
+	\param value: int *, value of the Case
+	\param stmts: body of the Case
 	\param breakOpt: Wether the case has a break option or not
-	\post  A new IntCase is created with the parameters
+	\post  A new Case is created with the parameters
 */
-	IntCase(StatementList * stmts, int * value = NULL, bool breakOpt = false, bool def = NULL) {
+	Case(StatementList * stmts, int * value = NULL, bool breakOpt = false, bool def = NULL) {
 		this->_value = value;
 		this->_stmts = stmts;
 		this->_breakOpt = breakOpt;
@@ -1638,7 +1638,7 @@ public:
 	}
 
 	/*!	
-		\brief   Gets the value of the IntCase
+		\brief   Gets the value of the Case
 		\return  int
 		\note 	 inline function
 	*/
@@ -1647,7 +1647,7 @@ public:
 	}
 
 	/*!	
-		\brief   Gets the break option of the IntCase
+		\brief   Gets the break option of the Case
 		\return  bool
 		\note 	 inline function
 	*/
@@ -1665,7 +1665,7 @@ public:
 	}
 
 	/*!	
-		\brief   Print the IntCase
+		\brief   Print the Case
 		\return  void
 		\sa		 evaluate
 	*/
@@ -1673,7 +1673,7 @@ public:
 	void print();
 
 	/*!	
-		\brief   Evaluate the IntCase
+		\brief   Evaluate the Case
 		\return  void
 		\sa		 print
 	*/
@@ -1686,17 +1686,17 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 
-class IntCaseList {
+class CaseList {
 
 private:
-	std::list<lp::IntCase *> _caseList;
+	std::list<lp::Case *> _caseList;
 
 public:
 
 	/*!
 		\brief Class constructor
 	*/
-	IntCaseList() {
+	CaseList() {
 		//Empty 
 	}
 
@@ -1704,10 +1704,10 @@ public:
 		\brief Adds a case to the list
 		\return void
 	*/
-	void addCase(lp::IntCase * caseElement);
+	void addCase(lp::Case * caseElement);
 
 	/*!	
-		\brief   Print the IntCaseList
+		\brief   Print the CaseList
 		\return  void
 		\sa		 evaluate
 	*/
@@ -1715,7 +1715,7 @@ public:
 	void print();
 
 	/*!	
-		\brief   Evaluate the IntCaseList
+		\brief   Evaluate the CaseList
 		\param 	 var: int, value of the variable to be evaluated
 		\return  void
 		\sa		 print
@@ -2522,7 +2522,7 @@ public:
 /*!	
   \class   SwitchStmt
   \brief   Definition of atributes and methods of SwitchStmt class
-  \note    SwitchStmt Class publicly inherits from IntCaseList class 
+  \note    SwitchStmt Class publicly inherits from CaseList class 
 		   and adds its own print and evaluate functions
 */
 
@@ -2530,7 +2530,7 @@ class SwitchStmt : public Statement {
 
 private:
 	ExpNode * _exp; //! Expression to be evaluated
-	lp::IntCaseList * _caseList; //! List of cases for the switch statement
+	lp::CaseList * _caseList; //! List of cases for the switch statement
 
 public:
 
@@ -2540,7 +2540,7 @@ public:
 	\param caseList: List of cases for the switch statement
 	\post A new SwitchStmt is created with the parameters 
 	*/
-	SwitchStmt(ExpNode * exp, lp::IntCaseList * caseList) {
+	SwitchStmt(ExpNode * exp, lp::CaseList * caseList) {
 		this->_exp = exp;
 		this->_caseList = caseList;
 	}

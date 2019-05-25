@@ -2460,8 +2460,8 @@ void lp::StatementList::evaluate() {
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 
-void lp::IntCase::print() {
-	std::cout << "IntCase: " << std::endl;
+void lp::Case::print() {
+	std::cout << "Case: " << std::endl;
 	if(this->_value != NULL) {
 		std::cout << "value: " << *(this->_value) << std::endl;
 	}
@@ -2471,7 +2471,7 @@ void lp::IntCase::print() {
 	std::cout << "default case: " << this->_def << std::endl;
 }
 
-void lp::IntCase::evaluate() {
+void lp::Case::evaluate() {
 	this->_stmts->evaluate();
 }
 
@@ -2480,23 +2480,23 @@ void lp::IntCase::evaluate() {
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 
-void lp::IntCaseList::addCase(lp::IntCase * caseElement) {
+void lp::CaseList::addCase(lp::Case * caseElement) {
 	this->_caseList.push_back(caseElement);
 }
 
-void lp::IntCaseList::print() {
+void lp::CaseList::print() {
 std::cout << "Tamaño de la lista: " << this->_caseList.size() << std::endl;
-	std::list<IntCase *>::iterator caseIter;
+	std::list<Case *>::iterator caseIter;
 
-	std::cout << "IntCaseList: "  << std::endl;
+	std::cout << "CaseList: "  << std::endl;
 
 	for (caseIter = this->_caseList.begin(); caseIter != this->_caseList.end(); caseIter++) {
 	    (*caseIter)->print();
 	}
 }
 
-void lp::IntCaseList::evaluate(int var) {
-	std::list<IntCase *>::iterator caseIter;
+void lp::CaseList::evaluate(int var) {
+	std::list<Case *>::iterator caseIter;
 	bool brk = false;
 	int pos = this->_caseList.size() - 1;
 
