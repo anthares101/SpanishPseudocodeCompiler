@@ -324,26 +324,26 @@ caseLst:  /* empty: epsilon rule */
 
 		  }  
 
-		| caseLst CASE NUMBER COLON stmtlist
+		| caseLst CASE exp COLON stmtlist
 		  { 
 			// copy up the list and add the stmt to it
 			$$ = $1;
-			$$->addCase(new lp::Case($5, new int((int) $3), false, false));
+			$$->addCase(new lp::Case($5, $3, false, false));
 
-			if(nDefaults.at(stackedStmts.size() - 1) > 0) {
-				warning("Error en tiemo de ejecución: el caso por defecto no es el último de todos ", "segun");
+			if(nDefaults.back() > 0) {
+				warning("Error en tiempo de compilación: el caso por defecto no es el último de todos ", "segun");
 			}
 
 		  }
 
-        | caseLst CASE NUMBER COLON stmtlist BREAK SEMICOLON 
+        | caseLst CASE exp COLON stmtlist BREAK SEMICOLON 
 		  { 
 			// copy up the list and add the stmt to it
 			$$ = $1;
-			$$->addCase(new lp::Case($5, new int((int) $3), true, false));
+			$$->addCase(new lp::Case($5, $3, true, false));
 
-			if(nDefaults.at(stackedStmts.size() - 1) > 0) {
-				warning("Error en tiemo de ejecución: el caso por defecto no es el último de todos ", "segun");
+			if(nDefaults.back() > 0) {
+				warning("Error en tiempo de compilación: el caso por defecto no es el último de todos ", "segun");
 			}
 
 		  }
@@ -352,9 +352,9 @@ caseLst:  /* empty: epsilon rule */
 		  { 
 			// copy up the list and add the stmt to it
 			$$ = $1;
-			$$->addCase(new lp::Case($4, NULL, false, true));
+			$$->addCase(new lp::Case($4, NULL, true, true));
 
-			nDefaults.at(stackedStmts.size() - 1)++;
+			nDefaults.back()++;
 
 			if(nDefaults.back() > 1) {
 				warning("Error en tiempo de compilación: hay más de un caso por defecto, el comportamiento del programa puede ser indefinido ", "segun");
@@ -367,7 +367,7 @@ caseLst:  /* empty: epsilon rule */
 			$$ = $1;
 			$$->addCase(new lp::Case($4, NULL, true, true));
 
-			nDefaults.at(stackedStmts.size() - 1)++;
+			nDefaults.back()++;
 
 			if(nDefaults.back() > 1) {
 				warning("Error en tiempo de compilación: hay más de un caso por defecto, el comportamiento del programa puede ser indefinido ", "segun");

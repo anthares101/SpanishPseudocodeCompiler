@@ -2415,11 +2415,16 @@ void lp::SwitchStmt::print()
 
 void lp::SwitchStmt::evaluate() {
 
-	if(this->_exp->getType() == NUMBER) {
+	/*if(this->_exp->getType() == NUMBER) {
 
 		double value = this->_exp->evaluateNumber();
 
 		this->_caseList->evaluate((int) value);
+
+	}*/
+	if(this->_exp->getType() == NUMBER || this->_exp->getType() == STRING) {
+
+		this->_caseList->evaluate(this->_exp);
 
 	}
 	else {
@@ -2463,7 +2468,8 @@ void lp::StatementList::evaluate() {
 void lp::Case::print() {
 	std::cout << "Case: " << std::endl;
 	if(this->_value != NULL) {
-		std::cout << "value: " << *(this->_value) << std::endl;
+		std::cout << "value: " << std::endl;
+		this->_value->print();
 	}
 	std::cout << "stmts: " << std::endl;
 	this->_stmts->print();
@@ -2495,7 +2501,7 @@ std::cout << "Tamaño de la lista: " << this->_caseList.size() << std::endl;
 	}
 }
 
-void lp::CaseList::evaluate(int var) {
+void lp::CaseList::evaluate(ExpNode * var) {
 	std::list<Case *>::iterator caseIter;
 	bool brk = false, switched = false;
 
@@ -2504,13 +2510,35 @@ void lp::CaseList::evaluate(int var) {
 		caseIter++) 
 	{
 
-		if(!((*caseIter)->isDefaultCase()) && (var == (*caseIter)->getValue() || switched)) {
-			(*caseIter)->evaluate();
-			brk = (*caseIter)->getBreakOpt();
-			switched = !brk;
+		if(!(*caseIter)->isDefaultCase() && var->getType() != (*caseIter)->getType()) {
+			warning("Error en tiempo de ejecución: la variable que se evalúa no es del mismo tipo que el valor. El comportamiento no está definido ", "segun");
 		}
-		else if((*caseIter)->isDefaultCase()) {
-			(*caseIter)->evaluate();
+
+		if(var->getType() == NUMBER) {
+
+			if(!((*caseIter)->isDefaultCase()) &&
+				(std::abs(var->evaluateNumber() - (*caseIter)->getNumValue()) < ERROR_BOUND || switched)) {
+
+				(*caseIter)->evaluate();
+				brk = (*caseIter)->getBreakOpt();
+				switched = !brk;
+			}
+			else if((*caseIter)->isDefaultCase()) {
+				(*caseIter)->evaluate();
+			}
+		}
+		else if(var->getType() == STRING) {
+
+			if(!((*caseIter)->isDefaultCase()) &&
+				(var->evaluateString().compare((*caseIter)->getStrValue()) == 0 || switched)) {
+
+				(*caseIter)->evaluate();
+				brk = (*caseIter)->getBreakOpt();
+				switched = !brk;
+			}
+			else if((*caseIter)->isDefaultCase()) {
+				(*caseIter)->evaluate();
+			}
 		}
 	}
 }

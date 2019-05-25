@@ -1616,7 +1616,7 @@ void evaluate();
 class Case : public Statement {
 
 private:
-	int * _value; //!< Case value
+	ExpNode * _value; //!< Case value
 	StatementList * _stmts; //!< Statements of the body of the case
 	bool _breakOpt; //!< Wether the case has a break option or not
 	bool _def; //!< Wether it is the default case or not
@@ -1630,7 +1630,7 @@ public:
 	\param breakOpt: Wether the case has a break option or not
 	\post  A new Case is created with the parameters
 */
-	Case(StatementList * stmts, int * value = NULL, bool breakOpt = false, bool def = NULL) {
+	Case(StatementList * stmts, ExpNode * value = NULL, bool breakOpt = false, bool def = NULL) {
 		this->_value = value;
 		this->_stmts = stmts;
 		this->_breakOpt = breakOpt;
@@ -1638,12 +1638,30 @@ public:
 	}
 
 	/*!	
-		\brief   Gets the value of the Case
+		\brief   Gets the type of the Case
 		\return  int
 		\note 	 inline function
 	*/
-	inline int getValue() const {
-		return *this->_value;
+	inline int getType() const {
+		return this->_value->getType();
+	}
+
+	/*!	
+		\brief   Gets the value of the Case
+		\return  double
+		\note 	 inline function
+	*/
+	inline double getNumValue() const {
+		return this->_value->evaluateNumber();
+	}
+
+	/*!	
+		\brief   Gets the value of the Case
+		\return  string
+		\note 	 inline function
+	*/
+	inline std::string getStrValue() const {
+		return this->_value->evaluateString();
 	}
 
 	/*!	
@@ -1716,11 +1734,11 @@ public:
 
 	/*!	
 		\brief   Evaluate the CaseList
-		\param 	 var: int, value of the variable to be evaluated
+		\param 	 var: ExpNode, value of the variable to be evaluated
 		\return  void
 		\sa		 print
 	*/
-	void evaluate(int var);
+	void evaluate(ExpNode * var);
 };
 
 

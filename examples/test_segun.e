@@ -1,19 +1,18 @@
-a:=5;
+a:='hola';
 b:=3;
 
 segun(a)
-	valor 3:
+	valor 'adios':
 
 		escribir 'no es\n';
 		salir;
-	valor 5:
+	valor 'hola':
 
-		segun(a+b)
-			valor 2:
-				escribir 'tampoco es\n';
-				salir;
-			valor 8:
+		segun(a||b)
+			valor 'hola'||3:
 				escribir 'correcto\n';
+			valor 'asd':
+				escribir 'tampoco es\n';
 				salir;
 			defecto:
 				escribir 'defecto anidado\n';
