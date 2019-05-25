@@ -139,7 +139,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
   std::list<lp::ExpNode *>  *parameters;    // New in example 16; NOTE: #include<list> must be in interpreter.l, init.cpp, interpreter.cpp
   lp::StatementList *stmts; /* NEW in example 16 */
   lp::Statement *st;				 /* NEW in example 16 */
-  lp::IntCase * caseElement;
+  //lp::IntCase * caseElement;
   lp::IntCaseList * caseList;
   lp::AST *prog;					 /* NEW in example 16 */
 }
@@ -148,7 +148,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 // New in example 17: cond
 %type <expNode> exp cond 
 
-%type <caseElement> caseElmnt
+//%type <caseElement> caseElmnt
 
 %type <caseList> caseLst
 
@@ -298,23 +298,23 @@ stmtlist:  /* empty: epsilon rule */
 ;
 
 
-caseElmnt: CASE NUMBER COLON stmtlist BREAK SEMICOLON
-		   {
-		   	$$ = new lp::IntCase($4, new int((int) $2), true, false);
-		   }
-					   /*| CASE NUMBER COLON stmtlist  					2 CONFLICTOS DESPLAZAMIENTO/REDUCCION
+			/*aseElmnt: CASE NUMBER COLON stmtlist BREAK SEMICOLON
 					   {
-					   	$$ = new lp::IntCase($4, (int*)(&$2), false);
-					   }*/
-		   | DEFAULT COLON stmtlist BREAK SEMICOLON
-		   {
-		   	$$ = new lp::IntCase($3, NULL, true, true);
-		   }
-					    /*| DEFAULT COLON stmtlist
+					   	$$ = new lp::IntCase($4, new int((int) $2), true, false);
+					   }
+								   | CASE NUMBER COLON stmtlist  					2 CONFLICTOS DESPLAZAMIENTO/REDUCCION
+								   {
+								   	$$ = new lp::IntCase($4, (int*)(&$2), false);
+								   }
+					   | DEFAULT COLON stmtlist BREAK SEMICOLON
 					   {
-					   	$$ = new lp::IntCase($3, NULL, true);
-					   }*/
-;
+					   	$$ = new lp::IntCase($3, NULL, true, true);
+					   }
+								    | DEFAULT COLON stmtlist
+								   {
+								   	$$ = new lp::IntCase($3, NULL, true);
+								   }
+			;*/
 
 caseLst:  /* empty: epsilon rule */
 		  { 
@@ -324,15 +324,25 @@ caseLst:  /* empty: epsilon rule */
 
 		  }  
 
-        | caseLst caseElmnt 
+        | caseLst CASE exp COLON stmtlist BREAK SEMICOLON 
 		  { 
 			// copy up the list and add the stmt to it
 			$$ = $1;
-			$$->addCase($2);
+			$$->addCase(new lp::IntCase($5, $3, true, false));
 
-			if($2->isDefaultCase()) {
-				nDefaults.at(stackedStmts.size() - 1)++;
+			if(nDefaults.at(stackedStmts.size() - 1) > 0) {
+				warning("Error en tiemo de ejecución: el caso por defecto no es el último de todos ", "segun");
 			}
+
+		  }
+
+		| caseLst DEFAULT COLON stmtlist BREAK SEMICOLON 
+		  { 
+			// copy up the list and add the stmt to it
+			$$ = $1;
+			$$->addCase(new lp::IntCase($4, NULL, true, true));
+
+			nDefaults.at(stackedStmts.size() - 1)++;
 
 			if(nDefaults.back() > 1) {
 				warning("Error en tiempo de compilación: hay más de un caso por defecto, el comportamiento del programa puede ser indefinido ", "segun");
