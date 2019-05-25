@@ -324,6 +324,18 @@ caseLst:  /* empty: epsilon rule */
 
 		  }  
 
+		| caseLst CASE NUMBER COLON stmtlist
+		  { 
+			// copy up the list and add the stmt to it
+			$$ = $1;
+			$$->addCase(new lp::Case($5, new int((int) $3), false, false));
+
+			if(nDefaults.at(stackedStmts.size() - 1) > 0) {
+				warning("Error en tiemo de ejecución: el caso por defecto no es el último de todos ", "segun");
+			}
+
+		  }
+
         | caseLst CASE NUMBER COLON stmtlist BREAK SEMICOLON 
 		  { 
 			// copy up the list and add the stmt to it
@@ -334,6 +346,19 @@ caseLst:  /* empty: epsilon rule */
 				warning("Error en tiemo de ejecución: el caso por defecto no es el último de todos ", "segun");
 			}
 
+		  }
+
+		| caseLst DEFAULT COLON stmtlist 
+		  { 
+			// copy up the list and add the stmt to it
+			$$ = $1;
+			$$->addCase(new lp::Case($4, NULL, false, true));
+
+			nDefaults.at(stackedStmts.size() - 1)++;
+
+			if(nDefaults.back() > 1) {
+				warning("Error en tiempo de compilación: hay más de un caso por defecto, el comportamiento del programa puede ser indefinido ", "segun");
+			}
 		  }
 
 		| caseLst DEFAULT COLON stmtlist BREAK SEMICOLON 

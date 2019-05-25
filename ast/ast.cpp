@@ -2497,26 +2497,21 @@ std::cout << "Tamaño de la lista: " << this->_caseList.size() << std::endl;
 
 void lp::CaseList::evaluate(int var) {
 	std::list<Case *>::iterator caseIter;
-	bool brk = false;
-	int pos = this->_caseList.size() - 1;
+	bool brk = false, switched = false;
 
 	for (caseIter = this->_caseList.begin();
 		caseIter != this->_caseList.end() && !brk;
 		caseIter++) 
 	{
 
-		if(!((*caseIter)->isDefaultCase()) && var == (*caseIter)->getValue()) {
+		if(!((*caseIter)->isDefaultCase()) && (var == (*caseIter)->getValue() || switched)) {
 			(*caseIter)->evaluate();
 			brk = (*caseIter)->getBreakOpt();
+			switched = !brk;
 		}
-		else if((*caseIter)->isDefaultCase() && pos == 0) {
+		else if((*caseIter)->isDefaultCase()) {
 			(*caseIter)->evaluate();
 		}
-		else if((*caseIter)->isDefaultCase() && pos != 0) {
-			warning("Error en tiemo de ejecución: el caso por defecto no es el último de todos ", "segun");
-		}
-
-		pos--;
 	}
 }
 
