@@ -497,54 +497,6 @@ class UnaryPlusNode : public NumericUnaryOperatorNode
   double evaluateNumber();
 };
 
-//////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////
-
-/*!	
-  \class   UnaryPlusPlusNode
-  \brief   Definition of atributes and methods of UnaryPlusPlusNode class
-  \note    UnaryPlusNode Class publicly inherits from ExpNode class
-*/
-class UnaryPlusPlusNode : public  ExpNode
-{
-
- private:
-	  std::string _id; //!< VariableNode
-
- public:
-
-/*!		
-	\brief Constructor of UnaryPlusPlusNode
-	\param id: string, variable name
-	\post  A new UnaryPlusPlusNode is created with the parameter
-*/
-  UnaryPlusPlusNode(std::string var)
-	{
-		this->_id = var;
-	}
-
-/*!
-	\brief   Print the expression
-	\return  void
-	\sa		 evaluate()
-*/
-  void print();
-
-/*!	
-	\brief   Type of  the expression
-	\return  int
-	\sa		 print
-*/
-  int getType();
-
-/*!	
-	\brief   Evaluate the expression
-	\return  double
-	\sa		 print
-*/
-  double evaluateNumber();
-};
-
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1652,6 +1604,88 @@ void evaluate();
 };
 
 
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+/*!	
+  \class   UnaryNode
+  \brief   Definition of atributes and methods of UnaryNode class
+  \note    UnaryNode Class publicly inherits from Statement class
+  \warning Abstract class, because it does not redefine the print method of Statement
+*/
+class UnaryNode : public Statement
+{
+ protected:
+  	  std::string _id; //!< VariableNode
+  	  bool _before; //!< Unary is before the variable
+
+ public:
+
+/*!		
+	\brief Constructor of UnaryNode
+	\param id: string, variable name
+	\param before: bool, unary operator position
+	\note  Inline function
+*/
+  UnaryNode(std::string id, bool before)
+	{
+		this->_id = id;
+		this->_before = before;
+	}
+
+/*!
+	\brief   Return the variable id
+	\return  string
+*/
+ std::string getId();
+
+ /*!
+	\brief   Determine if the unary operator is before the variable or not
+	\return  bool
+*/
+ bool beforeVariable();
+};
+
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+/*!	
+  \class   UnaryPlusPlusNode uses UnaryNode's constructor as member initializer
+  \brief   Definition of atributes and methods of UnaryPlusPlusNode class
+  \note    UnaryPlusPlusNode Class publicly inherits from UnaryNode class
+*/
+class UnaryPlusPlusNode : public UnaryNode
+{
+
+ public:
+
+/*!		
+	\brief Constructor of UnaryPlusPlusNode
+	\param id: string, variable name
+	\param before: bool, unary operator position
+	\post  A new UnaryPlusPlusNode is created with the parameters
+*/
+  UnaryPlusPlusNode(std::string id, bool before) : UnaryNode(id, before)
+	{
+		//empty
+	}
+
+/*!
+	\brief   Print the expression
+	\return  void
+	\sa		 evaluate()
+*/
+  void print();
+  
+
+/*!	
+	\brief   Evaluate the expression
+	\sa		 print
+*/
+  void evaluate();
+};
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1673,6 +1707,7 @@ class AssignmentStmt : public Statement
   AssignmentStmt *_asgn;  //!< Allow multiple assigment -> a = b = 2 
   PlusAssignmentStmt *_plusAsgn; //! Allow multiple plus assigment -> a = b += 2
   MinusAssignmentStmt *_minusAsgn; //! Allow multiple plus assigment -> a = b -= 2
+  UnaryNode *_unaryNode; //!Allow unary operators assigments -> a = ++b; a = b++; a = --b; a = b--;
 
  public:
 
@@ -1687,6 +1722,7 @@ class AssignmentStmt : public Statement
 		this->_asgn = NULL; 
 		this->_plusAsgn = NULL;
 		this->_minusAsgn = NULL;
+		this->_unaryNode = NULL;
 	}
 
 /*!		
@@ -1702,6 +1738,7 @@ class AssignmentStmt : public Statement
 		this->_exp = NULL;
 		this->_plusAsgn = NULL;
 		this->_minusAsgn = NULL;
+		this->_unaryNode = NULL;
 	}
 
 	/*!		
@@ -1716,6 +1753,7 @@ class AssignmentStmt : public Statement
 		this->_exp = NULL;
 		this->_asgn = NULL;
 		this->_minusAsgn = NULL;
+		this->_unaryNode = NULL;
 	}
 
 	/*!		
@@ -1730,6 +1768,21 @@ class AssignmentStmt : public Statement
 		this->_exp = NULL;
 		this->_asgn = NULL;
 		this->_plusAsgn = NULL;
+		this->_unaryNode = NULL;
+	}
+
+/*!		
+	\brief Constructor of AssignmentStmt 
+	\param id: string, variable of the AssignmentStmt
+	\param unaryNode: pointer to UnaryNode
+	\post  A new AssignmentStmt is created with the parameters
+*/
+  AssignmentStmt(std::string id, UnaryNode *unaryNode): _id(id), _unaryNode(unaryNode)
+	{
+		this->_exp = NULL;
+		this->_asgn = NULL; 
+		this->_plusAsgn = NULL;
+		this->_minusAsgn = NULL;
 	}
 
 	/*!

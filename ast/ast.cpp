@@ -422,46 +422,6 @@ double lp::UnaryPlusNode::evaluateNumber()
 }
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////
-
-
-void lp::UnaryPlusPlusNode::print() 
-{
-  std::cout << "UnaryPlusPlusNode: "  << std::endl;
-  std::cout << "++";
-  std::cout << "VariableNode: " << this->_id << std::endl;
-  std::cout << "Type: " << this->getType() << std::endl;
-}
-
-int lp::UnaryPlusPlusNode::getType() 
-{ 
-	// Get the identifier in the table of symbols as Constant
-	lp::Variable *var = (lp::Variable *) table.getSymbol(this->_id);
-
-	// Return the type of the Constant
-	return var->getType();
-}
-
-double lp::UnaryPlusPlusNode::evaluateNumber()
-{
-	double result = 0.0;
-
-	// Ckeck the type of the expression
-	if (this->getType() == NUMBER)
-	{
-		lp::NumericVariable *var = (lp::NumericVariable *) table.getSymbol(this->_id);
-		var->setValue(var->getValue() + 1);
-		result = var->getValue();
-	}
-	else
-	{
-		warning("Error en tiempo de ejecución: las expresiones no son numéricas para ","Más Más Unario");
-	}
-
-  return result;
-}
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1622,7 +1582,7 @@ void lp::AssignmentStmt::evaluate()
 		}
 	}
 
-	else { //if this->minusAsgn is not NULL
+	else if(this->_minusAsgn != NULL) { //if this->minusAsgn is not NULL
 
 		// IMPORTANT
 		//  evaluate the assigment child
@@ -1655,6 +1615,51 @@ void lp::AssignmentStmt::evaluate()
 			default:
 				warning("Error en tiempo de ejecución: tipo incompatible para ", "asignación");
 		}
+	}
+
+	else if(this->_unaryNode != NULL) { //if this->_unaryNode is not NULL
+		// IMPORTANT
+		// evaluate the assigment child (Will be done later if the unary operator is after the variable)
+		if(_unaryNode->beforeVariable())
+			this->_unaryNode->evaluate();
+
+
+		/* Get the identifier of the previous asgn in the table of symbols as Variable */
+		lp::Variable *secondVar = (lp::Variable *) table.getSymbol(this->_unaryNode->getId());
+
+		switch(secondVar->getType()) {
+			case NUMBER:
+			{
+				/* Get the identifier of the previous asgn in the table of symbols as NumericVariable */
+				lp::NumericVariable *secondVar = (lp::NumericVariable *) table.getSymbol(this->_unaryNode->getId());
+				// Check the type of the first variable
+				if (firstVar->getType() == NUMBER)
+				{
+					/* Get the identifier of the first variable in the table of symbols as NumericVariable */
+					lp::NumericVariable *firstVar = (lp::NumericVariable *) table.getSymbol(this->_id);
+
+					// Assignment the value of the second variable to the first variable
+					firstVar->setValue(secondVar->getValue());
+				}
+				else {
+					// Delete the variable from the table of symbols 
+					table.eraseSymbol(this->_id);
+
+					// Insert the variable in the table of symbols as NumericVariable 
+					// with the type NUMBER and the value 
+					lp::NumericVariable *v = new lp::NumericVariable(this->_id, VARIABLE, NUMBER, secondVar->getValue());
+					table.installSymbol(v);
+				}
+			}
+				break;
+			default:
+				warning("Error en tiempo de ejecución: tipo incompatible para ", "asignación");
+		}
+
+		// IMPORTANT
+		// evaluate the assigment child if it wasnt done
+		if(!_unaryNode->beforeVariable())
+			this->_unaryNode->evaluate();
 	}
 }
 
@@ -2461,6 +2466,51 @@ void lp::StatementList::evaluate() {
   {
     (*stmtIter)->evaluate();
   }
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+std::string lp::UnaryNode::getId(){
+	return this->_id;
+}
+
+bool lp::UnaryNode::beforeVariable(){
+	return this->_before;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+void lp::UnaryPlusPlusNode::print() 
+{
+  // Get the identifier in the table of symbols as Constant
+  lp::Variable *var = (lp::Variable *) table.getSymbol(this->_id);
+
+  std::cout << "UnaryPlusPlusNode: "  << std::endl;
+  std::cout << "++";
+  std::cout << "VariableNode: " << this->_id << std::endl;
+  std::cout << "Type: " << var->getType() << std::endl;
+}
+
+void lp::UnaryPlusPlusNode::evaluate()
+{
+	// Get the identifier in the table of symbols as Constant
+	lp::Variable *var = (lp::Variable *) table.getSymbol(this->_id);
+
+	// Ckeck the type of the expression
+	if (var->getType() == NUMBER)
+	{
+		lp::NumericVariable *varNum = (lp::NumericVariable *) var;
+		varNum->setValue(varNum->getValue() + 1);
+	}
+	else
+	{
+		warning("Error en tiempo de ejecución: las expresiones no son numéricas para ","Más Más Unario");
+	}
 }
 
 

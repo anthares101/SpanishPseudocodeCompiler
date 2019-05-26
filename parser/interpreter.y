@@ -149,7 +149,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 
 %type <stmts> stmtlist
 
-%type <st> stmt asgn print read if while repeatUntil for erase position
+%type <st> stmt asgn print read if while repeatUntil for erase position unary
 
 %type <prog> program
 
@@ -297,6 +297,11 @@ stmt: SEMICOLON  /* Empty statement: ";" */
 		// Default action
 		// $$ = $1;
 	  }
+	| unary SEMICOLON
+	  {
+		// Default action
+		// $$ = $1;
+	  }
 	| print SEMICOLON
 	  {
 		// Default action
@@ -432,6 +437,12 @@ asgn:   VARIABLE ASSIGNMENT exp
 		{ 
 			// Create a new assignment node
 			$$ = new lp::AssignmentStmt($1, (lp::AssignmentStmt *) $3);
+		}
+
+	|  VARIABLE ASSIGNMENT unary 
+		{ 
+			// Create a new assignment node
+			$$ = new lp::AssignmentStmt($1, (lp::UnaryNode *) $3);
 		}
 
 	   /* NEW in example 11 */ 
@@ -570,6 +581,12 @@ position: POSITION LPAREN listOfExp RPAREN {
 		}
 ;
 
+unary:	PLUSPLUS VARIABLE
+		{ 
+		  // Create a new unary plus plus node	
+  		  $$ = new lp::UnaryPlusPlusNode($2, true);
+		}
+
 
 exp:	NUMBER 
 		{ 
@@ -623,12 +640,6 @@ exp:	NUMBER
 		{ 
 		  // Create a new unary minus node	
   		  $$ = new lp::UnaryMinusNode($2);
-		}
-
-	| 	PLUSPLUS VARIABLE
-		{ 
-		  // Create a new unary plus plus node	
-  		  $$ = new lp::UnaryPlusPlusNode($2);
 		}
 
 	|	exp MODULO exp 
