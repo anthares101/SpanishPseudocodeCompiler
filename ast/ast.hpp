@@ -1685,6 +1685,46 @@ class UnaryPlusPlusNode : public UnaryNode
 };
 
 
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+/*!	
+  \class   UnaryMinusMinusNode uses UnaryNode's constructor as member initializer
+  \brief   Definition of atributes and methods of UnaryMinusMinusNode class
+  \note    UnaryMinusMinusNode Class publicly inherits from UnaryNode class
+*/
+class UnaryMinusMinusNode : public UnaryNode
+{
+
+ public:
+
+/*!		
+	\brief Constructor of UnaryMinusMinusNode
+	\param id: string, variable name
+	\param before: bool, unary operator position
+	\post  A new UnaryMinusMinusNode is created with the parameters
+*/
+  UnaryMinusMinusNode(std::string id, bool before) : UnaryNode(id, before)
+	{
+		//empty
+	}
+
+/*!
+	\brief   Print the expression
+	\return  void
+	\sa		 evaluate()
+*/
+  void print();
+  
+
+/*!	
+	\brief   Evaluate the expression
+	\sa		 print
+*/
+  void evaluate();
+};
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 

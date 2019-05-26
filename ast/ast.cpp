@@ -2714,6 +2714,39 @@ void lp::UnaryPlusPlusNode::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 
+void lp::UnaryMinusMinusNode::print() 
+{
+  // Get the identifier in the table of symbols as Constant
+  lp::Variable *var = (lp::Variable *) table.getSymbol(this->_id);
+
+  std::cout << "UnaryMinusMinusNode: "  << std::endl;
+  std::cout << "--";
+  std::cout << "VariableNode: " << this->_id << std::endl;
+  std::cout << "Type: " << var->getType() << std::endl;
+}
+
+void lp::UnaryMinusMinusNode::evaluate()
+{
+	// Get the identifier in the table of symbols as Constant
+	lp::Variable *var = (lp::Variable *) table.getSymbol(this->_id);
+
+	// Ckeck the type of the expression
+	if (var->getType() == NUMBER)
+	{
+		lp::NumericVariable *varNum = (lp::NumericVariable *) var;
+		varNum->setValue(varNum->getValue() - 1);
+	}
+	else
+	{
+		warning("Error en tiempo de ejecución: las expresiones no son numéricas para ","Menos Menos Unario");
+	}
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
 void lp::CaseList::addCase(lp::Case * caseElement) {
 	this->_caseList.push_back(caseElement);
 }

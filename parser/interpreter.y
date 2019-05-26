@@ -757,7 +757,24 @@ unary:	PLUSPLUS VARIABLE
 		  // Create a new unary plus plus node	
   		  $$ = new lp::UnaryPlusPlusNode($2, true);
 		}
-
+	|
+		VARIABLE PLUSPLUS
+		{ 
+		  // Create a new unary plus plus node	
+  		  $$ = new lp::UnaryPlusPlusNode($1, false);
+		}
+	|
+		MINUSMINUS VARIABLE
+		{ 
+		  // Create a new unary plus plus node	
+  		  $$ = new lp::UnaryMinusMinusNode($2, true);
+		}
+	|
+		VARIABLE MINUSMINUS
+		{ 
+		  // Create a new unary plus plus node	
+  		  $$ = new lp::UnaryMinusMinusNode($1, false);
+		}
 
 exp:	NUMBER 
 		{ 
