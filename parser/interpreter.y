@@ -532,7 +532,7 @@ asgn:   VARIABLE ASSIGNMENT exp
 	|  VARIABLE ASSIGNMENT asgn 
 		{ 
 			// Create a new assignment node
-			$$ = new lp::AssignmentStmt($1, (lp::AssignmentStmt *) $3);
+			$$ = new lp::AssignmentStmt($1, (lp::Assignment *) $3);
 		}
 
 	   /* NEW in example 11 */ 
@@ -553,7 +553,7 @@ asgn:   VARIABLE ASSIGNMENT exp
 
 	| VARIABLE PLUSASSIGNMENT asgn
 		{
-			$$ = new lp::PlusAssignmentStmt($1, (lp::AssignmentStmt *) $3);
+			$$ = new lp::PlusAssignmentStmt($1, (lp::Assignment *) $3);
 		}
 
 	| CONSTANT PLUSASSIGNMENT exp 
@@ -573,7 +573,7 @@ asgn:   VARIABLE ASSIGNMENT exp
 
 	| VARIABLE MINUSASSIGNMENT asgn
 		{
-			$$ = new lp::MinusAssignmentStmt($1, (lp::AssignmentStmt *) $3);
+			$$ = new lp::MinusAssignmentStmt($1, (lp::Assignment *) $3);
 		}
 
 	| CONSTANT MINUSASSIGNMENT exp 

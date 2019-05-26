@@ -310,7 +310,6 @@ class StringNode : public ExpNode
 };
 
 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1745,24 +1744,70 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+
+/*!	
+  \class Assignment
+  \brief Definition of atributes and methods of Assignment class
+  \note  Assignment Class publicly inherits from Statement class
+  \note Abstract class
+*/
+class Assignment : public Statement {
+
+protected:
+	std::string _id;    //!< Name of the variable of the assignment statement
+	ExpNode *_exp; 	 //!< Expresssion the assignment statement
+	Assignment *_asgn;  //!< Allow multiple assigment -> a = b = 2 
+
+public:
+
+	/*!		
+	\brief Constructor of Assignment 
+	\param id: string, variable of the Assignment
+	\param expression: pointer to ExpNode
+	\post  A new Assignment is created with the parameters
+*/
+	Assignment(std::string id, ExpNode *expression): _id(id), _exp(expression)
+	{
+		this->_asgn = NULL;
+	}
+
+	/*!		
+	\brief Constructor of Assignment 
+	\param id: string, variable of the Assignment
+	\param asgn: pointer to Assignment
+	\post  A new Assignment is created with the parameters
+*/
+	Assignment(std::string id, Assignment *asgn): _id(id), _asgn(asgn)
+	{
+		this->_exp = NULL;
+	}
+
+
+	/*!
+	\brief Getter for the ID
+	\note inline function
+	*/
+	inline std::string getId() const {
+		return this->_id;
+	} 
+
+};
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
 class PlusAssignmentStmt;
 class MinusAssignmentStmt;
 
 /*!	
   \class   AssignmentStmt
   \brief   Definition of atributes and methods of AssignmentStmt class
-  \note    AssignmentStmt Class publicly inherits from Statement class 
+  \note    AssignmentStmt Class publicly inherits from Assignment class 
 		   and adds its own print and evaluate functions
 */
-class AssignmentStmt : public Statement
+class AssignmentStmt : public Assignment
 {
- private:
-  std::string _id;    //!< Name of the variable of the assignment statement
-  ExpNode *_exp; 	 //!< Expresssion the assignment statement
-
-  AssignmentStmt *_asgn;  //!< Allow multiple assigment -> a = b = 2 
-  PlusAssignmentStmt *_plusAsgn; //! Allow multiple plus assigment -> a = b += 2
-  MinusAssignmentStmt *_minusAsgn; //! Allow multiple plus assigment -> a = b -= 2
 
  public:
 
@@ -1772,63 +1817,24 @@ class AssignmentStmt : public Statement
 	\param expression: pointer to ExpNode
 	\post  A new AssignmentStmt is created with the parameters
 */
-  AssignmentStmt(std::string id, ExpNode *expression): _id(id), _exp(expression)
+  AssignmentStmt(std::string id, ExpNode *expression) : Assignment(id, expression)
 	{
-		this->_asgn = NULL; 
-		this->_plusAsgn = NULL;
-		this->_minusAsgn = NULL;
+		//Empty
 	}
 
 /*!		
 	\brief Constructor of AssignmentStmt 
 	\param id: string, variable of the AssignmentStmt
-	\param asgn: pointer to AssignmentStmt
+	\param asgn: pointer to Assignment
 	\post  A new AssignmentStmt is created with the parameters
 	\note  Allow multiple assigment -> a = b = 2 
 */
 
-  AssignmentStmt(std::string id, AssignmentStmt *asgn): _id(id), _asgn(asgn)
+  AssignmentStmt(std::string id, Assignment *asgn) : Assignment(id, asgn)
 	{
-		this->_exp = NULL;
-		this->_plusAsgn = NULL;
-		this->_minusAsgn = NULL;
+		//Empty
 	}
 
-	/*!		
-	\brief Constructor of AssignmentStmt 
-	\param id: string, variable of the AssignmentStmt
-	\param plusAsgn: pointer to PlusAssignmentStmt
-	\post  A new AssignmentStmt is created with the parameters
-*/
-
-  AssignmentStmt(std::string id, PlusAssignmentStmt *plusAsgn): _id(id), _plusAsgn(plusAsgn)
-	{
-		this->_exp = NULL;
-		this->_asgn = NULL;
-		this->_minusAsgn = NULL;
-	}
-
-	/*!		
-	\brief Constructor of AssignmentStmt 
-	\param id: string, variable of the AssignmentStmt
-	\param minusAsgn: pointer to PlusAssignmentStmt
-	\post  A new AssignmentStmt is created with the parameters
-*/
-
-  AssignmentStmt(std::string id, MinusAssignmentStmt *minusAsgn): _id(id), _minusAsgn(minusAsgn)
-	{
-		this->_exp = NULL;
-		this->_asgn = NULL;
-		this->_plusAsgn = NULL;
-	}
-
-	/*!
-	\brief Getter for the ID
-	\note inline function
-	*/
-	inline const std::string getId() const {
-		return this->_id;
-	}
 
 /*!
 	\brief   Print the AssignmentStmt
@@ -1853,18 +1859,11 @@ class AssignmentStmt : public Statement
 /*!	
   \class   PlusAssignmentStmt
   \brief   Definition of atributes and methods of PlusAssignmentStmt class
-  \note    PlusAssignmentStmt Class publicly inherits from Statement class 
+  \note    PlusAssignmentStmt Class publicly inherits from Assignment class 
 		   and adds its own print and evaluate functions
 */
-class PlusAssignmentStmt : public Statement
+class PlusAssignmentStmt : public Assignment
 {
- private:
-  std::string _id;    //!< Name of the variable of the assignment statement
-  ExpNode *_exp; 	 //!< Expresssion the assignment statement
-
-  AssignmentStmt *_asgn;  //!< Allow multiple assigment -> a = b = 2 
-  PlusAssignmentStmt *_plusAsgn; //! Allow multiple plus assigment -> a += b += 2
-  MinusAssignmentStmt *_minusAsgn; //! Allow multiple plus assigment -> a = b -= 2
 
  public:
 
@@ -1874,11 +1873,9 @@ class PlusAssignmentStmt : public Statement
 	\param expression: pointer to ExpNode
 	\post  A new PlusAssignmentStmt is created with the parameters
 */
-  PlusAssignmentStmt(std::string id, ExpNode *expression): _id(id), _exp(expression)
+  PlusAssignmentStmt(std::string id, ExpNode *expression) : Assignment(id, expression)
 	{
-		this->_asgn = NULL;
-		this->_plusAsgn = NULL;
-		this->_minusAsgn = NULL;
+		//Empty
 	}
 
 /*!		
@@ -1888,49 +1885,10 @@ class PlusAssignmentStmt : public Statement
 	\post  A new PlusAssignmentStmt is created with the parameters 
 */
 
-  PlusAssignmentStmt(std::string id, AssignmentStmt *asgn): _id(id), _asgn(asgn)
+  PlusAssignmentStmt(std::string id, Assignment *asgn) : Assignment(id, asgn)
 	{
-		this->_exp = NULL;
-		this->_plusAsgn = NULL;
-		this->_minusAsgn = NULL;
+		//Empty
 	}
-
-/*!		
-	\brief Constructor of PlusAssignmentStmt 
-	\param id: string, variable of the PlusAssignmentStmt
-	\param plusAsgn: pointer to PlusAssignmentStmt
-	\post  A new PlusAssignmentStmt is created with the parameters
-*/
-
-  PlusAssignmentStmt(std::string id, PlusAssignmentStmt *plusAsgn): _id(id), _plusAsgn(plusAsgn)
-	{
-		this->_exp = NULL;
-		this->_asgn = NULL;
-		this->_minusAsgn = NULL;
-	}
-
-	/*!		
-	\brief Constructor of AssignmentStmt 
-	\param id: string, variable of the AssignmentStmt
-	\param minusAsgn: pointer to PlusAssignmentStmt
-	\post  A new AssignmentStmt is created with the parameters
-*/
-
-  PlusAssignmentStmt(std::string id, MinusAssignmentStmt *minusAsgn): _id(id), _minusAsgn(minusAsgn)
-	{
-		this->_exp = NULL;
-		this->_asgn = NULL;
-		this->_plusAsgn = NULL;
-	}
-
-	/*!
-	\brief Getter for the ID
-	\note inline function
-	*/
-	inline const std::string getId() const {
-		return this->_id;
-	}
-
 
 /*!
 	\brief   Print the PlusAssignmentStmt
@@ -1953,96 +1911,48 @@ class PlusAssignmentStmt : public Statement
 
 
 /*!	
-  \class   PlusAssignmentStmt
-  \brief   Definition of atributes and methods of PlusAssignmentStmt class
-  \note    PlusAssignmentStmt Class publicly inherits from Statement class 
+  \class   MinusAssignmentStmt
+  \brief   Definition of atributes and methods of MinusAssignmentStmt class
+  \note    MinusAssignmentStmt Class publicly inherits from Assignment class 
 		   and adds its own print and evaluate functions
 */
-class MinusAssignmentStmt : public Statement
+class MinusAssignmentStmt : public Assignment
 {
- private:
-  std::string _id;    //!< Name of the variable of the assignment statement
-  ExpNode *_exp; 	 //!< Expresssion the assignment statement
-
-  AssignmentStmt *_asgn;  //!< Allow multiple assigment -> a = b = 2 
-  PlusAssignmentStmt *_plusAsgn; //! Allow multiple plus assigment -> a += b += 2
-  MinusAssignmentStmt *_minusAsgn; //! Allow multiple plus assigment -> a = b -= 2
 
  public:
 
 /*!		
-	\brief Constructor of PlusAssignmentStmt 
-	\param id: string, variable of the PlusAssignmentStmt
+	\brief Constructor of MinusAssignmentStmt 
+	\param id: string, variable of the MinusAssignmentStmt
 	\param expression: pointer to ExpNode
-	\post  A new PlusAssignmentStmt is created with the parameters
+	\post  A new MinusAssignmentStmt is created with the parameters
 */
-  MinusAssignmentStmt(std::string id, ExpNode *expression): _id(id), _exp(expression)
+  MinusAssignmentStmt(std::string id, ExpNode *expression) : Assignment(id, expression)
 	{
-		this->_asgn = NULL;
-		this->_plusAsgn = NULL;
-		this->_minusAsgn = NULL;
+		//Empty
 	}
 
 /*!		
-	\brief Constructor of PlusAssignmentStmt 
-	\param id: string, variable of the PlusAssignmentStmt
-	\param asgn: pointer to AssignmentStmt
-	\post  A new PlusAssignmentStmt is created with the parameters 
+	\brief Constructor of MinusAssignmentStmt 
+	\param id: string, variable of the MinusAssignmentStmt
+	\param asgn: pointer to Assignment
+	\post  A new MinusAssignmentStmt is created with the parameters 
 */
 
-  MinusAssignmentStmt(std::string id, AssignmentStmt *asgn): _id(id), _asgn(asgn)
+  MinusAssignmentStmt(std::string id, Assignment *asgn) : Assignment(id, asgn)
 	{
-		this->_exp = NULL;
-		this->_plusAsgn = NULL;
-		this->_minusAsgn = NULL;
+		//Empty
 	}
-
-/*!		
-	\brief Constructor of PlusAssignmentStmt 
-	\param id: string, variable of the PlusAssignmentStmt
-	\param plusAsgn: pointer to PlusAssignmentStmt
-	\post  A new PlusAssignmentStmt is created with the parameters
-*/
-
-  MinusAssignmentStmt(std::string id, PlusAssignmentStmt *plusAsgn): _id(id), _plusAsgn(plusAsgn)
-	{
-		this->_exp = NULL;
-		this->_asgn = NULL;
-		this->_minusAsgn = NULL;
-	}
-
-	/*!		
-	\brief Constructor of AssignmentStmt 
-	\param id: string, variable of the AssignmentStmt
-	\param minusAsgn: pointer to PlusAssignmentStmt
-	\post  A new AssignmentStmt is created with the parameters
-*/
-
-  MinusAssignmentStmt(std::string id, MinusAssignmentStmt *minusAsgn): _id(id), _minusAsgn(minusAsgn)
-	{
-		this->_exp = NULL;
-		this->_asgn = NULL;
-		this->_plusAsgn = NULL;
-	}
-
-	/*!
-	\brief Getter for the ID
-	\note inline function
-	*/
-	inline const std::string getId() const {
-		return this->_id;
-	}
-
 
 /*!
-	\brief   Print the PlusAssignmentStmt
+	\brief   Print the MinusAssignmentStmt
 	\return  void
 	\sa		 evaluate()
 */
   void print();
 
 /*!	
-	\brief   Evaluate the PlusAssignmentStmt
+	\brief   Evaluate the MinusAssignmentStmt
 	\return  void
 	\sa		 print
 */
