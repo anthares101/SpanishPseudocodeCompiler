@@ -2089,6 +2089,138 @@ class MinusAssignmentStmt : public Assignment
 
 };
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/*!	
+  \class   ProductAssignmentStmt
+  \brief   Definition of atributes and methods of ProductAssignmentStmt class
+  \note    ProductAssignmentStmt Class publicly inherits from Assignment class 
+		   and adds its own print and evaluate functions
+*/
+class ProductAssignmentStmt : public Assignment
+{
+
+ public:
+
+/*!		
+	\brief Constructor of ProductAssignmentStmt 
+	\param id: string, variable of the ProductAssignmentStmt
+	\param expression: pointer to ExpNode
+	\post  A new ProductAssignmentStmt is created with the parameters
+*/
+  ProductAssignmentStmt(std::string id, ExpNode *expression) : Assignment(id, expression)
+	{
+		//Empty
+	}
+
+/*!		
+	\brief Constructor of ProductAssignmentStmt 
+	\param id: string, variable of the ProductAssignmentStmt
+	\param asgn: pointer to Assignment
+	\post  A new ProductAssignmentStmt is created with the parameters 
+*/
+
+  ProductAssignmentStmt(std::string id, Assignment *asgn) : Assignment(id, asgn)
+	{
+		//Empty
+	}
+
+	/*!		
+	\brief Constructor of ProductAssignmentStmt 
+	\param id: string, variable of the ProductAssignmentStmt
+	\param unaryNode: pointer to UnaryNode
+	\post  A new ProductAssignmentStmt is created with the parameters
+*/
+  ProductAssignmentStmt(std::string id, UnaryNode *unaryNode): Assignment(id, unaryNode)
+	{
+		//Empty
+	}
+
+/*!
+	\brief   Print the ProductAssignmentStmt
+	\return  void
+	\sa		 evaluate()
+*/
+  void print();
+
+/*!	
+	\brief   Evaluate the ProductAssignmentStmt
+	\return  void
+	\sa		 print
+*/
+    void evaluate();
+
+};
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/*!	
+  \class   DivisionAssignmentStmt
+  \brief   Definition of atributes and methods of DivisionAssignmentStmt class
+  \note    DivisionAssignmentStmt Class publicly inherits from Assignment class 
+		   and adds its own print and evaluate functions
+*/
+class DivisionAssignmentStmt : public Assignment
+{
+
+ public:
+
+/*!		
+	\brief Constructor of DivisionAssignmentStmt 
+	\param id: string, variable of the DivisionAssignmentStmt
+	\param expression: pointer to ExpNode
+	\post  A new DivisionAssignmentStmt is created with the parameters
+*/
+  DivisionAssignmentStmt(std::string id, ExpNode *expression) : Assignment(id, expression)
+	{
+		//Empty
+	}
+
+/*!		
+	\brief Constructor of DivisionAssignmentStmt 
+	\param id: string, variable of the DivisionAssignmentStmt
+	\param asgn: pointer to Assignment
+	\post  A new DivisionAssignmentStmt is created with the parameters 
+*/
+
+  DivisionAssignmentStmt(std::string id, Assignment *asgn) : Assignment(id, asgn)
+	{
+		//Empty
+	}
+
+	/*!		
+	\brief Constructor of DivisionAssignmentStmt 
+	\param id: string, variable of the DivisionAssignmentStmt
+	\param unaryNode: pointer to UnaryNode
+	\post  A new DivisionAssignmentStmt is created with the parameters
+*/
+  DivisionAssignmentStmt(std::string id, UnaryNode *unaryNode): Assignment(id, unaryNode)
+	{
+		//Empty
+	}
+
+/*!
+	\brief   Print the DivisionAssignmentStmt
+	\return  void
+	\sa		 evaluate()
+*/
+  void print();
+
+/*!	
+	\brief   Evaluate the DivisionAssignmentStmt
+	\return  void
+	\sa		 print
+*/
+    void evaluate();
+
+};
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 

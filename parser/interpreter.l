@@ -293,6 +293,10 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 
 "-:="	{ return MINUSASSIGNMENT; }
 
+"*:="	{ return PRODUCTASSIGNMENT; }
+
+"/:="	{ return DIVISIONASSIGNMENT; }
+
 
 	/* OPERADORES RELACIONALES */
 

@@ -1315,7 +1315,7 @@ bool lp::NotNode::evaluateBool()
 void lp::AssignmentStmt::print() 
 {
   std::cout << "assignment_node: "  << std::endl;
-  std::cout << this->_id << " = ";
+  std::cout << this->_id << " := ";
   this->_exp->print();
   std::cout << std::endl;
 }
@@ -1438,7 +1438,6 @@ void lp::AssignmentStmt::evaluate()
 
 	else if(this->_asgn != NULL)// this->_asgn is not NULL
 	{
-		std::cout << "holi con assign\n";
 		// IMPORTANT
 		//  evaluate the assigment child
 		this->_asgn->evaluate();
@@ -1457,10 +1456,8 @@ void lp::AssignmentStmt::evaluate()
 				// Check the type of the first variable
 				if (firstVar->getType() == NUMBER)
 				{
-				/* Get the identifier of the first variable in the table of symbols as NumericVariable */
-				lp::NumericVariable *firstVar = (lp::NumericVariable *) table.getSymbol(this->_id);
-				  	// Get the identifier o f the in the table of symbols as NumericVariable
-//					lp::NumericVariable *n = (lp::NumericVariable *) table.getSymbol(this->_id);
+					/* Get the identifier of the first variable in the table of symbols as NumericVariable */
+					lp::NumericVariable *firstVar = (lp::NumericVariable *) table.getSymbol(this->_id);
 
 					// Assignment the value of the second variable to the first variable
 					firstVar->setValue(secondVar->getValue());
@@ -1488,10 +1485,8 @@ void lp::AssignmentStmt::evaluate()
 				// Check the type of the first variable
 				if (firstVar->getType() == STRING)
 				{
-				/* Get the identifier of the first variable in the table of symbols as StringVariable */
-				lp::StringVariable *firstVar = (lp::StringVariable *) table.getSymbol(this->_id);
-				  	// Get the identifier o f the in the table of symbols as NumericVariable
-//					lp::StringVariable *n = (lp::StringVariable *) table.getSymbol(this->_id);
+					/* Get the identifier of the first variable in the table of symbols as StringVariable */
+					lp::StringVariable *firstVar = (lp::StringVariable *) table.getSymbol(this->_id);
 
 					// Assignment the value of the second variable to the first variable
 					firstVar->setValue(secondVar->getValue());
@@ -1519,10 +1514,8 @@ void lp::AssignmentStmt::evaluate()
 				// Check the type of the first variable
 				if (firstVar->getType() == BOOL)
 				{
-				/* Get the identifier of the first variable in the table of symbols as LogicalVariable */
-				lp::LogicalVariable *firstVar = (lp::LogicalVariable *) table.getSymbol(this->_id);
-				  	// Get the identifier o f the in the table of symbols as NumericVariable
-//					lp::NumericVariable *n = (lp::NumericVariable *) table.getSymbol(this->_id);
+					/* Get the identifier of the first variable in the table of symbols as LogicalVariable */
+					lp::LogicalVariable *firstVar = (lp::LogicalVariable *) table.getSymbol(this->_id);
 
 					// Assignment the value of the second variable to the first variable
 					firstVar->setValue(secondVar->getValue());
@@ -1676,10 +1669,8 @@ void lp::PlusAssignmentStmt::evaluate()
 				// Check the type of the first variable
 				if (firstVar->getType() == NUMBER)
 				{
-				/* Get the identifier of the first variable in the table of symbols as NumericVariable */
-				lp::NumericVariable *firstVar = (lp::NumericVariable *) table.getSymbol(this->_id);
-				  	// Get the identifier o f the in the table of symbols as NumericVariable
-//					lp::NumericVariable *n = (lp::NumericVariable *) table.getSymbol(this->_id);
+					/* Get the identifier of the first variable in the table of symbols as NumericVariable */
+					lp::NumericVariable *firstVar = (lp::NumericVariable *) table.getSymbol(this->_id);
 
 					// Assignment the value of the second variable to the first variable
 					firstVar->setValue(firstVar->getValue() + secondVar->getValue());
@@ -1744,7 +1735,7 @@ void lp::PlusAssignmentStmt::evaluate()
 void lp::MinusAssignmentStmt::print() 
 {
   std::cout << "minusAssignment_node: "  << std::endl;
-  std::cout << this->_id << " +:= ";
+  std::cout << this->_id << " -:= ";
   this->_exp->print();
   std::cout << std::endl;
 }
@@ -1819,10 +1810,8 @@ void lp::MinusAssignmentStmt::evaluate()
 				// Check the type of the first variable
 				if (firstVar->getType() == NUMBER)
 				{
-				/* Get the identifier of the first variable in the table of symbols as NumericVariable */
-				lp::NumericVariable *firstVar = (lp::NumericVariable *) table.getSymbol(this->_id);
-				  	// Get the identifier o f the in the table of symbols as NumericVariable
-//					lp::NumericVariable *n = (lp::NumericVariable *) table.getSymbol(this->_id);
+					/* Get the identifier of the first variable in the table of symbols as NumericVariable */
+					lp::NumericVariable *firstVar = (lp::NumericVariable *) table.getSymbol(this->_id);
 
 					// Assignment the value of the second variable to the first variable
 					firstVar->setValue(firstVar->getValue() - secondVar->getValue());
@@ -1879,6 +1868,309 @@ void lp::MinusAssignmentStmt::evaluate()
 			this->_unaryNode->evaluate();
 	}
 }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+void lp::ProductAssignmentStmt::print() 
+{
+  std::cout << "productAssignment_node: "  << std::endl;
+  std::cout << this->_id << " *:= ";
+  this->_exp->print();
+  std::cout << std::endl;
+}
+
+void lp::ProductAssignmentStmt::evaluate() 
+{
+	/* Get the identifier in the table of symbols as Variable */
+	/* 
+		a = 2;
+		a = b = 2;
+
+		a: firstVar
+		b: secondVar
+	*/
+	lp::Variable *firstVar = (lp::Variable *) table.getSymbol(this->_id);
+
+	// Check the expression
+	if (this->_exp != NULL)
+	{
+		// Check the type of the expression of the asgn
+		switch(this->_exp->getType())
+		{
+			case NUMBER:
+			{
+				double value;
+				// evaluate the expression as NUMBER
+			 	value = this->_exp->evaluateNumber();
+
+				// Check the type of the first varible
+				if (firstVar->getType() == NUMBER)
+				{
+				  	// Get the identifier in the table of symbols as NumericVariable
+					lp::NumericVariable *v = (lp::NumericVariable *) table.getSymbol(this->_id);
+
+					// Assignment the value to the identifier in the table of symbols
+					v->setValue(v->getValue() * value);
+				}
+				// The type of variable is not NUMBER
+				else
+				{
+					warning("Error en tiempo de ejecución: la variable no es numérica ", this->_id);
+				}
+			}
+			break;
+
+			default:
+				warning("Error en tiempo de ejecución: tipo incompatible para ", "asignación");
+		}
+
+	}
+
+	//////////////////////////////////////////////
+	// Allow multiple assigment -> a = b = c = 2;
+
+	else if(this->_asgn != NULL)// this->_asgn is not NULL
+	{
+		// IMPORTANT
+		//  evaluate the assigment child
+		this->_asgn->evaluate();
+
+
+		/* Get the identifier of the previous asgn in the table of symbols as Variable */
+		lp::Variable *secondVar = (lp::Variable *) table.getSymbol(this->_asgn->getId());
+
+		// Get the type of the variable of the previous asgn
+		switch(secondVar->getType())
+		{
+			case NUMBER:
+			{
+				/* Get the identifier of the previous asgn in the table of symbols as NumericVariable */
+				lp::NumericVariable *secondVar = (lp::NumericVariable *) table.getSymbol(this->_asgn->getId());
+				// Check the type of the first variable
+				if (firstVar->getType() == NUMBER)
+				{
+					/* Get the identifier of the first variable in the table of symbols as NumericVariable */
+					lp::NumericVariable *firstVar = (lp::NumericVariable *) table.getSymbol(this->_id);
+
+					// Assignment the value of the second variable to the first variable
+					firstVar->setValue(firstVar->getValue() * secondVar->getValue());
+
+				}
+				// The type of variable is not NUMBER
+				else
+				{
+					warning("Error en tiempo de ejecución: la variable no es numérica ", this->_id);
+				}
+			}
+			break;
+
+			default:
+				warning("Error en tiempo de ejecución: tipo incompatible para ", "asignación");
+		}
+	}
+	else if(this->_unaryNode != NULL) { //if this->_unaryNode is not NULL
+		// IMPORTANT
+		// evaluate the assigment child (Will be done later if the unary operator is after the variable)
+		if(_unaryNode->beforeVariable())
+			this->_unaryNode->evaluate();
+
+
+		/* Get the identifier of the previous asgn in the table of symbols as Variable */
+		lp::Variable *secondVar = (lp::Variable *) table.getSymbol(this->_unaryNode->getId());
+
+		switch(secondVar->getType()) {
+			case NUMBER:
+			{
+				/* Get the identifier of the previous asgn in the table of symbols as NumericVariable */
+				lp::NumericVariable *secondVar = (lp::NumericVariable *) table.getSymbol(this->_unaryNode->getId());
+				// Check the type of the first variable
+				if (firstVar->getType() == NUMBER)
+				{
+					/* Get the identifier of the first variable in the table of symbols as NumericVariable */
+					lp::NumericVariable *firstVar = (lp::NumericVariable *) table.getSymbol(this->_id);
+
+					// Assignment the value of the second variable to the first variable
+					firstVar->setValue(firstVar->getValue() * secondVar->getValue());
+				}
+				else {
+					warning("Error en tiempo de ejecución: la variable no es numérica ", this->_id);
+				}
+			}
+				break;
+			default:
+				warning("Error en tiempo de ejecución: tipo incompatible para ", "asignación");
+		}
+
+		// IMPORTANT
+		// evaluate the assigment child if it wasnt done
+		if(!_unaryNode->beforeVariable())
+			this->_unaryNode->evaluate();
+	}
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+void lp::DivisionAssignmentStmt::print() 
+{
+  std::cout << "divisionAssignment_node: "  << std::endl;
+  std::cout << this->_id << " /:= ";
+  this->_exp->print();
+  std::cout << std::endl;
+}
+
+void lp::DivisionAssignmentStmt::evaluate() 
+{
+	/* Get the identifier in the table of symbols as Variable */
+	/* 
+		a = 2;
+		a = b = 2;
+
+		a: firstVar
+		b: secondVar
+	*/
+	lp::Variable *firstVar = (lp::Variable *) table.getSymbol(this->_id);
+
+	// Check the expression
+	if (this->_exp != NULL)
+	{
+		// Check the type of the expression of the asgn
+		switch(this->_exp->getType())
+		{
+			case NUMBER:
+			{
+				double value;
+				// evaluate the expression as NUMBER
+			 	value = this->_exp->evaluateNumber();
+
+			 	if(std::abs(value) > ERROR_BOUND) {
+					// Check the type of the first varible
+					if (firstVar->getType() == NUMBER)
+					{
+					  	// Get the identifier in the table of symbols as NumericVariable
+						lp::NumericVariable *v = (lp::NumericVariable *) table.getSymbol(this->_id);
+
+						// Assignment the value to the identifier in the table of symbols
+						v->setValue(v->getValue() / value);
+					}
+					// The type of variable is not NUMBER
+					else
+					{
+						warning("Error en tiempo de ejecución: la variable no es numérica ", this->_id);
+					}
+				}
+				else {
+					warning("Error en tiempo de ejecución", "División por cero");
+				}
+			}
+			break;
+
+			default:
+				warning("Error en tiempo de ejecución: tipo incompatible para ", "asignación");
+		}
+
+	}
+
+	//////////////////////////////////////////////
+	// Allow multiple assigment -> a = b = c = 2;
+
+	else if(this->_asgn != NULL)// this->_asgn is not NULL
+	{
+		// IMPORTANT
+		//  evaluate the assigment child
+		this->_asgn->evaluate();
+
+
+		/* Get the identifier of the previous asgn in the table of symbols as Variable */
+		lp::Variable *secondVar = (lp::Variable *) table.getSymbol(this->_asgn->getId());
+
+		// Get the type of the variable of the previous asgn
+		switch(secondVar->getType())
+		{
+			case NUMBER:
+			{
+				/* Get the identifier of the previous asgn in the table of symbols as NumericVariable */
+				lp::NumericVariable *secondVar = (lp::NumericVariable *) table.getSymbol(this->_asgn->getId());
+
+				if(std::abs(secondVar->getValue()) > ERROR_BOUND) {
+					// Check the type of the first variable
+					if (firstVar->getType() == NUMBER)
+					{
+						/* Get the identifier of the first variable in the table of symbols as NumericVariable */
+						lp::NumericVariable *firstVar = (lp::NumericVariable *) table.getSymbol(this->_id);
+
+						// Assignment the value of the second variable to the first variable
+						firstVar->setValue(firstVar->getValue() / secondVar->getValue());
+
+					}
+					// The type of variable is not NUMBER
+					else
+					{
+						warning("Error en tiempo de ejecución: la variable no es numérica ", this->_id);
+					}
+				}
+				else {
+					warning("Error en tiempo de ejecución", "División por cero");
+				}
+			}
+			break;
+
+			default:
+				warning("Error en tiempo de ejecución: tipo incompatible para ", "asignación");
+		}
+	}
+	else if(this->_unaryNode != NULL) { //if this->_unaryNode is not NULL
+		// IMPORTANT
+		// evaluate the assigment child (Will be done later if the unary operator is after the variable)
+		if(_unaryNode->beforeVariable())
+			this->_unaryNode->evaluate();
+
+
+		/* Get the identifier of the previous asgn in the table of symbols as Variable */
+		lp::Variable *secondVar = (lp::Variable *) table.getSymbol(this->_unaryNode->getId());
+
+		switch(secondVar->getType()) {
+			case NUMBER:
+			{
+				/* Get the identifier of the previous asgn in the table of symbols as NumericVariable */
+				lp::NumericVariable *secondVar = (lp::NumericVariable *) table.getSymbol(this->_unaryNode->getId());
+
+				if(std::abs(secondVar->getValue()) > ERROR_BOUND) {
+					// Check the type of the first variable
+					if (firstVar->getType() == NUMBER)
+					{
+						/* Get the identifier of the first variable in the table of symbols as NumericVariable */
+						lp::NumericVariable *firstVar = (lp::NumericVariable *) table.getSymbol(this->_id);
+
+						// Assignment the value of the second variable to the first variable
+						firstVar->setValue(firstVar->getValue() / secondVar->getValue());
+
+					}
+					// The type of variable is not NUMBER
+					else
+					{
+						warning("Error en tiempo de ejecución: la variable no es numérica ", this->_id);
+					}
+				}
+				else {
+					warning("Error en tiempo de ejecución", "División por cero");
+				}
+			}
+				break;
+			default:
+				warning("Error en tiempo de ejecución: tipo incompatible para ", "asignación");
+		}
+
+		// IMPORTANT
+		// evaluate the assigment child if it wasnt done
+		if(!_unaryNode->beforeVariable())
+			this->_unaryNode->evaluate();
+	}
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////

@@ -199,7 +199,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 //%token LETFCURLYBRACKET RIGHTCURLYBRACKET
 
 /* NEW in example 7 */
-%right ASSIGNMENT PLUSASSIGNMENT MINUSASSIGNMENT
+%right ASSIGNMENT PLUSASSIGNMENT MINUSASSIGNMENT PRODUCTASSIGNMENT DIVISIONASSIGNMENT
 
 /* NEW in example 14 */
 %token COMMA
@@ -296,25 +296,6 @@ stmtlist:  /* empty: epsilon rule */
 			yyclearin; 
            } 
 ;
-
-
-			/*aseElmnt: CASE NUMBER COLON stmtlist BREAK SEMICOLON
-					   {
-					   	$$ = new lp::Case($4, new int((int) $2), true, false);
-					   }
-								   | CASE NUMBER COLON stmtlist  					2 CONFLICTOS DESPLAZAMIENTO/REDUCCION
-								   {
-								   	$$ = new lp::Case($4, (int*)(&$2), false);
-								   }
-					   | DEFAULT COLON stmtlist BREAK SEMICOLON
-					   {
-					   	$$ = new lp::Case($3, NULL, true, true);
-					   }
-								    | DEFAULT COLON stmtlist
-								   {
-								   	$$ = new lp::Case($3, NULL, true);
-								   }
-			;*/
 
 caseLst:  /* empty: epsilon rule */
 		  { 
@@ -620,6 +601,68 @@ asgn:   VARIABLE ASSIGNMENT exp
 		}
 
 	| CONSTANT MINUSASSIGNMENT unary 
+		{   
+ 			execerror("Error semántico en asignación: no se permite modificar una constante ", $1);
+		}
+
+	| VARIABLE PRODUCTASSIGNMENT exp
+		{
+			$$ = new lp::ProductAssignmentStmt($1, $3);
+		}
+
+	| VARIABLE PRODUCTASSIGNMENT asgn
+		{
+			$$ = new lp::ProductAssignmentStmt($1, (lp::Assignment *) $3);
+		}
+
+	|  VARIABLE PRODUCTASSIGNMENT unary 
+		{ 
+			// Create a new assignment node
+			$$ = new lp::ProductAssignmentStmt($1, (lp::UnaryNode *) $3);
+		}
+
+	| CONSTANT PRODUCTASSIGNMENT exp 
+		{   
+ 			execerror("Error semántico en asignación: no se permite modificar una constante ", $1);
+		}
+	   /* NEW in example 11 */ 
+	| CONSTANT PRODUCTASSIGNMENT asgn 
+		{   
+ 			execerror("Error semántico en asignación múltiple: no se permite modificar una constante ",$1);
+		}
+
+	| CONSTANT PRODUCTASSIGNMENT unary 
+		{   
+ 			execerror("Error semántico en asignación: no se permite modificar una constante ", $1);
+		}
+
+	| VARIABLE DIVISIONASSIGNMENT exp
+		{
+			$$ = new lp::DivisionAssignmentStmt($1, $3);
+		}
+
+	| VARIABLE DIVISIONASSIGNMENT asgn
+		{
+			$$ = new lp::DivisionAssignmentStmt($1, (lp::Assignment *) $3);
+		}
+
+	|  VARIABLE DIVISIONASSIGNMENT unary 
+		{ 
+			// Create a new assignment node
+			$$ = new lp::DivisionAssignmentStmt($1, (lp::UnaryNode *) $3);
+		}
+
+	| CONSTANT DIVISIONASSIGNMENT exp 
+		{   
+ 			execerror("Error semántico en asignación: no se permite modificar una constante ", $1);
+		}
+	   /* NEW in example 11 */ 
+	| CONSTANT DIVISIONASSIGNMENT asgn 
+		{   
+ 			execerror("Error semántico en asignación múltiple: no se permite modificar una constante ",$1);
+		}
+
+	| CONSTANT DIVISIONASSIGNMENT unary 
 		{   
  			execerror("Error semántico en asignación: no se permite modificar una constante ", $1);
 		}
