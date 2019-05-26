@@ -310,7 +310,6 @@ class StringNode : public ExpNode
 };
 
 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1566,7 +1565,7 @@ class Statement {
   \warning Abstract class
 */
 
-class StatementList : public Statement {
+class StatementList {
 
 private:
 	//! List with all the statements
@@ -1689,25 +1688,222 @@ class UnaryPlusPlusNode : public UnaryNode
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+
+/*!	
+  \class   Case
+  \brief   Definition of atributes and methods of Case class
+*/
+class Case : public Statement {
+
+private:
+	ExpNode * _value; //!< Case value
+	StatementList * _stmts; //!< Statements of the body of the case
+	bool _breakOpt; //!< Wether the case has a break option or not
+	bool _def; //!< Wether it is the default case or not
+
+public:
+
+	/*!		
+	\brief Constructor of Case 
+	\param value: int *, value of the Case
+	\param stmts: body of the Case
+	\param breakOpt: Wether the case has a break option or not
+	\post  A new Case is created with the parameters
+*/
+	Case(StatementList * stmts, ExpNode * value = NULL, bool breakOpt = false, bool def = NULL) {
+		this->_value = value;
+		this->_stmts = stmts;
+		this->_breakOpt = breakOpt;
+		this->_def = def;
+	}
+
+	/*!	
+		\brief   Gets the type of the Case
+		\return  int
+		\note 	 inline function
+	*/
+	inline int getType() const {
+		return this->_value->getType();
+	}
+
+	/*!	
+		\brief   Gets the value of the Case
+		\return  double
+		\note 	 inline function
+	*/
+	inline double getNumValue() const {
+		return this->_value->evaluateNumber();
+	}
+
+	/*!	
+		\brief   Gets the value of the Case
+		\return  string
+		\note 	 inline function
+	*/
+	inline std::string getStrValue() const {
+		return this->_value->evaluateString();
+	}
+
+	/*!	
+		\brief   Gets the break option of the Case
+		\return  bool
+		\note 	 inline function
+	*/
+	inline bool getBreakOpt() const {
+		return this->_breakOpt;
+	}
+
+	/*!	
+		\brief   Tells if it is de default case or not
+		\return  bool
+		\note 	 inline function
+	*/
+	inline bool isDefaultCase() const {
+		return this->_def;
+	}
+
+	/*!	
+		\brief   Print the Case
+		\return  void
+		\sa		 evaluate
+	*/
+
+	void print();
+
+	/*!	
+		\brief   Evaluate the Case
+		\return  void
+		\sa		 print
+	*/
+	void evaluate();
+
+};
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+class CaseList {
+
+private:
+	std::list<lp::Case *> _caseList;
+
+public:
+
+	/*!
+		\brief Class constructor
+	*/
+	CaseList() {
+		//Empty 
+	}
+
+	/*!
+		\brief Adds a case to the list
+		\return void
+	*/
+	void addCase(lp::Case * caseElement);
+
+	/*!	
+		\brief   Print the CaseList
+		\return  void
+		\sa		 evaluate
+	*/
+
+	void print();
+
+	/*!	
+		\brief   Evaluate the CaseList
+		\param 	 var: ExpNode, value of the variable to be evaluated
+		\return  void
+		\sa		 print
+	*/
+	void evaluate(ExpNode * var);
+};
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/*!	
+  \class Assignment
+  \brief Definition of atributes and methods of Assignment class
+  \note  Assignment Class publicly inherits from Statement class
+  \note Abstract class
+*/
+class Assignment : public Statement {
+
+protected:
+	std::string _id;    //!< Name of the variable of the assignment statement
+	ExpNode *_exp; 	 //!< Expresssion the assignment statement
+	Assignment *_asgn;  //!< Allow multiple assigment -> a = b = 2
+  	UnaryNode *_unaryNode; //!Allow unary operators assigments -> a = ++b; a = b++; a = --b; a = b--;
+
+public:
+
+	/*!		
+	\brief Constructor of Assignment 
+	\param id: string, variable of the Assignment
+	\param expression: pointer to ExpNode
+	\post  A new Assignment is created with the parameters
+*/
+	Assignment(std::string id, ExpNode *expression): _id(id), _exp(expression)
+	{
+		this->_asgn = NULL;
+		this->_unaryNode = NULL;
+	}
+
+	/*!		
+	\brief Constructor of Assignment 
+	\param id: string, variable of the Assignment
+	\param asgn: pointer to Assignment
+	\post  A new Assignment is created with the parameters
+*/
+	Assignment(std::string id, Assignment *asgn): _id(id), _asgn(asgn)
+	{
+		this->_exp = NULL;
+		this->_unaryNode = NULL;
+	}
+
+/*!		
+	\brief Constructor of Assignment 
+	\param id: string, variable of the Assignment
+	\param unaryNode: pointer to UnaryNode
+	\post  A new Assignment is created with the parameters
+*/
+  Assignment(std::string id, UnaryNode *unaryNode): _id(id), _unaryNode(unaryNode)
+	{
+		this->_exp = NULL;
+		this->_asgn = NULL;
+	}
+
+
+	/*!
+	\brief Getter for the ID
+	\note inline function
+	*/
+	inline std::string getId() const {
+		return this->_id;
+	} 
+
+};
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
 class PlusAssignmentStmt;
 class MinusAssignmentStmt;
 
 /*!	
   \class   AssignmentStmt
   \brief   Definition of atributes and methods of AssignmentStmt class
-  \note    AssignmentStmt Class publicly inherits from Statement class 
+  \note    AssignmentStmt Class publicly inherits from Assignment class 
 		   and adds its own print and evaluate functions
 */
-class AssignmentStmt : public Statement
+class AssignmentStmt : public Assignment
 {
- private:
-  std::string _id;    //!< Name of the variable of the assignment statement
-  ExpNode *_exp; 	 //!< Expresssion the assignment statement
-
-  AssignmentStmt *_asgn;  //!< Allow multiple assigment -> a = b = 2 
-  PlusAssignmentStmt *_plusAsgn; //! Allow multiple plus assigment -> a = b += 2
-  MinusAssignmentStmt *_minusAsgn; //! Allow multiple plus assigment -> a = b -= 2
-  UnaryNode *_unaryNode; //!Allow unary operators assigments -> a = ++b; a = b++; a = --b; a = b--;
 
  public:
 
@@ -1717,58 +1913,22 @@ class AssignmentStmt : public Statement
 	\param expression: pointer to ExpNode
 	\post  A new AssignmentStmt is created with the parameters
 */
-  AssignmentStmt(std::string id, ExpNode *expression): _id(id), _exp(expression)
+  AssignmentStmt(std::string id, ExpNode *expression) : Assignment(id, expression)
 	{
-		this->_asgn = NULL; 
-		this->_plusAsgn = NULL;
-		this->_minusAsgn = NULL;
-		this->_unaryNode = NULL;
+		//Empty
 	}
 
 /*!		
 	\brief Constructor of AssignmentStmt 
 	\param id: string, variable of the AssignmentStmt
-	\param asgn: pointer to AssignmentStmt
+	\param asgn: pointer to Assignment
 	\post  A new AssignmentStmt is created with the parameters
 	\note  Allow multiple assigment -> a = b = 2 
 */
 
-  AssignmentStmt(std::string id, AssignmentStmt *asgn): _id(id), _asgn(asgn)
+  AssignmentStmt(std::string id, Assignment *asgn) : Assignment(id, asgn)
 	{
-		this->_exp = NULL;
-		this->_plusAsgn = NULL;
-		this->_minusAsgn = NULL;
-		this->_unaryNode = NULL;
-	}
-
-	/*!		
-	\brief Constructor of AssignmentStmt 
-	\param id: string, variable of the AssignmentStmt
-	\param plusAsgn: pointer to PlusAssignmentStmt
-	\post  A new AssignmentStmt is created with the parameters
-*/
-
-  AssignmentStmt(std::string id, PlusAssignmentStmt *plusAsgn): _id(id), _plusAsgn(plusAsgn)
-	{
-		this->_exp = NULL;
-		this->_asgn = NULL;
-		this->_minusAsgn = NULL;
-		this->_unaryNode = NULL;
-	}
-
-	/*!		
-	\brief Constructor of AssignmentStmt 
-	\param id: string, variable of the AssignmentStmt
-	\param minusAsgn: pointer to PlusAssignmentStmt
-	\post  A new AssignmentStmt is created with the parameters
-*/
-
-  AssignmentStmt(std::string id, MinusAssignmentStmt *minusAsgn): _id(id), _minusAsgn(minusAsgn)
-	{
-		this->_exp = NULL;
-		this->_asgn = NULL;
-		this->_plusAsgn = NULL;
-		this->_unaryNode = NULL;
+		//Empty
 	}
 
 /*!		
@@ -1777,21 +1937,11 @@ class AssignmentStmt : public Statement
 	\param unaryNode: pointer to UnaryNode
 	\post  A new AssignmentStmt is created with the parameters
 */
-  AssignmentStmt(std::string id, UnaryNode *unaryNode): _id(id), _unaryNode(unaryNode)
+  AssignmentStmt(std::string id, UnaryNode *unaryNode): Assignment(id, unaryNode)
 	{
-		this->_exp = NULL;
-		this->_asgn = NULL; 
-		this->_plusAsgn = NULL;
-		this->_minusAsgn = NULL;
+		//Empty
 	}
 
-	/*!
-	\brief Getter for the ID
-	\note inline function
-	*/
-	inline const std::string getId() const {
-		return this->_id;
-	}
 
 /*!
 	\brief   Print the AssignmentStmt
@@ -1816,18 +1966,11 @@ class AssignmentStmt : public Statement
 /*!	
   \class   PlusAssignmentStmt
   \brief   Definition of atributes and methods of PlusAssignmentStmt class
-  \note    PlusAssignmentStmt Class publicly inherits from Statement class 
+  \note    PlusAssignmentStmt Class publicly inherits from Assignment class 
 		   and adds its own print and evaluate functions
 */
-class PlusAssignmentStmt : public Statement
+class PlusAssignmentStmt : public Assignment
 {
- private:
-  std::string _id;    //!< Name of the variable of the assignment statement
-  ExpNode *_exp; 	 //!< Expresssion the assignment statement
-
-  AssignmentStmt *_asgn;  //!< Allow multiple assigment -> a = b = 2 
-  PlusAssignmentStmt *_plusAsgn; //! Allow multiple plus assigment -> a += b += 2
-  MinusAssignmentStmt *_minusAsgn; //! Allow multiple plus assigment -> a = b -= 2
 
  public:
 
@@ -1837,11 +1980,9 @@ class PlusAssignmentStmt : public Statement
 	\param expression: pointer to ExpNode
 	\post  A new PlusAssignmentStmt is created with the parameters
 */
-  PlusAssignmentStmt(std::string id, ExpNode *expression): _id(id), _exp(expression)
+  PlusAssignmentStmt(std::string id, ExpNode *expression) : Assignment(id, expression)
 	{
-		this->_asgn = NULL;
-		this->_plusAsgn = NULL;
-		this->_minusAsgn = NULL;
+		//Empty
 	}
 
 /*!		
@@ -1851,49 +1992,10 @@ class PlusAssignmentStmt : public Statement
 	\post  A new PlusAssignmentStmt is created with the parameters 
 */
 
-  PlusAssignmentStmt(std::string id, AssignmentStmt *asgn): _id(id), _asgn(asgn)
+  PlusAssignmentStmt(std::string id, Assignment *asgn) : Assignment(id, asgn)
 	{
-		this->_exp = NULL;
-		this->_plusAsgn = NULL;
-		this->_minusAsgn = NULL;
+		//Empty
 	}
-
-/*!		
-	\brief Constructor of PlusAssignmentStmt 
-	\param id: string, variable of the PlusAssignmentStmt
-	\param plusAsgn: pointer to PlusAssignmentStmt
-	\post  A new PlusAssignmentStmt is created with the parameters
-*/
-
-  PlusAssignmentStmt(std::string id, PlusAssignmentStmt *plusAsgn): _id(id), _plusAsgn(plusAsgn)
-	{
-		this->_exp = NULL;
-		this->_asgn = NULL;
-		this->_minusAsgn = NULL;
-	}
-
-	/*!		
-	\brief Constructor of AssignmentStmt 
-	\param id: string, variable of the AssignmentStmt
-	\param minusAsgn: pointer to PlusAssignmentStmt
-	\post  A new AssignmentStmt is created with the parameters
-*/
-
-  PlusAssignmentStmt(std::string id, MinusAssignmentStmt *minusAsgn): _id(id), _minusAsgn(minusAsgn)
-	{
-		this->_exp = NULL;
-		this->_asgn = NULL;
-		this->_plusAsgn = NULL;
-	}
-
-	/*!
-	\brief Getter for the ID
-	\note inline function
-	*/
-	inline const std::string getId() const {
-		return this->_id;
-	}
-
 
 /*!
 	\brief   Print the PlusAssignmentStmt
@@ -1916,96 +2018,48 @@ class PlusAssignmentStmt : public Statement
 
 
 /*!	
-  \class   PlusAssignmentStmt
-  \brief   Definition of atributes and methods of PlusAssignmentStmt class
-  \note    PlusAssignmentStmt Class publicly inherits from Statement class 
+  \class   MinusAssignmentStmt
+  \brief   Definition of atributes and methods of MinusAssignmentStmt class
+  \note    MinusAssignmentStmt Class publicly inherits from Assignment class 
 		   and adds its own print and evaluate functions
 */
-class MinusAssignmentStmt : public Statement
+class MinusAssignmentStmt : public Assignment
 {
- private:
-  std::string _id;    //!< Name of the variable of the assignment statement
-  ExpNode *_exp; 	 //!< Expresssion the assignment statement
-
-  AssignmentStmt *_asgn;  //!< Allow multiple assigment -> a = b = 2 
-  PlusAssignmentStmt *_plusAsgn; //! Allow multiple plus assigment -> a += b += 2
-  MinusAssignmentStmt *_minusAsgn; //! Allow multiple plus assigment -> a = b -= 2
 
  public:
 
 /*!		
-	\brief Constructor of PlusAssignmentStmt 
-	\param id: string, variable of the PlusAssignmentStmt
+	\brief Constructor of MinusAssignmentStmt 
+	\param id: string, variable of the MinusAssignmentStmt
 	\param expression: pointer to ExpNode
-	\post  A new PlusAssignmentStmt is created with the parameters
+	\post  A new MinusAssignmentStmt is created with the parameters
 */
-  MinusAssignmentStmt(std::string id, ExpNode *expression): _id(id), _exp(expression)
+  MinusAssignmentStmt(std::string id, ExpNode *expression) : Assignment(id, expression)
 	{
-		this->_asgn = NULL;
-		this->_plusAsgn = NULL;
-		this->_minusAsgn = NULL;
+		//Empty
 	}
 
 /*!		
-	\brief Constructor of PlusAssignmentStmt 
-	\param id: string, variable of the PlusAssignmentStmt
-	\param asgn: pointer to AssignmentStmt
-	\post  A new PlusAssignmentStmt is created with the parameters 
+	\brief Constructor of MinusAssignmentStmt 
+	\param id: string, variable of the MinusAssignmentStmt
+	\param asgn: pointer to Assignment
+	\post  A new MinusAssignmentStmt is created with the parameters 
 */
 
-  MinusAssignmentStmt(std::string id, AssignmentStmt *asgn): _id(id), _asgn(asgn)
+  MinusAssignmentStmt(std::string id, Assignment *asgn) : Assignment(id, asgn)
 	{
-		this->_exp = NULL;
-		this->_plusAsgn = NULL;
-		this->_minusAsgn = NULL;
+		//Empty
 	}
-
-/*!		
-	\brief Constructor of PlusAssignmentStmt 
-	\param id: string, variable of the PlusAssignmentStmt
-	\param plusAsgn: pointer to PlusAssignmentStmt
-	\post  A new PlusAssignmentStmt is created with the parameters
-*/
-
-  MinusAssignmentStmt(std::string id, PlusAssignmentStmt *plusAsgn): _id(id), _plusAsgn(plusAsgn)
-	{
-		this->_exp = NULL;
-		this->_asgn = NULL;
-		this->_minusAsgn = NULL;
-	}
-
-	/*!		
-	\brief Constructor of AssignmentStmt 
-	\param id: string, variable of the AssignmentStmt
-	\param minusAsgn: pointer to PlusAssignmentStmt
-	\post  A new AssignmentStmt is created with the parameters
-*/
-
-  MinusAssignmentStmt(std::string id, MinusAssignmentStmt *minusAsgn): _id(id), _minusAsgn(minusAsgn)
-	{
-		this->_exp = NULL;
-		this->_asgn = NULL;
-		this->_plusAsgn = NULL;
-	}
-
-	/*!
-	\brief Getter for the ID
-	\note inline function
-	*/
-	inline const std::string getId() const {
-		return this->_id;
-	}
-
 
 /*!
-	\brief   Print the PlusAssignmentStmt
+	\brief   Print the MinusAssignmentStmt
 	\return  void
 	\sa		 evaluate()
 */
   void print();
 
 /*!	
-	\brief   Evaluate the PlusAssignmentStmt
+	\brief   Evaluate the MinusAssignmentStmt
 	\return  void
 	\sa		 print
 */
@@ -2276,7 +2330,7 @@ class EmptyStmt : public Statement
   \note    IfStmt Class publicly inherits from Statement class 
 		   and adds its own print and evaluate functions
 */
-class IfStmt : public StatementList 
+class IfStmt : public Statement 
 {
  private:
   ExpNode *_cond; //!< Condicion of the if statement
@@ -2342,7 +2396,7 @@ class IfStmt : public StatementList
   \note    WhileStmt Class publicly inherits from Statement class 
 		   and adds its own print and evaluate functions
 */
-class WhileStmt : public StatementList 
+class WhileStmt : public Statement 
 {
  private:
   ExpNode *_cond; //!< Condicion of the while statement
@@ -2388,7 +2442,7 @@ class WhileStmt : public StatementList
 		   and adds its own print and evaluate functions
 */
 
-class RepeatUntilStmt : public StatementList {
+class RepeatUntilStmt : public Statement {
 
 private:
 	ExpNode * _cond; //!< Condicion of the do-until statement
@@ -2432,7 +2486,7 @@ public:
 		   and adds its own print and evaluate functions
 */
 
-class ForStmt : public StatementList {
+class ForStmt : public Statement {
 
 private:
 	std::string _var; //!< Variable for the for loop
@@ -2494,6 +2548,54 @@ public:
   void evaluate();
 
 };
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/*!	
+  \class   SwitchStmt
+  \brief   Definition of atributes and methods of SwitchStmt class
+  \note    SwitchStmt Class publicly inherits from CaseList class 
+		   and adds its own print and evaluate functions
+*/
+
+class SwitchStmt : public Statement {
+
+private:
+	ExpNode * _exp; //! Expression to be evaluated
+	lp::CaseList * _caseList; //! List of cases for the switch statement
+
+public:
+
+	/**
+	\brief Constructor of the SwitchStmt class
+	\param exp: Expression to be evaluated
+	\param caseList: List of cases for the switch statement
+	\post A new SwitchStmt is created with the parameters 
+	*/
+	SwitchStmt(ExpNode * exp, lp::CaseList * caseList) {
+		this->_exp = exp;
+		this->_caseList = caseList;
+	}
+
+
+	/*!
+		\brief   Print the SwitchStmt
+		\return  void
+		\sa		 evaluate
+	*/
+	  void print();
+
+	/*!	
+		\brief   Evaluate the SwitchStmt
+		\return  void
+		\sa		 print
+	*/
+	  void evaluate();
+};
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////

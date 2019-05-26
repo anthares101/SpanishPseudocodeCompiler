@@ -108,6 +108,14 @@ static struct {
 						"fin_para", ENDFOR,
 						//////////////////////
 
+						//SWITCH-CASE
+						"segun", SWITCH,
+						"valor", CASE,
+						"salir", BREAK,
+						"defecto", DEFAULT,
+						"fin_segun", ENDSWITCH,
+						//////////////////////
+
 	                    "",      0
 	                   };
 

@@ -7,6 +7,7 @@
 %{
 #include <iostream>
 #include <string>
+#include <vector>
 
 /*******************************************/
 /* NEW in example 5 */
@@ -91,6 +92,7 @@ extern int lineNumber; //!< External line counter
 /* NEW in example 15 */
 extern bool interactiveMode; //!< Control the interactive mode of execution of the interpreter
 
+std::vector <int> nDefaults; //!< Controls the number of default cases in switch-cases
 
 /***********************************************************/
 /* NEW in example 2 */
@@ -137,6 +139,8 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
   std::list<lp::ExpNode *>  *parameters;    // New in example 16; NOTE: #include<list> must be in interpreter.l, init.cpp, interpreter.cpp
   lp::StatementList *stmts; /* NEW in example 16 */
   lp::Statement *st;				 /* NEW in example 16 */
+  //lp::Case * caseElement;
+  lp::CaseList * caseList;
   lp::AST *prog;					 /* NEW in example 16 */
 }
 
@@ -144,12 +148,16 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 // New in example 17: cond
 %type <expNode> exp cond 
 
+//%type <caseElement> caseElmnt
+
+%type <caseList> caseLst
+
 /* New in example 14 */
 %type <parameters> listOfExp  restOfListOfExp
 
 %type <stmts> stmtlist
 
-%type <st> stmt asgn print read if while repeatUntil for erase position unary
+%type <st> stmt asgn print read if while repeatUntil for erase position unary switch
 
 %type <prog> program
 
@@ -159,7 +167,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 
 /*******************************************/
 /* NEW in example 5 */
-%token SEMICOLON
+%token SEMICOLON COLON
 /*******************************************/
 
 // Tokens for print sentence
@@ -180,6 +188,9 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 
 // Tokens for for loop
 %token FOR START INC ENDFOR
+
+// Tokens for switch-case
+%token SWITCH CASE BREAK DEFAULT ENDSWITCH
 
 // Tokens for macros
 %token ERASE POSITION
@@ -285,7 +296,84 @@ stmtlist:  /* empty: epsilon rule */
 			yyclearin; 
            } 
 ;
- 
+
+
+			/*aseElmnt: CASE NUMBER COLON stmtlist BREAK SEMICOLON
+					   {
+					   	$$ = new lp::Case($4, new int((int) $2), true, false);
+					   }
+								   | CASE NUMBER COLON stmtlist  					2 CONFLICTOS DESPLAZAMIENTO/REDUCCION
+								   {
+								   	$$ = new lp::Case($4, (int*)(&$2), false);
+								   }
+					   | DEFAULT COLON stmtlist BREAK SEMICOLON
+					   {
+					   	$$ = new lp::Case($3, NULL, true, true);
+					   }
+								    | DEFAULT COLON stmtlist
+								   {
+								   	$$ = new lp::Case($3, NULL, true);
+								   }
+			;*/
+
+caseLst:  /* empty: epsilon rule */
+		  { 
+			// create a empty list of statements
+			$$ = new lp::CaseList(); 
+			nDefaults.push_back(0);
+
+		  }  
+
+		| caseLst CASE exp COLON stmtlist
+		  { 
+			// copy up the list and add the stmt to it
+			$$ = $1;
+			$$->addCase(new lp::Case($5, $3, false, false));
+
+			if(nDefaults.back() > 0) {
+				warning("Error en tiempo de compilación: el caso por defecto no es el último de todos ", "segun");
+			}
+
+		  }
+
+        | caseLst CASE exp COLON stmtlist BREAK SEMICOLON 
+		  { 
+			// copy up the list and add the stmt to it
+			$$ = $1;
+			$$->addCase(new lp::Case($5, $3, true, false));
+
+			if(nDefaults.back() > 0) {
+				warning("Error en tiempo de compilación: el caso por defecto no es el último de todos ", "segun");
+			}
+
+		  }
+
+		| caseLst DEFAULT COLON stmtlist 
+		  { 
+			// copy up the list and add the stmt to it
+			$$ = $1;
+			$$->addCase(new lp::Case($4, NULL, true, true));
+
+			nDefaults.back()++;
+
+			if(nDefaults.back() > 1) {
+				warning("Error en tiempo de compilación: hay más de un caso por defecto, el comportamiento del programa puede ser indefinido ", "segun");
+			}
+		  }
+
+		| caseLst DEFAULT COLON stmtlist BREAK SEMICOLON 
+		  { 
+			// copy up the list and add the stmt to it
+			$$ = $1;
+			$$->addCase(new lp::Case($4, NULL, true, true));
+
+			nDefaults.back()++;
+
+			if(nDefaults.back() > 1) {
+				warning("Error en tiempo de compilación: hay más de un caso por defecto, el comportamiento del programa puede ser indefinido ", "segun");
+			}
+		  }
+;
 
 stmt: SEMICOLON  /* Empty statement: ";" */
 	  {
@@ -330,6 +418,11 @@ stmt: SEMICOLON  /* Empty statement: ";" */
 		// $$ = $1;
 	 }
 	| for 
+	 {
+		// Default action
+		// $$ = $1;
+	 }
+	| switch 
 	 {
 		// Default action
 		// $$ = $1;
@@ -419,6 +512,14 @@ for: FOR VARIABLE START exp UNTIL exp INC exp DO stmtlist ENDFOR
 			*/
 ;
 
+
+switch: SWITCH LPAREN exp RPAREN caseLst ENDSWITCH
+		{
+			$$ = new lp::SwitchStmt($3, $5);
+			nDefaults.pop_back();
+		}
+;
+
 	/*  NEW in example 17 */
 cond: 	LPAREN exp RPAREN
 		{ 
@@ -436,7 +537,7 @@ asgn:   VARIABLE ASSIGNMENT exp
 	|  VARIABLE ASSIGNMENT asgn 
 		{ 
 			// Create a new assignment node
-			$$ = new lp::AssignmentStmt($1, (lp::AssignmentStmt *) $3);
+			$$ = new lp::AssignmentStmt($1, (lp::Assignment *) $3);
 		}
 
 	|  VARIABLE ASSIGNMENT unary 
@@ -463,7 +564,7 @@ asgn:   VARIABLE ASSIGNMENT exp
 
 	| VARIABLE PLUSASSIGNMENT asgn
 		{
-			$$ = new lp::PlusAssignmentStmt($1, (lp::AssignmentStmt *) $3);
+			$$ = new lp::PlusAssignmentStmt($1, (lp::Assignment *) $3);
 		}
 
 	| CONSTANT PLUSASSIGNMENT exp 
@@ -483,7 +584,7 @@ asgn:   VARIABLE ASSIGNMENT exp
 
 	| VARIABLE MINUSASSIGNMENT asgn
 		{
-			$$ = new lp::MinusAssignmentStmt($1, (lp::AssignmentStmt *) $3);
+			$$ = new lp::MinusAssignmentStmt($1, (lp::Assignment *) $3);
 		}
 
 	| CONSTANT MINUSASSIGNMENT exp 
