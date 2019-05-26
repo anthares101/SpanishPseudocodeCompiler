@@ -557,6 +557,11 @@ asgn:   VARIABLE ASSIGNMENT exp
  			execerror("Error semántico en asignación múltiple: no se permite modificar una constante ",$1);
 		}
 
+	| CONSTANT ASSIGNMENT unary 
+		{   
+ 			execerror("Error semántico en asignación: no se permite modificar una constante ", $1);
+		}
+
 	| VARIABLE PLUSASSIGNMENT exp
 		{
 			$$ = new lp::PlusAssignmentStmt($1, $3);
@@ -565,6 +570,12 @@ asgn:   VARIABLE ASSIGNMENT exp
 	| VARIABLE PLUSASSIGNMENT asgn
 		{
 			$$ = new lp::PlusAssignmentStmt($1, (lp::Assignment *) $3);
+		}
+
+	|  VARIABLE PLUSASSIGNMENT unary 
+		{ 
+			// Create a new assignment node
+			$$ = new lp::PlusAssignmentStmt($1, (lp::UnaryNode *) $3);
 		}
 
 	| CONSTANT PLUSASSIGNMENT exp 
@@ -577,6 +588,11 @@ asgn:   VARIABLE ASSIGNMENT exp
  			execerror("Error semántico en asignación múltiple: no se permite modificar una constante ",$1);
 		}
 
+	| CONSTANT PLUSASSIGNMENT unary 
+		{   
+ 			execerror("Error semántico en asignación: no se permite modificar una constante ", $1);
+		}
+
 	| VARIABLE MINUSASSIGNMENT exp
 		{
 			$$ = new lp::MinusAssignmentStmt($1, $3);
@@ -587,6 +603,12 @@ asgn:   VARIABLE ASSIGNMENT exp
 			$$ = new lp::MinusAssignmentStmt($1, (lp::Assignment *) $3);
 		}
 
+	|  VARIABLE MINUSASSIGNMENT unary 
+		{ 
+			// Create a new assignment node
+			$$ = new lp::MinusAssignmentStmt($1, (lp::UnaryNode *) $3);
+		}
+
 	| CONSTANT MINUSASSIGNMENT exp 
 		{   
  			execerror("Error semántico en asignación: no se permite modificar una constante ", $1);
@@ -595,6 +617,11 @@ asgn:   VARIABLE ASSIGNMENT exp
 	| CONSTANT MINUSASSIGNMENT asgn 
 		{   
  			execerror("Error semántico en asignación múltiple: no se permite modificar una constante ",$1);
+		}
+
+	| CONSTANT MINUSASSIGNMENT unary 
+		{   
+ 			execerror("Error semántico en asignación: no se permite modificar una constante ", $1);
 		}
 ;
 

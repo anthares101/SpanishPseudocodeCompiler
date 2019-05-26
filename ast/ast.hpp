@@ -1997,6 +1997,17 @@ class PlusAssignmentStmt : public Assignment
 		//Empty
 	}
 
+/*!		
+	\brief Constructor of PlusAssignmentStmt 
+	\param id: string, variable of the PlusAssignmentStmt
+	\param unaryNode: pointer to UnaryNode
+	\post  A new PlusAssignmentStmt is created with the parameters
+*/
+  PlusAssignmentStmt(std::string id, UnaryNode *unaryNode): Assignment(id, unaryNode)
+	{
+		//Empty
+	}
+
 /*!
 	\brief   Print the PlusAssignmentStmt
 	\return  void
@@ -2047,6 +2058,17 @@ class MinusAssignmentStmt : public Assignment
 */
 
   MinusAssignmentStmt(std::string id, Assignment *asgn) : Assignment(id, asgn)
+	{
+		//Empty
+	}
+
+	/*!		
+	\brief Constructor of MinusAssignmentStmt 
+	\param id: string, variable of the MinusAssignmentStmt
+	\param unaryNode: pointer to UnaryNode
+	\post  A new MinusAssignmentStmt is created with the parameters
+*/
+  MinusAssignmentStmt(std::string id, UnaryNode *unaryNode): Assignment(id, unaryNode)
 	{
 		//Empty
 	}
