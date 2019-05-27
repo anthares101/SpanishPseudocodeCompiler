@@ -60,7 +60,7 @@ extern int lineNumber; //!< External line counter
 //Definition of the statement stack
 std::stack <int> stackedStmts;
 
-bool repeatState = false;
+bool repeatState = false; //!< Used to manage control statements
 
 %}
 

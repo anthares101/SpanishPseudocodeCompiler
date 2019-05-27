@@ -16,7 +16,7 @@
 #include <list>
 
 
-#define ERROR_BOUND 1.0e-6  //!< Error bound for the comparison of real numbers.
+#define ERROR_BOUND 1.0e-6  //! Error bound for the comparison of real numbers.
 /*
 #define NUMBER 1
 #define BOOL 2
@@ -1560,11 +1560,9 @@ class Statement {
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 /*!	
-  \class   Statement
-  \brief   Definition of atributes and methods of Statement class
-  \warning Abstract class
+  \class   StatementList
+  \brief   Definition of atributes and methods of StatementList class
 */
-
 class StatementList {
 
 private:
@@ -1748,6 +1746,7 @@ public:
 	\param value: int *, value of the Case
 	\param stmts: body of the Case
 	\param breakOpt: Wether the case has a break option or not
+	\param def: Wether the case is default or not
 	\post  A new Case is created with the parameters
 */
 	Case(StatementList * stmts, ExpNode * value = NULL, bool breakOpt = false, bool def = NULL) {
@@ -1823,11 +1822,14 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-
+/*!	
+  \class   CaseList
+  \brief   Definition of atributes and methods of CaseList class
+*/
 class CaseList {
 
 private:
-	std::list<lp::Case *> _caseList;
+	std::list<lp::Case *> _caseList; //!< List of cases
 
 public:
 
@@ -1878,7 +1880,7 @@ protected:
 	std::string _id;    //!< Name of the variable of the assignment statement
 	ExpNode *_exp; 	 //!< Expresssion the assignment statement
 	Assignment *_asgn;  //!< Allow multiple assigment -> a = b = 2
-  	UnaryNode *_unaryNode; //!Allow unary operators assigments -> a = ++b; a = b++; a = --b; a = b--;
+  	UnaryNode *_unaryNode; //!< Allow unary operators assigments -> a = ++b; a = b++; a = --b; a = b--;
 
 public:
 
@@ -2406,7 +2408,6 @@ class EraseStmt : public Statement
   public:
 /*!		
 	\brief Constructor of EraseStmt
-	\param id: string, name of the variable of the EraseStmt
 	\post  A new EraseStmt is created with the parameter
 */
   EraseStmt()
@@ -2443,13 +2444,14 @@ class EraseStmt : public Statement
 class PositionStmt : public Statement 
 {
   private:
-	ExpNode * _x;
-	ExpNode * _y;	
+	ExpNode * _x; //!< X coordinate
+	ExpNode * _y; //!< Y coordinate
 
   public:
 /*!		
 	\brief Constructor of PositionStmt
-	\param id: string, name of the variable of the PositionStmt
+	\param x: ExpNode*, x coordinate
+	\param y: ExpNode*, y coordinate
 	\post  A new PositionStmt is created with the parameter
 */
   PositionStmt(ExpNode * x, ExpNode * y)
@@ -2600,7 +2602,7 @@ class WhileStmt : public Statement
 /*!		
 	\brief Constructor of  WhileStmt
 	\param condition: ExpNode of the condition
-	\param statement: Statement of the body of the loop 
+	\param statements: Statement of the body of the loop 
 	\post  A new WhileStmt is created with the parameters
 */
   WhileStmt(ExpNode *condition, StatementList *statements)
@@ -2646,8 +2648,8 @@ public:
 
 	/*!		
 	\brief Constructor of  RepeatUntilStmt
+	\param statements: Statement of the body of the loop 
 	\param condition: ExpNode of the condition
-	\param statement: Statement of the body of the loop 
 	\post  A new RepeatUntilStmt is created with the parameters
 */
   RepeatUntilStmt(StatementList *statements, ExpNode *condition)
@@ -2754,12 +2756,11 @@ public:
   \note    SwitchStmt Class publicly inherits from CaseList class 
 		   and adds its own print and evaluate functions
 */
-
 class SwitchStmt : public Statement {
 
 private:
-	ExpNode * _exp; //! Expression to be evaluated
-	lp::CaseList * _caseList; //! List of cases for the switch statement
+	ExpNode * _exp; //!<  Expression to be evaluated
+	lp::CaseList * _caseList; //!<  List of cases for the switch statement
 
 public:
 

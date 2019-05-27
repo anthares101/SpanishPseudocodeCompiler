@@ -5,7 +5,7 @@
 
 /*!
  \mainpage Flex and Bison: example 17
- \author   
+ \author   Sergio Gomez Moreales and Ángel Heredia Pérez
  \date     2018 - 4 - 26
  \version  1.0
  \note Novelties
