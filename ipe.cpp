@@ -1,5 +1,5 @@
 /*! 
-  \file interpreter.cpp
+  \file ipe.cpp
   \brief Main program
 */
 

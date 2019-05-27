@@ -1649,7 +1649,7 @@ class UnaryNode : public Statement
 //////////////////////////////////////////////////////////////////////////////
 
 /*!	
-  \class   UnaryPlusPlusNode uses UnaryNode's constructor as member initializer
+  \class   UnaryPlusPlusNode
   \brief   Definition of atributes and methods of UnaryPlusPlusNode class
   \note    UnaryPlusPlusNode Class publicly inherits from UnaryNode class
 */
@@ -1659,7 +1659,7 @@ class UnaryPlusPlusNode : public UnaryNode
  public:
 
 /*!		
-	\brief Constructor of UnaryPlusPlusNode
+	\brief Constructor of UnaryPlusPlusNode uses UnaryNode's constructor as member initializer
 	\param id: string, variable name
 	\param before: bool, unary operator position
 	\post  A new UnaryPlusPlusNode is created with the parameters
@@ -1689,7 +1689,7 @@ class UnaryPlusPlusNode : public UnaryNode
 //////////////////////////////////////////////////////////////////////////////
 
 /*!	
-  \class   UnaryMinusMinusNode uses UnaryNode's constructor as member initializer
+  \class   UnaryMinusMinusNode
   \brief   Definition of atributes and methods of UnaryMinusMinusNode class
   \note    UnaryMinusMinusNode Class publicly inherits from UnaryNode class
 */
@@ -1699,7 +1699,7 @@ class UnaryMinusMinusNode : public UnaryNode
  public:
 
 /*!		
-	\brief Constructor of UnaryMinusMinusNode
+	\brief Constructor of UnaryMinusMinusNode uses UnaryNode's constructor as member initializer
 	\param id: string, variable name
 	\param before: bool, unary operator position
 	\post  A new UnaryMinusMinusNode is created with the parameters
