@@ -81,6 +81,14 @@ lp::Table table; //!< Table of Symbols
 
 // cout.precision
 #include <iostream>
+
+#include <fstream>
+
+std::ofstream errorLog; //!< file pointer to error log
+
+//Date and time
+#include <ctime>
+
 //////////////////////////////////////////////////
 
 //! \name Main program
@@ -148,6 +156,24 @@ else
  /* Number of decimal places */ 
  std::cout.precision(7);
 
+ errorLog.open("error_log.txt");
+
+ time_t current_time;
+ struct tm * time_info;
+ char timeString[9];
+ char dateString[9];
+
+ current_time = time(NULL);
+ time(&current_time);
+ time_info = localtime(&current_time);
+
+ strftime(dateString, sizeof(dateString), "%D", time_info);
+
+ errorLog << ">>> Entry at: " << dateString << " current time: ";
+
+ strftime(timeString, sizeof(timeString), "%H:%M:%S", time_info);
+ errorLog << timeString << "\n\n";
+
  /* 
    Table of symbols initialization 
    Must be written before the recovery sentence: setjmp
@@ -171,6 +197,8 @@ else
  		root->evaluate();
  	}
  }
+
+ errorLog.close();
 
  /* End of program */
  return 0;

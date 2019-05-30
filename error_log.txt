@@ -1,0 +1,6 @@
+>>> Entry at: 05/30/19 current time: 10:51:56
+
+ Programa: ./ipe.exe
+ Línea de error 19 --> Error en tiempo de compilación: hay más de un caso por defecto, el comportamiento del programa puede ser indefinido 
+	segun
+

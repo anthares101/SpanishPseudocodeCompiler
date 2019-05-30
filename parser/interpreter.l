@@ -370,13 +370,12 @@ IDENTIFIER_ERR ({LETTER}|{DIGIT}|_)+
 		}*/
 
 <<EOF>> { /* The interpreter finishes when finds the end of file character */
-		/*  PLACE(24,10);
+		  PLACE(24,28);
 	  	  std::cout <<  BICYAN;
 	   	  std::cout <<  ">>>>>>> Fin de fichero <<<<<<<";
 	 	  std::cout << std::endl;
 	   	  std::cout << RESET;
 		  PLACE(25,1);
-		*/
 	  	  return 0;
 	}
 

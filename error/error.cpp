@@ -7,6 +7,9 @@
 // cerr, endl
 #include <iostream>
 
+// ofstream
+#include <fstream>
+
 #include <string>
 
 /*  longjmp */
@@ -29,9 +32,16 @@ extern jmp_buf begin; //!< Used for error recovery
 // NEW
 extern int errno; //!<  ReferenceReference to the global variable that controls errors in the mathematical code
 
+extern std::ofstream errorLog;
+
 
 void warning(std::string errorMessage1,std::string errorMessage2)
 {
+
+  if(!errorLog.is_open()) {
+    errorLog.open("../error_log.txt");
+  }
+
   std::cerr << IGREEN; 
   std::cerr << " Programa: " << progname << std::endl;
   std::cerr << BIRED; 
@@ -42,6 +52,17 @@ void warning(std::string errorMessage1,std::string errorMessage2)
 
   if (errorMessage2.compare("")!=0)
 		 std::cerr << "\t" << errorMessage2 << std::endl;
+
+
+  errorLog << " Programa: " << progname << std::endl;
+  errorLog << " Línea de error " << lineNumber 
+            << " --> " << errorMessage1 << std::endl;
+
+
+  if (errorMessage2.compare("")!=0)
+     errorLog << "\t" << errorMessage2 << std::endl;
+
+   errorLog << std::endl;
 }
 
 void yyerror(std::string errorMessage)
@@ -73,6 +94,7 @@ double errcheck(double d, std::string s)
      std::string msg("Error en tiempo de ejecución --> argumento fuera de dominio");
  
      std::cout << msg << std::endl;
+     errorLog << msg << std::endl;
      execerror(s,msg);
     }
    else if (errno==ERANGE)
