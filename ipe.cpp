@@ -84,6 +84,9 @@ lp::Table table; //!< Table of Symbols
 
 #include <fstream>
 
+// rand, RAND_MAX
+#include <stdlib.h>
+
 std::ofstream errorLog; //!< file pointer to error log
 
 //Date and time
@@ -103,6 +106,8 @@ std::ofstream errorLog; //!< file pointer to error log
 */
 int main(int argc, char *argv[])
 {
+ srand (time(NULL)); //Random seed
+
  // Option -t needed
  // yydebug = 1;
  

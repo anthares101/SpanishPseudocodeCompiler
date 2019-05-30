@@ -58,8 +58,6 @@ double integer(double x)
 
 double Random()
 {
- srand (time(NULL));
-
  return (double) (long) rand() / RAND_MAX;
 }
 

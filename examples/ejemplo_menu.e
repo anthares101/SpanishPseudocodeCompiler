@@ -7,7 +7,7 @@ mientras (_no exit_state) hacer
 
 	escribir 'Bienvenido/a, seleccione una opción:\n\n';
 	escribir '1) Calcular los n primeros elementos de la serie de Fibonacci\n';
-	escribir '2) Ni idea ahora mismo\n\n';
+	escribir '2) Calcular el seno, coseno y el arcotangente de un número\n\n';
 	escribir '0) Salir\n\n\n';
 
 	si (error_state) entonces
@@ -20,7 +20,11 @@ mientras (_no exit_state) hacer
 
 	segun(opcion)
 		valor 1:
-			escribir '\n';
+			_borrar;
+			_lugar(3,10);
+			
+			escribir '1) N primeros elementos de la serie de Fibonacci\n\n';
+			
 			escribir 'Introduzca cuantos elementos de la serie de fibonacci desea: ';
 			leer (n);
 
@@ -45,11 +49,27 @@ mientras (_no exit_state) hacer
 			fin_si
 
 			escribir '\n\n';
-			escribir 'Introduzca una tecla para continuar... ';
-			leer (t);
+			escribir 'Pulse una tecla para continuar... ';
+			leer_cadena (pausa);
 
 			salir;
 		valor 2:
+			_borrar;
+			_lugar(3,10);
+			
+			escribir '2) Calcular el seno, coseno y el arcotangente de un número\n\n';
+			
+			escribir 'Introduzca un número: ';
+			leer (n);
+			escribir '\n';
+			
+			escribir 'Seno =  ' || sin(n) || '\n';
+			escribir 'Coseno =  ' || cos(n) || '\n';
+			escribir 'Arcotangente =  ' || atan(n) || '\n\n\n';
+			
+			escribir 'Pulse una tecla para continuar... ';
+			leer_cadena (pausa);
+			
 			salir;
 		valor 0:
 			exit_state:=Verdadero;
