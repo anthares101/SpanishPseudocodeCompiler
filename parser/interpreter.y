@@ -408,12 +408,12 @@ stmt: SEMICOLON  /* Empty statement: ";" */
 		// Default action
 		// $$ = $1;
 	 }
-	| erase 
+	| erase SEMICOLON
 	 {
 		// Default action
 		// $$ = $1;
 	 }
-	 | position 
+	 | position SEMICOLON
 	 {
 		// Default action
 		// $$ = $1;
